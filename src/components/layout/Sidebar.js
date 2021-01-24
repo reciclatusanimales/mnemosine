@@ -26,10 +26,12 @@ export default function Sidebar() {
 						setSelectedProject("INBOX");
 					}}
 				>
-					<span>
-						<FaInbox />
-					</span>
-					<span>Inbox</span>
+					<div>
+						<span>
+							<FaInbox />
+						</span>
+						<span>Inbox</span>
+					</div>
 				</li>
 				<li
 					className={active === "today" ? "active" : undefined}
@@ -39,10 +41,12 @@ export default function Sidebar() {
 						setSelectedProject("TODAY");
 					}}
 				>
-					<span>
-						<FaRegCalendar />
-					</span>
-					<span>Today</span>
+					<div>
+						<span>
+							<FaRegCalendar />
+						</span>
+						<span>Today</span>
+					</div>
 				</li>
 				<li
 					className={active === "next_7" ? "active" : undefined}
@@ -52,10 +56,12 @@ export default function Sidebar() {
 						setSelectedProject("NEXT_7");
 					}}
 				>
-					<span>
-						<FaRegCalendarAlt />
-					</span>
-					<span>Next 7 days</span>
+					<div>
+						<span>
+							<FaRegCalendarAlt />
+						</span>
+						<span>Next 7 days</span>
+					</div>
 				</li>
 				<div
 					className="sidebar__middle"

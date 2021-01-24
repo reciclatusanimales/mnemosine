@@ -4,6 +4,7 @@ import { getTitle, getCollatedTitle, collatedTasksExists } from "../helpers";
 import { useTasks } from "../hooks";
 import { useSelectedProjectValue, useProjectsValue } from "../context";
 import { useEffect } from "react";
+import AddTask from "./AddTask";
 
 export default function Tasks() {
 	const { selectedProject } = useSelectedProjectValue();
@@ -14,11 +15,9 @@ export default function Tasks() {
 
 	if (collatedTasksExists(selectedProject) && selectedProject) {
 		projectName = getCollatedTitle(collatedTasks, selectedProject).name;
-		console.log("afd");
 	}
 
 	if (
-		projects &&
 		projects.length > 0 &&
 		selectedProject &&
 		!collatedTasksExists(selectedProject)
@@ -42,6 +41,8 @@ export default function Tasks() {
 					</li>
 				))}
 			</ul>
+
+			<AddTask />
 		</div>
 	);
 }
