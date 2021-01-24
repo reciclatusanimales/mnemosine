@@ -9,14 +9,19 @@ export default function TaskDate({
 		showTaskDate && (
 			<div className="task-date" data-testid="task-date-overlay">
 				<ul className="task-date__list">
-					<li
-						onClick={() => {
-							setShowTaskDate(false);
-							setTaskDate(moment().format("DD/MM/YYYY"));
-						}}
-						data-testid="task-date-overlay"
-					>
-						<div>
+					<li data-testid="task-date-overlay">
+						<div
+							onClick={() => {
+								setShowTaskDate(false);
+								setTaskDate(moment().format("DD/MM/YYYY"));
+							}}
+							onKeyDown={() => {
+								setShowTaskDate(false);
+								setTaskDate(moment().format("DD/MM/YYYY"));
+							}}
+							tabIndex={0}
+							role="button"
+						>
 							<span>
 								<FaSpaceShuttle />
 							</span>
@@ -24,32 +29,46 @@ export default function TaskDate({
 						</div>
 					</li>
 
-					<li
-						onClick={() => {
-							setShowTaskDate(false);
-							setTaskDate(
-								moment().add(1, "day").format("DD/MM/YYYY")
-							);
-						}}
-						data-testid="task-date-tomorrow"
-					>
-						<div>
+					<li data-testid="task-date-tomorrow">
+						<div
+							onClick={() => {
+								setShowTaskDate(false);
+								setTaskDate(
+									moment().add(1, "day").format("DD/MM/YYYY")
+								);
+							}}
+							onKeyDown={() => {
+								setShowTaskDate(false);
+								setTaskDate(
+									moment().add(1, "day").format("DD/MM/YYYY")
+								);
+							}}
+							tabIndex={0}
+							role="button"
+						>
 							<span>
 								<FaSun />
 							</span>
 							<span>Tomorrow</span>
 						</div>
 					</li>
-					<li
-						onClick={() => {
-							setShowTaskDate(false);
-							setTaskDate(
-								moment().add(7, "day").format("DD/MM/YYYY")
-							);
-						}}
-						data-testid="task-date-next-week"
-					>
-						<div>
+					<li data-testid="task-date-next-week">
+						<div
+							onClick={() => {
+								setShowTaskDate(false);
+								setTaskDate(
+									moment().add(7, "day").format("DD/MM/YYYY")
+								);
+							}}
+							onKeyDown={() => {
+								setShowTaskDate(false);
+								setTaskDate(
+									moment().add(7, "day").format("DD/MM/YYYY")
+								);
+							}}
+							tabIndex={0}
+							role="button"
+						>
 							<span>
 								<FaRegPaperPlane />
 							</span>

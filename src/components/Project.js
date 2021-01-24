@@ -38,10 +38,16 @@ export default function Project({ project }) {
 							<button
 								type="button"
 								onClick={() => deleteProject(docId)}
+								onKeyDown={() => deleteProject(docId)}
 							>
 								Delete
 							</button>
-							<span onClick={() => setShowConfirm(!showConfirm)}>
+							<span
+								onClick={() => setShowConfirm(!showConfirm)}
+								onKeyDown={() => setShowConfirm(!showConfirm)}
+								tabIndex={0}
+								role="button"
+							>
 								Cancel
 							</span>
 						</span>

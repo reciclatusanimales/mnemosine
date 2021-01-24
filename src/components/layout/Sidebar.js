@@ -21,12 +21,19 @@ export default function Sidebar() {
 				<li
 					className={active === "inbox" ? "active" : undefined}
 					data-testid="inbox"
-					onClick={() => {
-						setActive("inbox");
-						setSelectedProject("INBOX");
-					}}
 				>
-					<div>
+					<div
+						onClick={() => {
+							setActive("inbox");
+							setSelectedProject("INBOX");
+						}}
+						onKeyDown={() => {
+							setActive("inbox");
+							setSelectedProject("INBOX");
+						}}
+						tabIndex={0}
+						role="button"
+					>
 						<span>
 							<FaInbox />
 						</span>
@@ -36,12 +43,19 @@ export default function Sidebar() {
 				<li
 					className={active === "today" ? "active" : undefined}
 					data-testid="today"
-					onClick={() => {
-						setActive("today");
-						setSelectedProject("TODAY");
-					}}
 				>
-					<div>
+					<div
+						onClick={() => {
+							setActive("today");
+							setSelectedProject("TODAY");
+						}}
+						onKeyDown={() => {
+							setActive("today");
+							setSelectedProject("TODAY");
+						}}
+						tabIndex={0}
+						role="button"
+					>
 						<span>
 							<FaRegCalendar />
 						</span>
@@ -51,12 +65,19 @@ export default function Sidebar() {
 				<li
 					className={active === "next_7" ? "active" : undefined}
 					data-testid="next_7"
-					onClick={() => {
-						setActive("next_7");
-						setSelectedProject("NEXT_7");
-					}}
 				>
-					<div>
+					<div
+						onClick={() => {
+							setActive("next_7");
+							setSelectedProject("NEXT_7");
+						}}
+						onKeyDown={() => {
+							setActive("next_7");
+							setSelectedProject("NEXT_7");
+						}}
+						tabIndex={0}
+						role="button"
+					>
 						<span>
 							<FaRegCalendarAlt />
 						</span>
@@ -66,6 +87,9 @@ export default function Sidebar() {
 				<div
 					className="sidebar__middle"
 					onClick={() => setShowProjects(!showProjects)}
+					onKeyDown={() => setShowProjects(!showProjects)}
+					tabIndex={0}
+					role="button"
 				>
 					<span>
 						<FaChevronDown

@@ -67,6 +67,11 @@ export default function AddTask({
 					onClick={() => {
 						setShowMain(!showMain);
 					}}
+					onKeyDown={() => {
+						setShowMain(!showMain);
+					}}
+					tabIndex={0}
+					role="button"
 				>
 					<span className="add-task__plus">+</span>
 					<span className="add-task__text">Add Task</span>
@@ -87,6 +92,13 @@ export default function AddTask({
 										setShowProjectOverlay(false);
 										setShowQuickAddTask(false);
 									}}
+									onKeyDown={() => {
+										setShowMain(false);
+										setShowProjectOverlay(false);
+										setShowQuickAddTask(false);
+									}}
+									tabIndex={0}
+									role="button"
 								>
 									X
 								</span>
@@ -135,6 +147,12 @@ export default function AddTask({
 								setShowMain(false);
 								setShowProjectOverlay(false);
 							}}
+							onKeyDown={() => {
+								setShowMain(false);
+								setShowProjectOverlay(false);
+							}}
+							tabIndex={0}
+							role="button"
 						>
 							Cancel
 						</span>
@@ -146,6 +164,11 @@ export default function AddTask({
 						onClick={() =>
 							setShowProjectOverlay(!showProjectOverlay)
 						}
+						onKeyDown={() =>
+							setShowProjectOverlay(!showProjectOverlay)
+						}
+						tabIndex={0}
+						role="button"
 					>
 						<FaRegListAlt />
 					</span>
@@ -154,6 +177,9 @@ export default function AddTask({
 						className="add-task__date"
 						data-testid="show-task-date-overlay"
 						onClick={() => setShowTaskDate(!showTaskDate)}
+						onKeyDown={() => setShowTaskDate(!showTaskDate)}
+						tabIndex={0}
+						role="button"
 					>
 						<FaRegCalendarAlt />
 					</span>
