@@ -62,6 +62,7 @@ export default function AddTask({
 		>
 			{showAddTaskMain && (
 				<div
+					aria-label="Add task"
 					className="add-task__shallow"
 					data-testid="show-main-action"
 					onClick={() => {
@@ -85,6 +86,7 @@ export default function AddTask({
 							<div data-testid="quick-add-task">
 								<h2 className="header">Quick Add Task</h2>
 								<span
+									aria-label="Cancel adding task"
 									className="add-task__cancel-x"
 									data-testid="add-task-quick-cancel"
 									onClick={() => {
@@ -119,6 +121,7 @@ export default function AddTask({
 					/>
 
 					<input
+						aria-label="Enter your task"
 						className="add-task__content"
 						data-testid="add-task-content"
 						type="text"
@@ -141,6 +144,7 @@ export default function AddTask({
 
 					{!showQuickAddTask && (
 						<span
+							aria-label="Cancel adding a task"
 							className="add-task__cancel"
 							data-testid="add-task-main-cancel"
 							onClick={() => {

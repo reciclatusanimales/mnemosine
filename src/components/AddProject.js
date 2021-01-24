@@ -47,6 +47,7 @@ export default function AddProject({ shouldShow = false }) {
 						Add Project
 					</button>
 					<span
+						aria-label="Cancel adding project"
 						className="add-project__cancel"
 						data-testid="hide-project-overlay"
 						onClick={() => setShow(false)}
@@ -60,6 +61,7 @@ export default function AddProject({ shouldShow = false }) {
 			)}
 			<span className="add-project__plus">+</span>
 			<span
+				aria-label="Add project"
 				className="add-project__text"
 				data-testid="add-project-action"
 				onClick={() => setShow(!show)}

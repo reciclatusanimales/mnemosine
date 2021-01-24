@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useProjectsValue, useSelectedProjectValue } from "../context";
 import Project from "./Project";
 
-export default function Projects({ activeValue = true }) {
+export default function Projects({ activeValue = null }) {
 	const [active, setActive] = useState(activeValue);
 	const { setSelectedProject } = useSelectedProjectValue();
 	const { projects } = useProjectsValue();
@@ -13,7 +13,6 @@ export default function Projects({ activeValue = true }) {
 			<li
 				key={project.projectId}
 				data-doc-id={project.docId}
-				data-testid="project-action"
 				className={
 					active === project.projectId
 						? "active sidebar__project"
@@ -21,6 +20,8 @@ export default function Projects({ activeValue = true }) {
 				}
 			>
 				<div
+					data-testid="project-action"
+					aria-label={`Select ${project.name} as the task project`}
 					role="button"
 					tabIndex={0}
 					onClick={() => {

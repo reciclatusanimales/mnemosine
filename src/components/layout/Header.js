@@ -14,11 +14,10 @@ export default function Header({ darkMode, setDarkMode }) {
 				</div>
 				<div className="settings">
 					<ul>
-						<li
-							className="settings__add"
-							data-testid="quick-add-task-action"
-						>
+						<li className="settings__add">
 							<button
+								data-testid="quick-add-task-action"
+								aria-label="Quick add task"
 								onClick={() => {
 									setShowQuickAddTask(true);
 									setShouldShowMain(true);
@@ -32,11 +31,10 @@ export default function Header({ darkMode, setDarkMode }) {
 								+
 							</button>
 						</li>
-						<li
-							className="settings__darkmode"
-							data-testid="dark-mode-action"
-						>
+						<li className="settings__darkmode">
 							<button
+								data-testid="dark-mode-action"
+								aria-label="Darkmode on/off"
 								onClick={() => setDarkMode(!darkMode)}
 								onKeyDown={() => setDarkMode(!darkMode)}
 								type="button"
