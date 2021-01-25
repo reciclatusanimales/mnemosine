@@ -6,12 +6,13 @@ import {
 	FaRegCalendar,
 } from "react-icons/fa";
 
-import { useSelectedProjectValue } from "../../context";
 import AddProject from "../AddProject";
 import Projects from "../Projects";
 
-export default function Sidebar() {
-	const { setSelectedProject } = useSelectedProjectValue();
+import { connect } from "react-redux";
+import { setProject } from "../../redux/actions/dataActions";
+
+const Sidebar = ({ selectedProject, setProject }) => {
 	const [active, setActive] = useState("inbox");
 	const [showProjects, setShowProjects] = useState(true);
 
@@ -23,11 +24,11 @@ export default function Sidebar() {
 						data-testid="inbox"
 						onClick={() => {
 							setActive("inbox");
-							setSelectedProject("INBOX");
+							setProject("INBOX");
 						}}
 						onKeyDown={() => {
 							setActive("inbox");
-							setSelectedProject("INBOX");
+							setProject("INBOX");
 						}}
 						tabIndex={0}
 						role="button"
@@ -44,11 +45,11 @@ export default function Sidebar() {
 						aria-label="Show today's tasks"
 						onClick={() => {
 							setActive("today");
-							setSelectedProject("TODAY");
+							setProject("TODAY");
 						}}
 						onKeyDown={() => {
 							setActive("today");
-							setSelectedProject("TODAY");
+							setProject("TODAY");
 						}}
 						tabIndex={0}
 						role="button"
@@ -65,11 +66,11 @@ export default function Sidebar() {
 						aria-label="Show tasks for the next 7 days"
 						onClick={() => {
 							setActive("next_7");
-							setSelectedProject("NEXT_7");
+							setProject("NEXT_7");
 						}}
 						onKeyDown={() => {
 							setActive("next_7");
-							setSelectedProject("NEXT_7");
+							setProject("NEXT_7");
 						}}
 						tabIndex={0}
 						role="button"
@@ -105,4 +106,13 @@ export default function Sidebar() {
 			{showProjects && <AddProject />}
 		</div>
 	);
-}
+};
+
+const mapStateToProps = (state) => ({
+	selectedProject: state.data.selectedProject,
+});
+
+const mapActionsToProps = {
+	setProject,
+};
+export default connect(mapStateToProps, mapActionsToProps)(Sidebar);

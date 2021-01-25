@@ -1,20 +1,16 @@
 import {
 	ProjectsContext,
 	ProjectsProvider,
-	useProjectsValue,
+	useProject,
 } from "./projects-context";
 
-import {
-	SelectedProjectContext,
-	SelectedProjectProvider,
-	useSelectedProjectValue,
-} from "./selected-project-context";
+import { FoldersContext, FoldersProvider, useFolder } from "./folders-context";
 
 export {
 	ProjectsContext,
 	ProjectsProvider,
-	useProjectsValue,
-	SelectedProjectContext,
-	SelectedProjectProvider,
-	useSelectedProjectValue,
+	useProject,
+	FoldersContext,
+	FoldersProvider,
+	useFolder,
 };

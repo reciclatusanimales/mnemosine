@@ -1,23 +1,18 @@
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { useProjectsValue, useSelectedProjectValue } from "../context";
-import { firebase } from "../firebase";
+import { db } from "../firebase";
 
 export default function Project({ project }) {
 	const { docId, name } = project;
 	const [showConfirm, setShowConfirm] = useState(false);
-	const { projects, setProjects } = useProjectsValue();
-	const { setSelectedProject } = useSelectedProjectValue();
 
 	const deleteProject = (docId) => {
-		firebase
-			.firestore()
-			.collection("projects")
+		db.collection("projects")
 			.doc(docId)
 			.delete()
 			.then(() => {
-				setProjects([...projects]);
-				setSelectedProject("INBOX");
+				//setProjects([...projects]);
+				//setFolder("INBOX");
 			});
 	};
 

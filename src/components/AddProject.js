@@ -1,38 +1,28 @@
-import { firebase } from "../firebase";
+import { db } from "../firebase";
 import { generatePushId } from "../helpers";
-import { useProjectsValue } from "../context";
 import { useState } from "react";
 
-export default function AddProject({ shouldShow = false }) {
+import { connect } from "react-redux";
+import { addProject } from "../redux/actions/dataActions";
+
+const AddProject = ({ shouldShow = false, addProject }) => {
 	const [show, setShow] = useState(shouldShow);
-	const [projectName, setProjectName] = useState("");
-	const projectId = generatePushId();
+	const [name, setName] = useState("");
 
-	const { projects, setProjects } = useProjectsValue();
-
-	const addProject = () =>
-		projectName &&
-		firebase
-			.firestore()
-			.collection("projects")
-			.add({
-				projectId,
-				name: projectName,
-				userId: "nluAjrw1PLLTYAtn",
-			})
-			.then(() => {
-				setProjects([...projects]);
-				setProjectName("");
-				setShow(false);
-			});
+	const handleAddProject = () => {
+		if (name === "") return;
+		addProject({ name });
+		setName("");
+		setShow(false);
+	};
 
 	return (
 		<div className="add-project" data-testid="add-project">
 			{show && (
 				<div className="add-project__input">
 					<input
-						value={projectName}
-						onChange={(e) => setProjectName(e.target.value)}
+						value={name}
+						onChange={(e) => setName(e.target.value)}
 						className="add-project__name"
 						data-testid="project-name"
 						type="text"
@@ -41,7 +31,7 @@ export default function AddProject({ shouldShow = false }) {
 					<button
 						className="add-project__submit"
 						type="button"
-						onClick={() => addProject()}
+						onClick={() => handleAddProject()}
 						data-testid="add-project-submit"
 					>
 						Add Project
@@ -73,4 +63,10 @@ export default function AddProject({ shouldShow = false }) {
 			</span>
 		</div>
 	);
-}
+};
+
+const mapActionsToProps = {
+	addProject,
+};
+
+export default connect(null, mapActionsToProps)(AddProject);

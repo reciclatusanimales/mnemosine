@@ -1,12 +1,11 @@
-import { useProjectsValue } from "../context";
+import { connect } from "react-redux";
 
-export default function ProjectOverlay({
+const ProjectOverlay = ({
+	projects,
 	setProject,
 	showProjectOverlay,
 	setShowProjectOverlay,
-}) {
-	const { projects } = useProjectsValue();
-
+}) => {
 	return (
 		projects &&
 		showProjectOverlay && (
@@ -36,4 +35,10 @@ export default function ProjectOverlay({
 			</div>
 		)
 	);
-}
+};
+
+const mapStateToProps = (state) => ({
+	projects: state.data.projects,
+});
+
+export default connect(mapStateToProps)(ProjectOverlay);

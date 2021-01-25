@@ -1,56 +1,52 @@
 import { FaRegListAlt, FaRegCalendarAlt } from "react-icons/fa";
 import moment from "moment";
-import { firebase } from "../firebase";
-import { useSelectedProjectValue } from "../context";
 import { useState } from "react";
 import ProjectOverlay from "./ProjectOverlay";
 import TaskDate from "./TaskDate";
 
-export default function AddTask({
+import { connect } from "react-redux";
+import { selectedProject, addTask } from "../redux/actions/dataActions";
+
+const AddTask = ({
 	showAddTaskMain = true,
 	shouldShowMain = false,
 	showQuickAddTask,
 	setShowQuickAddTask,
-}) {
-	const [task, setTask] = useState("");
+	selectedProject,
+	addTask,
+}) => {
+	const [name, setName] = useState("");
 	const [taskDate, setTaskDate] = useState("");
 	const [project, setProject] = useState("");
 	const [showMain, setShowMain] = useState(shouldShowMain);
 	const [showProjectOverlay, setShowProjectOverlay] = useState(false);
 	const [showTaskDate, setShowTaskDate] = useState(false);
 
-	const { selectedProject } = useSelectedProjectValue();
-
-	const addTask = () => {
-		const projectId = project || selectedProject;
+	const handleAddTask = () => {
+		const projectId = project;
 		let collatedDate = "";
 
 		if (projectId === "TODAY") {
-			collatedDate = moment().format("DD/MM/YYYY");
+			collatedDate = moment().format("DD-MM-YYYY");
 		} else if (project === "NEXT_7") {
-			collatedDate = moment().add(7, "days").format("DD/MM/YYYY");
+			collatedDate = moment().add(7, "days").format("DD-MM-YYYY");
 		}
 
-		return (
-			task &&
-			projectId &&
-			firebase
-				.firestore()
-				.collection("tasks")
-				.add({
-					archived: false,
-					projectId,
-					task,
-					date: collatedDate || taskDate,
-					userId: "nluAjrw1PLLTYAtn",
-				})
-				.then(() => {
-					setTask("");
-					setProject("");
-					setShowMain(false);
-					setShowProjectOverlay(false);
-				})
-		);
+		if (name === "" || projectId === "") return;
+
+		const task = {
+			projectId,
+			name,
+			date: collatedDate || taskDate,
+		};
+
+		addTask({ task, selectedProject });
+
+		setName("");
+		setProject("");
+		setShowMain(false);
+		setShowProjectOverlay(false);
+		setShowQuickAddTask(false);
 	};
 
 	return (
@@ -125,8 +121,8 @@ export default function AddTask({
 						className="add-task__content"
 						data-testid="add-task-content"
 						type="text"
-						value={task}
-						onChange={(e) => setTask(e.target.value)}
+						value={name}
+						onChange={(e) => setName(e.target.value)}
 					/>
 
 					<button
@@ -135,8 +131,8 @@ export default function AddTask({
 						type="button"
 						onClick={() => {
 							showQuickAddTask
-								? addTask() && setShowQuickAddTask(false)
-								: addTask();
+								? handleAddTask() && setShowQuickAddTask(false)
+								: handleAddTask();
 						}}
 					>
 						Add Task
@@ -191,4 +187,14 @@ export default function AddTask({
 			)}
 		</div>
 	);
-}
+};
+
+const mapStateToProps = (state) => ({
+	selectedProject: state.data.selectedProject,
+});
+
+const mapActionsToProps = {
+	addTask,
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(AddTask);

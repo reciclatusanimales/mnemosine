@@ -1,11 +1,13 @@
 import Sidebar from "./Sidebar";
 import Tasks from "../Tasks";
 
-export default function Content() {
+const Content = () => {
 	return (
 		<section className="content">
 			<Sidebar />
 			<Tasks />
 		</section>
 	);
-}
+};
+
+export default Content;

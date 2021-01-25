@@ -1,10 +1,9 @@
-import { firebase } from "../firebase";
+import { connect } from "react-redux";
+import { archiveTask } from "../redux/actions/dataActions";
 
-export default function Checkbox({ id, taskDesc }) {
-	const archiveTask = () => {
-		firebase.firestore().collection("tasks").doc(id).update({
-			archived: true,
-		});
+const Checkbox = ({ id, taskDesc, archiveTask }) => {
+	const handleArchiveTask = () => {
+		archiveTask(id);
 	};
 
 	return (
@@ -12,12 +11,18 @@ export default function Checkbox({ id, taskDesc }) {
 			aria-label={`Mark ${taskDesc} as done?`}
 			className="checkbox-holder"
 			data-testid="checkbox-action"
-			onClick={() => archiveTask()}
-			onKeyDown={() => archiveTask()}
+			onClick={() => handleArchiveTask()}
+			onKeyDown={() => handleArchiveTask()}
 			role="button"
 			tabIndex={0}
 		>
 			<span className="checkbox" />
 		</div>
 	);
-}
+};
+
+const mapActionsToProps = {
+	archiveTask,
+};
+
+export default connect(null, mapActionsToProps)(Checkbox);

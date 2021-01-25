@@ -15,11 +15,11 @@ export default function TaskDate({
 							aria-label="Select today as the task date"
 							onClick={() => {
 								setShowTaskDate(false);
-								setTaskDate(moment().format("DD/MM/YYYY"));
+								setTaskDate(moment().format("DD-MM-YYYY"));
 							}}
 							onKeyDown={() => {
 								setShowTaskDate(false);
-								setTaskDate(moment().format("DD/MM/YYYY"));
+								setTaskDate(moment().format("DD-MM-YYYY"));
 							}}
 							tabIndex={0}
 							role="button"
@@ -38,13 +38,13 @@ export default function TaskDate({
 							onClick={() => {
 								setShowTaskDate(false);
 								setTaskDate(
-									moment().add(1, "day").format("DD/MM/YYYY")
+									moment().add(1, "day").format("DD-MM-YYYY")
 								);
 							}}
 							onKeyDown={() => {
 								setShowTaskDate(false);
 								setTaskDate(
-									moment().add(1, "day").format("DD/MM/YYYY")
+									moment().add(1, "day").format("DD-MM-YYYY")
 								);
 							}}
 							tabIndex={0}
@@ -63,13 +63,13 @@ export default function TaskDate({
 							onClick={() => {
 								setShowTaskDate(false);
 								setTaskDate(
-									moment().add(7, "day").format("DD/MM/YYYY")
+									moment().add(7, "day").format("DD-MM-YYYY")
 								);
 							}}
 							onKeyDown={() => {
 								setShowTaskDate(false);
 								setTaskDate(
-									moment().add(7, "day").format("DD/MM/YYYY")
+									moment().add(7, "day").format("DD-MM-YYYY")
 								);
 							}}
 							tabIndex={0}

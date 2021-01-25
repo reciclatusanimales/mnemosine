@@ -1,48 +1,58 @@
-import Checkbox from "./Checkbox";
-import { collatedTasks } from "../constants";
-import { getTitle, getCollatedTitle, collatedTasksExists } from "../helpers";
-import { useTasks } from "../hooks";
-import { useSelectedProjectValue, useProjectsValue } from "../context";
 import { useEffect } from "react";
+import Checkbox from "./Checkbox";
+import { folders } from "../constants";
+import { getTitle, getCollatedTitle, collatedTasksExists } from "../helpers";
 import AddTask from "./AddTask";
 
-export default function Tasks() {
-	const { selectedProject } = useSelectedProjectValue();
-	const { projects } = useProjectsValue();
-	const { tasks } = useTasks(selectedProject);
+import { connect } from "react-redux";
+import { getTasks } from "../redux/actions/dataActions";
 
+const Tasks = ({ projects, tasks, getTasks }) => {
 	let projectName = "";
 
-	if (collatedTasksExists(selectedProject) && selectedProject) {
-		projectName = getCollatedTitle(collatedTasks, selectedProject).name;
-	}
+	// if (collatedTasksExists(folder) && folder) {
+	// 	projectName = getCollatedTitle(folders, folder).name;
+	// }
 
-	if (
-		projects.length > 0 &&
-		selectedProject &&
-		!collatedTasksExists(selectedProject)
-	) {
-		projectName = getTitle(projects, selectedProject).name;
-	}
-
+	// if (projects.length > 0 && folder && !collatedTasksExists(folder)) {
+	// 	projectName = getTitle(projects, folder).name;
+	// }
 	useEffect(() => {
-		document.title = `${projectName}: Todoist`;
-	});
+		getTasks();
+	}, []);
+
+	document.title = `${projectName}: Todoist`;
+
+	const taskMarkup =
+		tasks.length > 0
+			? tasks.map((task) => {
+					console.log(tasks);
+					return (
+						<li key={task.id}>
+							<Checkbox id={task.id} taskDesc={task.task} />
+							<span>{task.name}</span>
+						</li>
+					);
+			  })
+			: null;
 
 	return (
 		<div className="tasks" data-testid="tasks">
 			<h2 data-testid="project-name">{projectName}</h2>
 
-			<ul className="tasks__list">
-				{tasks.map((task) => (
-					<li key={task.id}>
-						<Checkbox id={task.id} taskDesc={task.task} />
-						<span>{task.task}</span>
-					</li>
-				))}
-			</ul>
+			<ul className="tasks__list">{taskMarkup}</ul>
 
 			<AddTask />
 		</div>
 	);
-}
+};
+
+const mapStateToProps = (state) => ({
+	projects: state.data.projects,
+	tasks: state.data.tasks,
+});
+
+const mapActionsToProps = {
+	getTasks,
+};
+export default connect(mapStateToProps, mapActionsToProps)(Tasks);
