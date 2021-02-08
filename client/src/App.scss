@@ -151,6 +151,35 @@ $secondary: #f1f1f1;
 		background-color: $dark-primary;
 		border-color: transparent;
 	}
+
+	.tasks__list-project,
+	.add-task__plus,
+	.add-project__plus {
+		color: $dark-primary;
+	}
+
+	.add-project__submit,
+	.add-task__submit,
+	.task-delete-modal__inner button,
+	.project-delete-modal__inner button {
+		background-color: $dark-primary;
+	}
+
+	.react-datepicker__day--selected,
+	.react-datepicker__day--keyboard-selected,
+	.react-datepicker__month-text--keyboard-selected,
+	.react-datepicker__quarter-text--keyboard-selected,
+	.react-datepicker__year-text--keyboard-selected {
+		background-color: $dark-primary !important;
+	}
+
+	.checkbox-container:hover input ~ .checkmark {
+		border: 1px solid $dark-primary !important;
+	}
+
+	.checkbox-container input:checked ~ .checkmark {
+		background-color: $dark-primary !important;
+	}
 }
 
 /* Header
@@ -183,7 +212,7 @@ $secondary: #f1f1f1;
 		}
 	}
 
-	@media (max-width: 991.98px) {
+	@media (max-width: 767.98px) {
 		& {
 			width: 320px;
 			-moz-transform: translateX(-320px);
@@ -266,7 +295,7 @@ $secondary: #f1f1f1;
 	}
 }
 
-@media (max-width: 900px) {
+@media (max-width: 767.98px) {
 	.empty-container {
 		margin-left: 0;
 		img {
@@ -417,13 +446,13 @@ $secondary: #f1f1f1;
 	opacity: 1;
 	visibility: hidden;
 	padding: 14px;
-	-moz-transition: all 0.5s ease;
-	-o-transition: all 0.5s ease;
-	-webkit-transition: all 0.5s ease;
-	-ms-transition: all 0.5s ease;
-	transition: all 0.5s ease;
+	-moz-transition: all 0.2s ease;
+	-o-transition: all 0.2s ease;
+	-webkit-transition: all 0.2s ease;
+	-ms-transition: all 0.2s ease;
+	transition: all 0.2s ease;
 }
-@media (max-width: 991.98px) {
+@media (max-width: 767.98px) {
 	.colorlib-nav-toggle {
 		opacity: 1;
 		visibility: visible;
@@ -795,7 +824,7 @@ header {
 	padding-top: 80px;
 	padding-bottom: 84px;
 
-	@include mq("900px") {
+	@include mq("767.98px") {
 		margin-left: 0;
 		width: auto;
 	}

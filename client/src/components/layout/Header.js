@@ -1,6 +1,7 @@
 import AddTask from "../AddTask";
 import EditTask from "../EditTask";
 import { useUI } from "../../context";
+import { FaRegListAlt } from "react-icons/fa";
 
 export default function Header({ darkMode, setDarkMode }) {
 	const {
@@ -51,7 +52,7 @@ export default function Header({ darkMode, setDarkMode }) {
 								type="button"
 							>
 								<div className="logo">
-									<img src="/images/logo.png" alt="Todo" />
+									<FaRegListAlt />
 								</div>
 							</button>
 						</li>

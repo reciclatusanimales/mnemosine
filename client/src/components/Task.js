@@ -22,7 +22,7 @@ const Task = ({ task, selectedProject, setTask, archiveTask, deleteTask }) => {
 	const handleArchiveTask = (id) => {
 		setIsFadingOut(true);
 		setTimeout(() => {
-			archiveTask(id);
+			//archiveTask(id);
 			setIsFadingOut(false);
 		}, 500);
 	};
