@@ -224,8 +224,8 @@ $secondary: #f1f1f1;
 	align-items: center;
 	padding: 10px;
 	margin: 10px;
-	-webkit-animation: fadeout 0.5s linear forwards;
-	animation: fadeout 0.5s linear forwards;
+	-webkit-animation: fadeout 0.7s linear forwards;
+	animation: fadeout 0.7s linear forwards;
 }
 
 @-webkit-keyframes fadein {
@@ -833,6 +833,11 @@ header {
 			}
 		}
 
+		&-project {
+			margin-left: 10px;
+			color: $primary;
+		}
+
 		&-delete {
 			margin-left: 10px;
 			display: none;
@@ -852,7 +857,7 @@ header {
 			}
 		}
 
-		.checkbox-holder {
+		.checkbox-container {
 			margin-right: 20px;
 			display: -webkit-box;
 			display: -ms-flexbox;
@@ -864,17 +869,63 @@ header {
 			-ms-flex-pack: center;
 			justify-content: center;
 			line-height: 16px;
+			position: relative;
+			cursor: pointer;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
 
-			.checkbox {
-				cursor: pointer;
-				border-color: gray;
-				color: #343434;
-				height: 16px;
-				width: 16px;
-				display: block;
-				border: 1px solid gray;
-				border-radius: 16px;
-			}
+		.checkbox-container input {
+			position: absolute;
+			opacity: 0;
+			cursor: pointer;
+			height: 0;
+			width: 0;
+		}
+
+		.checkmark {
+			width: 1.3em;
+			height: 1.3em;
+			background-color: white;
+			border-radius: 50%;
+			vertical-align: middle;
+			border: 1px solid #ddd;
+			-webkit-appearance: none;
+			outline: none;
+			cursor: pointer;
+			position: absolute;
+		}
+
+		.checkbox-container:hover input ~ .checkmark {
+			border: 1px solid $primary;
+		}
+
+		.checkbox-container input:checked ~ .checkmark {
+			background-color: $primary;
+		}
+
+		.checkmark:after {
+			content: "";
+			position: absolute;
+			display: none;
+		}
+
+		.checkbox-container input:checked ~ .checkmark:after {
+			display: block;
+		}
+
+		.checkbox-container .checkmark:after {
+			left: 6px;
+			top: 3px;
+			width: 5px;
+			height: 10px;
+			border: solid white;
+			border-width: 0 3px 3px 0;
+			-webkit-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			transform: rotate(45deg);
 		}
 	}
 }
@@ -938,6 +989,18 @@ header {
 		float: right;
 		color: gray;
 		margin: 20px 10px;
+	}
+
+	.react-datepicker__input-container input {
+		visibility: hidden !important;
+	}
+
+	.react-datepicker__day--selected,
+	.react-datepicker__day--keyboard-selected,
+	.react-datepicker__month-text--keyboard-selected,
+	.react-datepicker__quarter-text--keyboard-selected,
+	.react-datepicker__year-text--keyboard-selected {
+		background-color: $primary;
 	}
 
 	&__date {

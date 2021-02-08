@@ -2,25 +2,24 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import TaskDate from "./TaskDate";
-import MomentUtils from "@date-io/moment";
 
 import { connect } from "react-redux";
 import { updateTask } from "../redux/actions/dataActions";
 import { useUI } from "../context";
 
-import "date-fns";
-import React from "react";
-import Grid from "@material-ui/core/Grid";
-import {
-	MuiPickersUtilsProvider,
-	KeyboardDatePicker,
-} from "@material-ui/pickers";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { registerLocale } from "react-datepicker";
+import es from "date-fns/locale/es";
+registerLocale("es", es);
 
 const EditTask = ({ projects, selectedProject, selectedTask, updateTask }) => {
 	const [taskName, setTaskName] = useState(selectedTask.name);
 	const [taskDate, setTaskDate] = useState(selectedTask.date);
 	const [readableDate, setReadableDate] = useState(selectedTask.date);
-	const [date, setDate] = useState(selectedTask.date);
+	const [date, setDate] = useState(
+		Date.parse(moment(selectedTask.date, "DD/MM/YYYY").toISOString())
+	);
 	const [project, setProject] = useState(selectedTask.projectId);
 
 	const { setShowEditTask } = useUI();
@@ -29,21 +28,32 @@ const EditTask = ({ projects, selectedProject, selectedTask, updateTask }) => {
 
 	useEffect(() => {
 		if (taskDate === "today") {
-			setDate(moment().format("YYYY/MM/DD"));
+			setDate(Date.parse(moment(new Date(), "DD/MM/YYYY").toISOString()));
 			setReadableDate("Hoy");
 		} else if (taskDate === "tomorrow") {
-			setDate(moment().add(1, "day").format("YYYY/MM/DD"));
+			setDate(
+				Date.parse(
+					moment(new Date(), "DD/MM/YYYY").add(1, "day").toISOString()
+				)
+			);
 			setReadableDate("Mañana");
 		} else if (taskDate === "next_7") {
-			setDate(moment().add(7, "day").format("YYYY/MM/DD"));
+			setDate(
+				Date.parse(
+					moment(new Date(), "DD/MM/YYYY").add(7, "day").toISOString()
+				)
+			);
 			setReadableDate("Próxima Semana");
 		}
+		setShowTaskCalendar(false);
 	}, [taskDate]);
 
 	const handleDateChange = (date) => {
-		setDate(date.format("YYYY/MM/DD"));
-		setTaskDate(date.format("YYYY/MM/DD"));
-		setReadableDate(date.format("YYYY/MM/DD"));
+		const parseDate = Date.parse(moment(date, "DD/MM/YYYY").toISOString());
+		setDate(parseDate);
+		setTaskDate(moment(date).format("DD/MM/YYYY"));
+		setReadableDate(moment(date).format("DD/MM/YYYY"));
+		setShowTaskCalendar(false);
 	};
 
 	const handleUpdateTask = () => {
@@ -53,7 +63,7 @@ const EditTask = ({ projects, selectedProject, selectedTask, updateTask }) => {
 			id: selectedTask.id,
 			name: taskName,
 			projectId: project,
-			date,
+			date: moment(date).format("DD/MM/YYYY"),
 		};
 
 		updateTask(task);
@@ -122,35 +132,13 @@ const EditTask = ({ projects, selectedProject, selectedTask, updateTask }) => {
 					<FaRegCalendarAlt />
 				</span>
 
-				<MuiPickersUtilsProvider
-					libInstance={moment}
-					utils={MomentUtils}
-				>
-					<Grid container>
-						<KeyboardDatePicker
-							autoOk={true}
-							open={showTaskCalendar}
-							onOpen={() => setShowTaskCalendar(true)}
-							onClose={() => setShowTaskCalendar(false)}
-							disableToolbar
-							variant="inline"
-							format="YYYY/MM/DD"
-							inputValue={moment(date).format("YYYY/MM/DD")}
-							margin="normal"
-							id="date-picker-inline"
-							label="Fecha"
-							value={date}
-							onChange={handleDateChange}
-							KeyboardButtonProps={{
-								"aria-label": "change date",
-							}}
-							InputProps={{
-								disableUnderline: true,
-							}}
-							TextFieldComponent={() => null}
-						/>
-					</Grid>
-				</MuiPickersUtilsProvider>
+				<DatePicker
+					selected={date}
+					open={showTaskCalendar}
+					locale="es"
+					dateFormat="dd/MM/yyyy"
+					onChange={(date) => handleDateChange(date)}
+				/>
 
 				<div className="add-task__btns">
 					<button

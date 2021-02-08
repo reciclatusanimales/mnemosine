@@ -1,4 +1,3 @@
-import { FaPizzaSlice } from "react-icons/fa";
 import AddTask from "../AddTask";
 import EditTask from "../EditTask";
 import { useUI } from "../../context";

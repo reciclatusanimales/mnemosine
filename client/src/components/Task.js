@@ -1,11 +1,10 @@
-import Checkbox from "./Checkbox";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { setTask, archiveTask, deleteTask } from "../redux/actions/dataActions";
 import { FaPen, FaTrash } from "react-icons/fa";
 import { useUI } from "../context";
 
-const Task = ({ task, setTask, archiveTask, deleteTask }) => {
+const Task = ({ task, selectedProject, setTask, archiveTask, deleteTask }) => {
 	const [showConfirm, setShowConfirm] = useState(false);
 	const { setShowEditTask } = useUI();
 	const [isFadingOut, setIsFadingOut] = useState(false);
@@ -39,9 +38,17 @@ const Task = ({ task, setTask, archiveTask, deleteTask }) => {
 				role="button"
 				tabIndex={0}
 			>
-				<span className="checkbox" />
+				<label className="checkbox-container">
+					<input type="checkbox" />
+					<span className="checkmark"></span>
+				</label>
 			</div>
 			<span>{task.name}</span>
+			{!selectedProject.uuid && (
+				<span className="tasks__list-project">
+					<small>{task.project.name}</small>
+				</span>
+			)}
 			<span
 				aria-label="Editar Tarea"
 				className="tasks__list-edit"
@@ -90,10 +97,14 @@ const Task = ({ task, setTask, archiveTask, deleteTask }) => {
 	);
 };
 
+const mapStateToProps = (state) => ({
+	selectedProject: state.data.selectedProject,
+});
+
 const mapActionsToProps = {
 	setTask,
 	archiveTask,
 	deleteTask,
 };
 
-export default connect(null, mapActionsToProps)(Task);
+export default connect(mapStateToProps, mapActionsToProps)(Task);

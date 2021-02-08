@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
 		static associate({ Project }) {
 			this.belongsTo(Project, {
 				foreignKey: "projectId",
+				as: "project",
 			});
 		}
 	}

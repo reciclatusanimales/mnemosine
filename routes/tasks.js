@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const { Task } = require("../models");
+const { Task, Project } = require("../models");
 
 exports.getTasks = async (request, response) => {
 	try {
@@ -7,6 +7,7 @@ exports.getTasks = async (request, response) => {
 			where: {
 				archived: false,
 			},
+			include: "project",
 		});
 		return response.status(200).json(data);
 	} catch (error) {

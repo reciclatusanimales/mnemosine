@@ -30,16 +30,15 @@ let index, projectsCopy, tasksCopy, selectedTasksCopy;
 const getProjectTasks = (project, tasks) => {
 	switch (project.id) {
 		case "all":
-			console.log(tasks);
 			return tasks;
 		case "today":
 			return tasks.filter(
-				(task) => task.date === moment().format("YYYY/MM/DD")
+				(task) => task.date === moment().format("DD/MM/YYYY")
 			);
 		case "next_7":
 			return tasks.filter(
 				(task) =>
-					moment(task.date, "DD-MM-YYYY").diff(moment(), "days") <= 7
+					moment(task.date, "DD/MM/YYYY").diff(moment(), "days") <= 7
 			);
 		default:
 			return tasks.filter((task) => task.projectId === project.id);

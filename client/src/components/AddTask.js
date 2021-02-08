@@ -2,25 +2,24 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import TaskDate from "./TaskDate";
-import MomentUtils from "@date-io/moment";
 
 import { connect } from "react-redux";
 import { addTask } from "../redux/actions/dataActions";
 import { useUI } from "../context";
 
-import "date-fns";
-import React from "react";
-import Grid from "@material-ui/core/Grid";
-import {
-	MuiPickersUtilsProvider,
-	KeyboardDatePicker,
-} from "@material-ui/pickers";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { registerLocale } from "react-datepicker";
+import es from "date-fns/locale/es";
+registerLocale("es", es);
 
 const AddTask = ({ projects, selectedProject, addTask }) => {
 	const [taskName, setTaskName] = useState("");
 	const [taskDate, setTaskDate] = useState("today");
 	const [readableDate, setReadableDate] = useState("Hoy");
-	const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState(
+		Date.parse(moment(new Date(), "DD/MM/YYYY").toISOString())
+	);
 	const [project, setProject] = useState(
 		selectedProject && selectedProject.uuid ? selectedProject.id : ""
 	);
@@ -31,21 +30,32 @@ const AddTask = ({ projects, selectedProject, addTask }) => {
 
 	useEffect(() => {
 		if (taskDate === "today") {
-			setDate(moment().format("DD/MM/YYYY"));
+			setDate(Date.parse(moment(new Date(), "DD/MM/YYYY").toISOString()));
 			setReadableDate("Hoy");
 		} else if (taskDate === "tomorrow") {
-			setDate(moment().add(1, "day").format("DD/MM/YYYY"));
+			setDate(
+				Date.parse(
+					moment(new Date(), "DD/MM/YYYY").add(1, "day").toISOString()
+				)
+			);
 			setReadableDate("Mañana");
 		} else if (taskDate === "next_7") {
-			setDate(moment().add(7, "day").format("DD/MM/YYYY"));
+			setDate(
+				Date.parse(
+					moment(new Date(), "DD/MM/YYYY").add(7, "day").toISOString()
+				)
+			);
 			setReadableDate("Próxima Semana");
 		}
+		setShowTaskCalendar(false);
 	}, [taskDate]);
 
 	const handleDateChange = (date) => {
-		setDate(date.format("DD/MM/YYYY"));
-		setTaskDate(date.format("DD/MM/YYYY"));
-		setReadableDate(date.format("DD/MM/YYYY"));
+		const parseDate = Date.parse(moment(date, "DD/MM/YYYY").toISOString());
+		setDate(parseDate);
+		setTaskDate(moment(date).format("DD/MM/YYYY"));
+		setReadableDate(moment(date).format("DD/MM/YYYY"));
+		setShowTaskCalendar(false);
 	};
 
 	const handleAddTask = () => {
@@ -54,7 +64,7 @@ const AddTask = ({ projects, selectedProject, addTask }) => {
 		const task = {
 			name: taskName,
 			projectId: project,
-			date,
+			date: moment(date).format("DD/MM/YYYY"),
 		};
 
 		addTask(task);
@@ -119,43 +129,27 @@ const AddTask = ({ projects, selectedProject, addTask }) => {
 				<span
 					className="add-task__date"
 					data-testid="show-task-date-overlay"
-					onClick={() => setShowTaskDate(!showTaskDate)}
-					onKeyDown={() => setShowTaskDate(!showTaskDate)}
+					onClick={() => {
+						setShowTaskDate(!showTaskDate);
+						setShowTaskCalendar(false);
+					}}
+					onKeyDown={() => {
+						setShowTaskDate(!showTaskDate);
+						setShowTaskCalendar(false);
+					}}
 					tabIndex={0}
 					role="button"
 				>
 					<FaRegCalendarAlt />
 				</span>
 
-				<MuiPickersUtilsProvider
-					libInstance={moment}
-					utils={MomentUtils}
-				>
-					<Grid container>
-						<KeyboardDatePicker
-							autoOk={true}
-							open={showTaskCalendar}
-							onOpen={() => setShowTaskCalendar(true)}
-							onClose={() => setShowTaskCalendar(false)}
-							disableToolbar
-							variant="inline"
-							format="DD/MM/YYYY"
-							inputValue={moment().format("DD/MM/YYYY")}
-							margin="normal"
-							id="date-picker-inline"
-							label="Fecha"
-							value={date}
-							onChange={handleDateChange}
-							KeyboardButtonProps={{
-								"aria-label": "change date",
-							}}
-							InputProps={{
-								disableUnderline: true,
-							}}
-							TextFieldComponent={() => null}
-						/>
-					</Grid>
-				</MuiPickersUtilsProvider>
+				<DatePicker
+					selected={date}
+					open={showTaskCalendar}
+					locale="es"
+					dateFormat="dd/MM/yyyy"
+					onChange={(date) => handleDateChange(date)}
+				/>
 
 				<div className="add-task__btns">
 					<button
