@@ -46,7 +46,7 @@ const Task = ({ task, selectedProject, setTask, archiveTask, deleteTask }) => {
 			<span>{task.name}</span>
 			{!selectedProject.uuid && (
 				<span className="tasks__list-project">
-					<small>{task.project.name}</small>
+					<small>{task.project?.name}</small>
 				</span>
 			)}
 			<span

@@ -55,7 +55,10 @@ exports.updateTask = async (request, response) => {
 	const { id, name, projectId, date } = request.body;
 
 	try {
-		const task = await Task.findByPk(id);
+		const task = await Task.findOne({
+			where: { id: id },
+			include: "project",
+		});
 		if (!task)
 			return response.status(404).json({ error: "Task not found." });
 

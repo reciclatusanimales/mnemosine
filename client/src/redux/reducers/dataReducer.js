@@ -26,7 +26,7 @@ const initialState = {
 	isTasksLoading: false,
 };
 
-let index, projectsCopy, tasksCopy, selectedTasksCopy;
+let index, projectsCopy, tasksCopy;
 
 const getProjectTasks = (project, tasks) => {
 	switch (project.id) {
@@ -118,20 +118,15 @@ const dataReducer = (state = initialState, { type, payload }) => {
 				selectedTasks: tasksCopy,
 			};
 		case UPDATE_TASK:
-			tasksCopy = state.tasks;
-			index = state.tasks.findIndex((task) => task.id === payload.id);
-			tasksCopy[index] = payload;
-			selectedTasksCopy = state.selectedTasks;
+			var newState = Object.assign({}, JSON.parse(JSON.stringify(state)));
 			index = state.selectedTasks.findIndex(
 				(task) => task.id === payload.id
 			);
-			selectedTasksCopy[index] = payload;
-			return {
-				...state,
-				tasks: tasksCopy,
-				selectedTasks: selectedTasksCopy,
-				selectedTask: null,
-			};
+			newState.selectedTasks[index] = payload;
+			index = state.tasks.findIndex((task) => task.id === payload.id);
+			newState.tasks[index] = payload;
+			newState.selectedTask = null;
+			return newState;
 		case ARCHIVE_TASK:
 			return {
 				...state,

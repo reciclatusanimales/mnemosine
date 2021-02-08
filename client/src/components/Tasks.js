@@ -5,7 +5,7 @@ import Task from "./Task";
 import Empty from "./layout/Empty";
 
 const Tasks = ({
-	tasks,
+	selectedTasks,
 	selectedProject,
 	getTasks,
 	setTask,
@@ -26,9 +26,9 @@ const Tasks = ({
 				{selectedProject && selectedProject.name}
 			</h2>
 
-			{tasks.length ? (
+			{selectedTasks.length ? (
 				<ul className="tasks__list">
-					{tasks.map((task) => (
+					{selectedTasks.map((task) => (
 						<Task key={task.id} task={task} />
 					))}
 				</ul>
@@ -40,7 +40,7 @@ const Tasks = ({
 };
 
 const mapStateToProps = (state) => ({
-	tasks: state.data.selectedTasks,
+	selectedTasks: state.data.selectedTasks,
 	selectedProject: state.data.selectedProject,
 });
 
