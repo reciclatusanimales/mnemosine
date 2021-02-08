@@ -4,13 +4,14 @@ import {
 	ADD_PROJECT,
 	UPDATE_PROJECT,
 	DELETE_PROJECT,
-	SET_SHOW_EDIT_PROJECT,
 	GET_TASKS,
 	ADD_TASK,
 	ARCHIVE_TASK,
 	UPDATE_TASK,
 	SET_TASK,
 	DELETE_TASK,
+	SET_LOADING_PROJECTS,
+	SET_LOADING_TASKS,
 } from "../types";
 import moment from "moment";
 import { defaultProjects } from "../../constants";
@@ -18,11 +19,11 @@ import { defaultProjects } from "../../constants";
 const initialState = {
 	projects: [],
 	selectedProject: defaultProjects[0],
-	showEditProject: null,
 	tasks: [],
 	selectedTasks: [],
 	selectedTask: null,
-	showEditTask: null,
+	isProjectsLoading: false,
+	isTasksLoading: false,
 };
 
 let index, projectsCopy, tasksCopy, selectedTasksCopy;
@@ -47,10 +48,16 @@ const getProjectTasks = (project, tasks) => {
 
 const dataReducer = (state = initialState, { type, payload }) => {
 	switch (type) {
+		case SET_LOADING_PROJECTS:
+			return {
+				...state,
+				isProjectsLoading: payload,
+			};
 		case GET_PROJECTS:
 			return {
 				...state,
 				projects: payload,
+				isProjectsLoading: false,
 			};
 		case SET_PROJECT:
 			return {
@@ -83,11 +90,10 @@ const dataReducer = (state = initialState, { type, payload }) => {
 					(project) => project.id !== payload
 				),
 			};
-		case SET_SHOW_EDIT_PROJECT:
+		case SET_LOADING_TASKS:
 			return {
 				...state,
-				showEditProject: !!payload,
-				selectedProject: payload ? payload : state.selectedProject,
+				isTasksLoading: payload,
 			};
 		case GET_TASKS:
 			return {
@@ -95,6 +101,7 @@ const dataReducer = (state = initialState, { type, payload }) => {
 				tasks: payload,
 				selectedTasks: payload,
 				selectedTask: null,
+				isTasksLoading: false,
 			};
 		case ADD_TASK:
 			if (

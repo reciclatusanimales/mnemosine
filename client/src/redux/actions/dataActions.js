@@ -4,18 +4,20 @@ import {
 	ADD_PROJECT,
 	UPDATE_PROJECT,
 	DELETE_PROJECT,
-	SET_SHOW_EDIT_PROJECT,
 	GET_TASKS,
 	ADD_TASK,
 	ARCHIVE_TASK,
 	UPDATE_TASK,
 	SET_TASK,
 	DELETE_TASK,
+	SET_LOADING_PROJECTS,
+	SET_LOADING_TASKS,
 } from "../types";
 
 import axios from "axios";
 
 export const getProjects = () => (dispatch) => {
+	dispatch({ type: SET_LOADING_PROJECTS, payload: true });
 	axios
 		.get("/projects")
 		.then((response) => {
@@ -63,11 +65,8 @@ export const deleteProject = (id) => (dispatch) => {
 		});
 };
 
-export const setShowEditProject = (show) => (dispatch) => {
-	dispatch({ type: SET_SHOW_EDIT_PROJECT, payload: show });
-};
-
 export const getTasks = () => (dispatch) => {
+	dispatch({ type: SET_LOADING_TASKS, payload: true });
 	axios
 		.get("/tasks")
 		.then((response) => {
