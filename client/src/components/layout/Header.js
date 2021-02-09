@@ -16,11 +16,7 @@ export default function Header({ darkMode, setDarkMode }) {
 		<header className="header" data-testid="header">
 			<nav>
 				<div
-					className={
-						showSidebar
-							? "colorlib-nav-toggle active"
-							: "colorlib-nav-toggle"
-					}
+					className={showSidebar ? "nav-toggle active" : "nav-toggle"}
 					onClick={() => setShowSidebar(!showSidebar)}
 				>
 					<i></i>

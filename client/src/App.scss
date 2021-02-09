@@ -333,25 +333,25 @@ $secondary: #f1f1f1;
 	position: fixed;
 }
 
-.colorlib-nav-toggle {
+.nav-toggle {
 	cursor: pointer;
 	text-decoration: none;
 }
-.colorlib-nav-toggle.active i::before,
-.colorlib-nav-toggle.active i::after {
+.nav-toggle.active i::before,
+.nav-toggle.active i::after {
 	background: $secondary;
 }
-.colorlib-nav-toggle.dark.active i::before,
-.colorlib-nav-toggle.dark.active i::after {
+.nav-toggle.dark.active i::before,
+.nav-toggle.dark.active i::after {
 	background: $secondary;
 }
-.colorlib-nav-toggle:hover,
-.colorlib-nav-toggle:focus,
-.colorlib-nav-toggle:active {
+.nav-toggle:hover,
+.nav-toggle:focus,
+.nav-toggle:active {
 	outline: none;
 	border-bottom: none !important;
 }
-.colorlib-nav-toggle i {
+.nav-toggle i {
 	position: relative;
 	display: inline-block;
 	width: 25px;
@@ -366,8 +366,8 @@ $secondary: #f1f1f1;
 	-o-transition: all 0.2s ease-out;
 	transition: all 0.2s ease-out;
 }
-.colorlib-nav-toggle i::before,
-.colorlib-nav-toggle i::after {
+.nav-toggle i::before,
+.nav-toggle i::after {
 	content: "";
 	width: 25px;
 	height: 4px;
@@ -381,7 +381,7 @@ $secondary: #f1f1f1;
 	-ms-transition: all 0.2s ease;
 	transition: all 0.2s ease;
 }
-.colorlib-nav-toggle.dark i {
+.nav-toggle.dark i {
 	position: relative;
 	color: $secondary;
 	background: $secondary;
@@ -389,8 +389,8 @@ $secondary: #f1f1f1;
 	-o-transition: all 0.2s ease-out;
 	transition: all 0.2s ease-out;
 }
-.colorlib-nav-toggle.dark i::before,
-.colorlib-nav-toggle.dark i::after {
+.nav-toggle.dark i::before,
+.nav-toggle.dark i::after {
 	background: $secondary;
 	-moz-transition: all 0.2s ease;
 	-o-transition: all 0.2s ease;
@@ -399,27 +399,27 @@ $secondary: #f1f1f1;
 	transition: all 0.2s ease;
 }
 
-.colorlib-nav-toggle i::before {
+.nav-toggle i::before {
 	top: -7px;
 }
 
-.colorlib-nav-toggle i::after {
+.nav-toggle i::after {
 	bottom: -7px;
 }
 
-.colorlib-nav-toggle:hover i::before {
+.nav-toggle:hover i::before {
 	top: -10px;
 }
 
-.colorlib-nav-toggle:hover i::after {
+.nav-toggle:hover i::after {
 	bottom: -10px;
 }
 
-.colorlib-nav-toggle.active i {
+.nav-toggle.active i {
 	background: transparent;
 }
 
-.colorlib-nav-toggle.active i::before {
+.nav-toggle.active i::before {
 	top: 0;
 	-webkit-transform: rotateZ(45deg);
 	-moz-transform: rotateZ(45deg);
@@ -428,7 +428,7 @@ $secondary: #f1f1f1;
 	transform: rotateZ(45deg);
 }
 
-.colorlib-nav-toggle.active i::after {
+.nav-toggle.active i::after {
 	bottom: 0;
 	-webkit-transform: rotateZ(-45deg);
 	-moz-transform: rotateZ(-45deg);
@@ -437,7 +437,7 @@ $secondary: #f1f1f1;
 	transform: rotateZ(-45deg);
 }
 
-.colorlib-nav-toggle {
+.nav-toggle {
 	position: fixed;
 	left: 5px;
 	top: 0px;
@@ -453,7 +453,7 @@ $secondary: #f1f1f1;
 	transition: all 0.2s ease;
 }
 @media (max-width: 767.98px) {
-	.colorlib-nav-toggle {
+	.nav-toggle {
 		opacity: 1;
 		visibility: visible;
 	}
