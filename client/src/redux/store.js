@@ -1,6 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import dataReducer from "./reducers/dataReducer";
+import userReducer from "./reducers/userReducer";
 
 const initialState = {};
 
@@ -8,6 +9,7 @@ const middleware = [thunk];
 const isDevelopment = process.env.NODE_ENV === "development";
 
 const reducers = combineReducers({
+	user: userReducer,
 	data: dataReducer,
 });
 

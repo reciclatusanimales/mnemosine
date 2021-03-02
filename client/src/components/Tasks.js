@@ -12,7 +12,7 @@ const Tasks = ({
 	archiveTask,
 	deleteTask,
 }) => {
-	if (selectedProject) document.title = `${selectedProject.name}: Todoist`;
+	if (selectedProject) document.title = `${selectedProject.name}: Mnemosine`;
 
 	useEffect(() => {
 		getTasks();

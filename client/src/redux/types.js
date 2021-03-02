@@ -11,3 +11,6 @@ export const ARCHIVE_TASK = "ARCHIVE_TASK";
 export const UPDATE_TASK = "UPDATE_TASK";
 export const SET_TASK = "SET_TASK";
 export const DELETE_TASK = "DELETE_TASK";
+
+export const SET_USER = "SET_USER";
+export const SET_UNAUTHENTICATED = "SET_UNAUTHENTICATED";
