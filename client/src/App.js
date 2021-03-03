@@ -19,7 +19,7 @@ if (token) {
 		localStorage.removeItem("token");
 	} else {
 		store.dispatch({ type: "SET_USER", payload: decodedToken });
-		axios.defaults.headers.common["Authorization"] = token;
+		axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 	}
 } else {
 	console.log("NO TOKEN");
@@ -43,7 +43,10 @@ export default function App({ darkModeDefault = false }) {
 						<Content />
 					</>
 				) : (
-					<Auth />
+					<>
+						<Header darkMode={darkMode} setDarkMode={setDarkMode} />
+						<Auth />
+					</>
 				)}
 			</main>
 		</UIProvider>

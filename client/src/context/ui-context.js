@@ -4,6 +4,7 @@ export const UIContext = createContext();
 
 export const UIProvider = ({ children }) => {
 	const [showSidebar, setShowSidebar] = useState(false);
+	const [showProfileMenu, setShowProfileMenu] = useState(false);
 	const [showRegister, setShowRegister] = useState(false);
 	const [showAddProject, setShowAddProject] = useState(false);
 	const [showEditProject, setShowEditProject] = useState(false);
@@ -13,6 +14,8 @@ export const UIProvider = ({ children }) => {
 	const values = {
 		showSidebar,
 		setShowSidebar,
+		showProfileMenu,
+		setShowProfileMenu,
 		showRegister,
 		setShowRegister,
 		showAddProject,

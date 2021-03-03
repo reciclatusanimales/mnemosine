@@ -1,22 +1,27 @@
 const { Project } = require("../models");
 
-exports.getProjects = async (requets, response) => {
+exports.getProjects = async (request, response) => {
+	const user = response.locals.user;
+
 	try {
-		const data = await Project.findAll();
+		if (!user) throw new Error("Unauthenticated.");
+
+		const data = await Project.findAll({ where: { userId: user.id } });
 		return response.status(200).json(data);
 	} catch (error) {
+		console.log(error);
 		return response.status(500).json({ error: error });
 	}
 };
 
 exports.addProject = async (request, response) => {
+	const user = response.locals.user;
 	const { name } = request.body;
-	const userId = 1;
 
 	try {
 		const data = await Project.create({
 			name,
-			userId,
+			userId: user.id,
 		});
 		return response.status(200).json(data);
 	} catch (error) {

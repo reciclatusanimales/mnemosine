@@ -37,7 +37,7 @@ export default function Register() {
 			})
 			.catch((err) => {
 				console.log(err);
-				setErrors(err.response.data.error);
+				setErrors(err.error);
 			});
 	};
 
@@ -47,10 +47,10 @@ export default function Register() {
 	};
 
 	return (
-		<div>
-			<h1>Register</h1>
+		<div className="auth__content">
+			<h1>Registro</h1>
 
-			<form onSubmit={handleSubmit} noValidate>
+			<form onSubmit={handleSubmit} className="auth__form" noValidate>
 				<label>{errors.email ?? "Email"}</label>
 				<input
 					type="email"
@@ -84,15 +84,18 @@ export default function Register() {
 					value={confirmPassword}
 					onChange={(e) => setConfirmPassword(e.target.value)}
 				/>
+				<div>
+					<button type="submit">Registrarse</button>
+				</div>
 
-				<button type="submit">Registrarse</button>
+				<span>{errors.general}</span>
 			</form>
 
-			<span className="text-danger">{errors.general}</span>
-
-			<a href="/" onClick={handleLogin}>
-				Login
-			</a>
+			<div className="auth__options">
+				<a href="/" onClick={handleLogin}>
+					Login
+				</a>
+			</div>
 		</div>
 	);
 }

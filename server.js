@@ -10,6 +10,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const { login, register, loginWithGoogle } = require("./routes/auth");
+const { auth } = require("./middleware/auth");
+
 const {
 	getProjects,
 	addProject,
@@ -29,15 +32,19 @@ app.get("/api", (req, res) => {
 	res.send("Hello Friend...");
 });
 
-app.get("/api/projects", getProjects);
-app.post("/api/add-project", addProject);
-app.post("/api/update-project", updateProject);
-app.post("/api/delete-project", deleteProject);
+app.post("/api/login", login);
+app.post("/api/login-with-google", loginWithGoogle);
+app.post("/api/register", register);
 
-app.get("/api/tasks", getTasks);
-app.post("/api/add-task", addTask);
-app.post("/api/archive-task", archiveTask);
-app.post("/api/update-task", updateTask);
-app.post("/api/delete-task", deleteTask);
+app.get("/api/projects", auth, getProjects);
+app.post("/api/add-project", auth, addProject);
+app.post("/api/update-project", auth, updateProject);
+app.post("/api/delete-project", auth, deleteProject);
+
+app.get("/api/tasks", auth, getTasks);
+app.post("/api/add-task", auth, addTask);
+app.post("/api/archive-task", auth, archiveTask);
+app.post("/api/update-task", auth, updateTask);
+app.post("/api/delete-task", auth, deleteTask);
 
 app.listen(PORT, console.log(`Listen on port: ${PORT}`));

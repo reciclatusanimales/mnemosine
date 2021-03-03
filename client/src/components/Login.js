@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useUI } from "../context";
-import { login } from "../redux/actions/userActions";
+import { login, loginWithGoogle } from "../redux/actions/userActions";
 import app, { googleAuthProvider } from "../firebase/config";
+import { FaGoogle } from "react-icons/fa";
 
 export default function Login() {
 	const dispatch = useDispatch();
@@ -28,8 +29,8 @@ export default function Login() {
 				localStorage.setItem("token", res.token);
 			})
 			.catch((err) => {
-				console.log(err);
-				setErrors(err.response.data.error);
+				console.log(err.error);
+				setErrors(err.error);
 			});
 	};
 
@@ -37,10 +38,21 @@ export default function Login() {
 		await app
 			.auth()
 			.signInWithPopup(provider)
-			.then((result) => {
+			.then(async (result) => {
 				const { displayName, email, photoURL } = result.user;
 				console.log(result);
 				console.log(displayName, email, photoURL);
+				await dispatch(
+					loginWithGoogle({ displayName, email, photoURL })
+				)
+					.then((res) => {
+						console.log(res);
+						localStorage.setItem("token", res.token);
+					})
+					.catch((err) => {
+						console.log(err);
+						setErrors(err.response.data.error);
+					});
 			})
 			.catch((error) => {
 				console.log(error.message);
@@ -53,10 +65,10 @@ export default function Login() {
 	};
 
 	return (
-		<div>
+		<div className="auth__content">
 			<h1>Login</h1>
 
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit} className="auth__form" noValidate>
 				<label>{errors.username ?? "Nombre de usuario"}</label>
 				<input
 					type="text"
@@ -73,18 +85,21 @@ export default function Login() {
 					onChange={(e) => setPassword(e.target.value)}
 				/>
 
-				<button type="submit">Entrar</button>
+				<div>
+					<button type="submit">Entrar</button>
+				</div>
 
-				<span className="text-danger">{errors.general}</span>
+				<span>{errors.general}</span>
 			</form>
 
-			<button onClick={() => socialLogin(googleAuthProvider)}>
-				Entrar con Google
-			</button>
-
-			<a href="/" onClick={handleRegister}>
-				Registrarse
-			</a>
+			<div className="auth__options">
+				<button onClick={() => socialLogin(googleAuthProvider)}>
+					<FaGoogle /> Entra con Google
+				</button>
+				<a href="/" onClick={handleRegister}>
+					Registrarse
+				</a>
+			</div>
 		</div>
 	);
 }

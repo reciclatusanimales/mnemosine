@@ -2,9 +2,14 @@ const Sequelize = require("sequelize");
 const { Task, Project } = require("../models");
 
 exports.getTasks = async (request, response) => {
+	const user = response.locals.user;
+
 	try {
+		if (!user) throw new Error("Unauthenticated.");
+
 		const data = await Task.findAll({
 			where: {
+				userId: user.id,
 				archived: false,
 			},
 			include: "project",
@@ -17,14 +22,14 @@ exports.getTasks = async (request, response) => {
 };
 
 exports.addTask = async (request, response) => {
+	const user = response.locals.user;
 	const { name, projectId, date } = request.body;
-	const userId = 1;
 
 	try {
 		const data = await Task.create({
 			name,
 			projectId,
-			userId,
+			userId: user.id,
 			date,
 			archived: false,
 		});

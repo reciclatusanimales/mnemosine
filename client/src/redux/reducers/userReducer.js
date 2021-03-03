@@ -7,10 +7,11 @@ const initialState = {
 const userReducer = (state = initialState, { type, payload }) => {
 	switch (type) {
 		case SET_USER:
-			const { username, email, imageUrl } = payload;
+			const { id, username, email, imageUrl } = payload;
 			return {
 				...state,
 				user: {
+					id,
 					username,
 					email,
 					imageUrl,

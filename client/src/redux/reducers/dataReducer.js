@@ -85,7 +85,7 @@ const dataReducer = (state = initialState, { type, payload }) => {
 		case DELETE_PROJECT:
 			return {
 				...state,
-				selectedProject: null,
+				selectedProject: defaultProjects[0],
 				projects: state.projects.filter(
 					(project) => project.id !== payload
 				),

@@ -40,10 +40,16 @@ ul {
 $generic-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
 	rgba(0, 0, 0, 0.1) 0px 4px 11px;
 $generic-border: 1px solid #f1f1f1;
+$generic-dark-bg-secondary: #f8dbd9;
 $generic-dark-bg: #db4c3f;
+$generic-bg-secondary: #fff6e2;
 $generic-bg: hsl(42, 78%, 60%);
 $dark-primary: #db4c3f;
+$dark-primary-1: #db4c3f;
+$dark-primary-2: #e27065;
 $primary: hsl(42, 78%, 60%);
+$primary-1: #e9b949;
+$primary-2: #f0ce80;
 $secondary: #f1f1f1;
 
 /* Mixins
@@ -179,6 +185,30 @@ $secondary: #f1f1f1;
 
 	.checkbox-container input:checked ~ .checkmark {
 		background-color: $dark-primary !important;
+	}
+
+	.auth {
+		background-color: $generic-dark-bg-secondary;
+		&__form button {
+			background-color: $generic-dark-bg;
+			&:hover {
+				background-color: $dark-primary-2;
+			}
+		}
+		&__options {
+			a {
+				color: $generic-dark-bg;
+				&:hover {
+					color: $dark-primary-2;
+				}
+			}
+			button {
+				background-color: $generic-dark-bg;
+				&:hover {
+					background-color: $dark-primary-2;
+				}
+			}
+		}
 	}
 }
 
@@ -538,6 +568,7 @@ header {
 					}
 
 					&.settings__darkmode {
+						margin-right: 15px;
 						button {
 							@include transparent-button();
 							color: white;
@@ -549,6 +580,46 @@ header {
 							svg {
 								width: 20px;
 								height: 20px;
+							}
+						}
+					}
+
+					&.settings__avatar {
+						position: relative;
+						display: inline-block;
+						.avatar {
+							img {
+								vertical-align: middle;
+								width: 30px;
+								height: 30px;
+								border-radius: 50%;
+							}
+						}
+						.dropdown-content {
+							position: absolute;
+							right: 0px;
+							top: 37px;
+							background-color: #f9f9f9;
+							min-width: 160px;
+							box-shadow: 0px 2px 2px 0px lightsteelblue;
+							z-index: 1;
+							border-radius: 0 0 5px 5px;
+
+							span {
+								cursor: default;
+								font-size: 0.85rem;
+								text-align: left;
+								color: #545454;
+								padding: 12px 16px;
+								text-decoration: none;
+								display: block;
+							}
+							span:last-of-type {
+								cursor: pointer;
+								text-align: right;
+							}
+							svg {
+								font-size: 0.7rem;
 							}
 						}
 					}
@@ -1187,5 +1258,137 @@ header {
 
 	&__cancel {
 		@include cancel();
+	}
+}
+
+/* AUTH */
+
+.auth {
+	position: relative;
+	min-height: 100vh;
+	background-color: $generic-bg-secondary;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	&__content {
+		position: relative;
+
+		> h1 {
+			text-align: center;
+		}
+	}
+
+	&__form {
+		overflow: hidden;
+		background-color: white;
+		padding: 40px 30px 30px 30px;
+		border-radius: 10px;
+		top: 50%;
+		left: 50%;
+		width: 400px;
+		box-shadow: 5px 10px 10px rgba(rgba(2, 128, 144, 1), 0.2);
+
+		> input {
+			display: block;
+			border-radius: 5px;
+			font-size: 16px;
+			background: white;
+			width: 100%;
+			border: 1px solid #545454;
+			padding: 10px 10px;
+			margin: 15px -10px;
+		}
+
+		> span {
+			color: red;
+		}
+
+		> div {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		button {
+			cursor: pointer;
+			color: #fff;
+			font-size: 16px;
+			text-transform: uppercase;
+			border: 0;
+			padding: 10px 5px;
+			margin-top: 10px;
+			margin-left: -5px;
+			border-radius: 5px;
+			background-color: $generic-bg;
+
+			&:hover {
+				background-color: $primary-2;
+			}
+		}
+	}
+
+	&__options {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		margin-top: 2rem;
+
+		a {
+			text-decoration: none;
+			margin-left: auto;
+			color: $generic-bg;
+
+			&:hover {
+				color: $primary-2;
+			}
+		}
+
+		button {
+			position: relative;
+			cursor: pointer;
+			background-color: $generic-bg;
+			display: block;
+			color: white;
+			text-decoration: none;
+			margin: 20px 0;
+			padding: 8px 8px;
+			border-radius: 5px;
+			position: relative;
+			padding-left: 60px;
+			border-color: white;
+
+			svg {
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 1;
+				width: 50px;
+				height: 100%;
+				text-align: center;
+				padding: 0.3rem;
+				background: hsla(0, 0, 0, 0.1);
+				line-height: 3.2;
+				border-radius: 5px;
+			}
+
+			&:after {
+				content: "";
+				position: absolute;
+				z-index: 1;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				transition: all 0.2s ease-in-out;
+				border-radius: 5px;
+			}
+
+			&:hover {
+				background-color: $primary-2;
+			}
+		}
 	}
 }
