@@ -4,6 +4,7 @@
 Mnemosine is a simple TODO app powered by ReactJS and Express.js to help you in your daily tasks in order not to miss anything.
 
 <br />
+<br />
 
 <div align="center"><img src="https://resources.reciclatusanimales.com/image/mnemosine.png" width=700></div>
 
