@@ -5,8 +5,6 @@ exports.getTasks = async (request, response) => {
 	const user = response.locals.user;
 
 	try {
-		if (!user) throw new Error("Unauthenticated.");
-
 		const data = await Task.findAll({
 			where: {
 				userId: user.id,

@@ -20,7 +20,6 @@ export default function Header({ darkMode, setDarkMode }) {
 	} = useUI();
 
 	const handleProfile = () => {
-		console.log(123);
 		setShowProfileMenu(!showProfileMenu);
 	};
 

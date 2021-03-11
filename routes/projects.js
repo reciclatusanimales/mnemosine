@@ -4,8 +4,6 @@ exports.getProjects = async (request, response) => {
 	const user = response.locals.user;
 
 	try {
-		if (!user) throw new Error("Unauthenticated.");
-
 		const data = await Project.findAll({ where: { userId: user.id } });
 		return response.status(200).json(data);
 	} catch (error) {

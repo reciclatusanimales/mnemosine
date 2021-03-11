@@ -1,13 +1,14 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
+console.log(process.env.REACT_APP_FIREBASE_API_KEY);
 const app = firebase.initializeApp({
-	apiKey: "AIzaSyAFNl_harA2vX_y4jhJxO6J1c_HX_Gz17s",
-	authDomain: "mnemosine-app.firebaseapp.com",
-	projectId: "mnemosine-app",
-	storageBucket: "mnemosine-app.appspot.com",
-	messagingSenderId: "961166572443",
-	appId: "1:961166572443:web:9aab38d61129aad2c2ff3e",
+	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+	authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+	projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+	storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+	appId: process.env.REACT_APP_FIREBASE_APP_ID,
 });
 
 export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
