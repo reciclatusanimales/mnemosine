@@ -12,7 +12,7 @@ const ProjectOverlay = ({
 			<div className="project-overlay" data-testid="project-overlay">
 				<ul className="project-overlay__list">
 					{projects.map((project) => (
-						<li key={project.projectId}>
+						<li key={project.id}>
 							<div
 								data-testid="project-overlay-action"
 								aria-label="Select the task project"

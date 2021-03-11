@@ -1,13 +1,4 @@
-import { folders } from "../constants";
-
-export const getTitle = (projects, projectId) =>
-	projects.find((project) => project.projectId === projectId);
-
-export const getCollatedTitle = (projects, key) =>
-	projects.find((project) => project.key === key);
-
-export const collatedTasksExists = (selectedProject) =>
-	folders.find((task) => task.key === selectedProject);
+import { defaultProjects } from "../constants";
 
 export const generatePushId = (() => {
 	const PUSH_CHARS =
