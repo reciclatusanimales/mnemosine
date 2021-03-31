@@ -1,12 +1,17 @@
 import AddTask from "../AddTask";
 import EditTask from "../EditTask";
+import DeleteProject from "../DeleteProject";
+import DeleteTask from "../DeleteTask";
 import { useUI } from "../../context";
 import { FaPalette, FaSignOutAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/actions/userActions";
+import { useEffect, useRef } from "react";
 
-export default function Header({ darkMode, setDarkMode }) {
-	const user = useSelector((state: any) => state.user.user);
+export default function Header() {
+	const profileRef = useRef(null);
+	const { darkMode, setDarkMode } = useUI();
+	const user = useSelector((state) => state.user.user);
 	const dispatch = useDispatch();
 
 	const {
@@ -27,8 +32,39 @@ export default function Header({ darkMode, setDarkMode }) {
 		dispatch(logoutUser());
 	};
 
+	useEffect(() => {
+		const handleOutsideClick = (event) => {
+			if (!profileRef.current?.contains(event.target)) {
+				if (!showProfileMenu) return;
+				setShowProfileMenu(false);
+			}
+		};
+
+		if (typeof window !== "undefined") {
+			window.addEventListener("click", handleOutsideClick);
+		}
+
+		if (typeof window !== "undefined") {
+			return () =>
+				window.removeEventListener("click", handleOutsideClick);
+		}
+	}, [showProfileMenu, setShowProfileMenu]);
+
+	useEffect(() => {
+		const handleEscape = (event) => {
+			if (!showProfileMenu) return;
+
+			if (event.key === "Escape") {
+				setShowProfileMenu(false);
+			}
+		};
+
+		document.addEventListener("keyup", handleEscape);
+		return () => document.removeEventListener("keyup", handleEscape);
+	}, [showProfileMenu, setShowProfileMenu]);
+
 	return (
-		<header className="header" data-testid="header">
+		<header className="header">
 			<nav>
 				{user && (
 					<div
@@ -45,7 +81,6 @@ export default function Header({ darkMode, setDarkMode }) {
 						{user && (
 							<li className="settings__add">
 								<button
-									data-testid="quick-add-task-action"
 									aria-label="Quick add task"
 									onClick={() => {
 										setShowAddTask(true);
@@ -61,7 +96,6 @@ export default function Header({ darkMode, setDarkMode }) {
 						)}
 						<li className="settings__darkmode">
 							<button
-								data-testid="dark-mode-action"
 								aria-label="Darkmode on/off"
 								onClick={() => setDarkMode(!darkMode)}
 								onKeyDown={() => setDarkMode(!darkMode)}
@@ -76,6 +110,7 @@ export default function Header({ darkMode, setDarkMode }) {
 							<li
 								className="settings__avatar"
 								onClick={handleProfile}
+								ref={profileRef}
 							>
 								<div className="avatar">
 									<img src={user.imageUrl} alt="Avatar" />
@@ -98,8 +133,10 @@ export default function Header({ darkMode, setDarkMode }) {
 			</nav>
 
 			{showAddTask && <AddTask />}
-
 			{showEditTask && <EditTask />}
+
+			<DeleteProject />
+			<DeleteTask />
 		</header>
 	);
 }

@@ -1,18 +1,22 @@
 import { useEffect } from "react";
 import Project from "./Project";
 
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getProjects, setProject } from "../redux/actions/dataActions";
 import { useUI } from "../context";
 
-const Projects = ({ projects, selectedProject, setProject, getProjects }) => {
-	const { setShowSidebar, setShowAddProject } = useUI();
+export default function Projects({ showProjects }) {
+	const { setShowSidebar } = useUI();
+	const projects = useSelector((state) => state.data.projects);
+	const selectedProject = useSelector((state) => state.data.selectedProject);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		getProjects();
-
+		dispatch(getProjects());
 		// eslint-disable-next-line
 	}, []);
+
+	if (!showProjects) return null;
 
 	return (
 		projects &&
@@ -24,14 +28,12 @@ const Projects = ({ projects, selectedProject, setProject, getProjects }) => {
 				role="button"
 				tabIndex={0}
 				onClick={() => {
-					setProject(project);
+					dispatch(setProject(project));
 					setShowSidebar(false);
-					setShowAddProject(false);
 				}}
 				onKeyDown={() => {
-					setProject(project);
+					dispatch(setProject(project));
 					setShowSidebar(false);
-					setShowAddProject(false);
 				}}
 				className={
 					selectedProject?.id === project.id
@@ -39,22 +41,8 @@ const Projects = ({ projects, selectedProject, setProject, getProjects }) => {
 						: "sidebar__project"
 				}
 			>
-				<div>
-					<Project project={project} />
-				</div>
+				<Project project={project} />
 			</li>
 		))
 	);
-};
-
-const mapStateToProps = (state) => ({
-	projects: state.data.projects,
-	selectedProject: state.data.selectedProject,
-});
-
-const mapActionsToProps = {
-	getProjects,
-	setProject,
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(Projects);
+}

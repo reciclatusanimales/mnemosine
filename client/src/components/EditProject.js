@@ -1,22 +1,56 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateProject } from "../redux/actions/dataActions";
 import { useUI } from "../context";
 
-const EditProject = ({ selectedProject, updateProject }) => {
-	const { setShowEditProject } = useUI();
+export default function EditProject() {
+	const modalRef = useRef(null);
+	const dispatch = useDispatch();
+	const selectedProject = useSelector((state) => state.data.selectedProject);
+	const { showEditProject, setShowEditProject } = useUI();
 	const [name, setName] = useState(selectedProject?.name);
 
 	const handleUpdateProject = () => {
 		if (name === "") return;
-		updateProject({ id: selectedProject.id, name });
+		dispatch(updateProject({ id: selectedProject.id, name }));
 		setName("");
 		setShowEditProject(null);
 	};
 
+	useEffect(() => {
+		const handleOutsideClick = (event) => {
+			if (!modalRef.current?.contains(event.target)) {
+				if (!showEditProject) return;
+				setShowEditProject(false);
+			}
+		};
+
+		if (typeof window !== "undefined") {
+			window.addEventListener("click", handleOutsideClick);
+		}
+
+		if (typeof window !== "undefined") {
+			return () =>
+				window.removeEventListener("click", handleOutsideClick);
+		}
+	}, [showEditProject, setShowEditProject]);
+
+	useEffect(() => {
+		const handleEscape = (event) => {
+			if (!showEditProject) return;
+
+			if (event.key === "Escape") {
+				setShowEditProject(false);
+			}
+		};
+
+		document.addEventListener("keyup", handleEscape);
+		return () => document.removeEventListener("keyup", handleEscape);
+	}, [showEditProject, setShowEditProject]);
+
 	return (
-		<div className="add-project" data-testid="add-project">
+		<div className="add-project" ref={modalRef}>
 			<div className="add-project__input">
 				<input
 					value={name}
@@ -26,14 +60,7 @@ const EditProject = ({ selectedProject, updateProject }) => {
 					type="text"
 					placeholder="Nombre"
 				/>
-				<button
-					className="add-project__submit"
-					type="button"
-					onClick={() => handleUpdateProject()}
-					data-testid="add-project-submit"
-				>
-					Guardar
-				</button>
+
 				<span
 					aria-label="Cancel adding project"
 					className="add-project__cancel"
@@ -45,17 +72,16 @@ const EditProject = ({ selectedProject, updateProject }) => {
 				>
 					Cancel
 				</span>
+
+				<button
+					className="add-project__submit"
+					type="button"
+					onClick={() => handleUpdateProject()}
+					data-testid="add-project-submit"
+				>
+					Guardar
+				</button>
 			</div>
 		</div>
 	);
-};
-
-const mapStateToProps = (state) => ({
-	selectedProject: state.data.selectedProject,
-});
-
-const mapActionsToProps = {
-	updateProject,
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(EditProject);
+}

@@ -1,11 +1,13 @@
 # 📅 Mnemosine 
 
-Mnemosine is a simple TODO app powered by ReactJS and Express.js to help you in your daily tasks in order not to miss anything.
-
-
-<div align="center"><img src="https://resources.reciclatusanimales.com/image/mnemosine.png" width=500></div>
+Mnemosine is a simple TODO app powered by [ReactJS](https://reactjs.org/) and [Express.js](https://expressjs.com/) to help you in your daily tasks in order not to miss anything.
 
 <br />
+
+<div align="center"><img src="https://resources.reciclatusanimales.com/image/mnemosine.png" width=700></div>
+
+<br />
+
 ## Features 📋
 * Manage projects.
 * Manage projects's tasks.
@@ -28,13 +30,13 @@ $ git clone https://github.com/reciclatusanimales/mnemosine.git
 # Go into the server folder
 $ cd mnemosine
 
-# Install dependencies
+# Install server dependencies
 $ npm install
 
 # Go into the client folder
-$ cd client
+$ cd ../client
 
-# Install dependencies
+# Install client dependencies
 $ npm install
 
 # Run the app
@@ -54,19 +56,20 @@ Live Demo: [https://mnemosine.reciclatusanimales.com/](https://mnemosine.recicla
 <br />
 
 ## Built with 🛠️
-* [Expres.js](http://www.dropwizard.io/1.0.2/docs/) - v4.17.1
-* [Sequelize](http://www.dropwizard.io/1.0.2/docs/) - v6.5.0
-* [ReactJS](http://www.dropwizard.io/1.0.2/docs/) - v17.0.1
-* [Redux](http://www.dropwizard.io/1.0.2/docs/) - v4.0.5
-* [Firebase](http://www.dropwizard.io/1.0.2/docs/) - v8.2.9
-* [React Datepicker](http://www.dropwizard.io/1.0.2/docs/) - v3.4.1
+* [Expres.js](https://expressjs.com/) - v4.17.1
+* [Sequelize](https://sequelize.org/) - v6.5.0
+* [ReactJS](https://reactjs.org/) - v17.0.1
+* [Redux](https://redux.js.org/) - v4.0.5
+* [Firebase](https://firebase.google.com/) - v8.2.9
+* [React Datepicker](https://reactdatepicker.com/) - v3.4.1
 
 
 
 <br />
 <br />
 
-⌨️ por <a href="https://github.com/danielreyesveas">Daniel Reyes Veas</a>
+⌨️ por [Daniel Reyes Veas](https://github.com/danielreyesveas)
 <br />
-💾 <a href="https://reciclatusanimales.com">reciclatusanimales.com</a>
+💾 [reciclatusanimales.com](https://reciclatusanimales.com)
 
+<br />

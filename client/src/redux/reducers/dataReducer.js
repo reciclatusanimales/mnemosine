@@ -70,6 +70,9 @@ const dataReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				projects: [...state.projects, payload],
+				selectedProject: payload,
+				selectedTasks: [],
+				selectedTask: null,
 			};
 		case UPDATE_PROJECT:
 			projectsCopy = state.projects;
@@ -89,6 +92,11 @@ const dataReducer = (state = initialState, { type, payload }) => {
 				projects: state.projects.filter(
 					(project) => project.id !== payload
 				),
+				selectedTasks: state.selectedTasks.filter(
+					(task) => task.projectId !== payload
+				),
+				selectedTask: null,
+				tasks: state.tasks.filter((task) => task.projectId !== payload),
 			};
 		case SET_LOADING_TASKS:
 			return {
@@ -136,10 +144,9 @@ const dataReducer = (state = initialState, { type, payload }) => {
 				),
 			};
 		case SET_TASK:
-			index = state.tasks.findIndex((task) => task.id === payload);
 			return {
 				...state,
-				selectedTask: state.tasks[index],
+				selectedTask: payload,
 			};
 		case DELETE_TASK:
 			return {

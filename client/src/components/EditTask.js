@@ -3,7 +3,7 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import TaskDate from "./TaskDate";
 
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateTask } from "../redux/actions/dataActions";
 import { useUI } from "../context";
 
@@ -11,18 +11,25 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from "react-datepicker";
 import es from "date-fns/locale/es";
+import Overlay from "./layout/Overlay";
 registerLocale("es", es);
 
-const EditTask = ({ projects, selectedProject, selectedTask, updateTask }) => {
+export default function EditTask() {
+	const selectedTask = useSelector((state) => state.data.selectedTask);
+	const projects = useSelector((state) => state.data.projects);
+	const dispatch = useDispatch();
+
 	const [taskName, setTaskName] = useState(selectedTask.name);
 	const [taskDate, setTaskDate] = useState(selectedTask.date);
 	const [readableDate, setReadableDate] = useState(selectedTask.date);
+
 	const [date, setDate] = useState(
 		Date.parse(moment(selectedTask.date, "DD/MM/YYYY").toISOString())
 	);
 	const [project, setProject] = useState(selectedTask.projectId);
 
 	const { setShowEditTask } = useUI();
+
 	const [showTaskDate, setShowTaskDate] = useState(false);
 	const [showTaskCalendar, setShowTaskCalendar] = useState(false);
 
@@ -66,23 +73,26 @@ const EditTask = ({ projects, selectedProject, selectedTask, updateTask }) => {
 			date: moment(date).format("DD/MM/YYYY"),
 		};
 
-		updateTask(task);
+		dispatch(updateTask(task));
 
 		setTaskName("");
 		setShowEditTask(false);
 	};
 
+	const hideModal = () => {
+		setShowEditTask(false);
+	};
+
 	return (
-		<div className="add-task add-task__overlay" data-testid="add-task-comp">
-			<div className="add-task__main" data-testid="add-task-main">
-				<div data-testid="quick-add-task">
-					<h2 className="header">Editar Tarea</h2>
+		<Overlay onClickOutside={hideModal} onEscape={hideModal}>
+			<div className="add-task__main">
+				<div className="add-task__header-options">
+					<h3>Editar Tarea</h3>
 					<span
-						aria-label="Cancel adding task"
-						className="add-task__cancel-x"
-						data-testid="add-task-quick-cancel"
-						onClick={() => setShowEditTask(false)}
-						onKeyDown={() => setShowEditTask(false)}
+						aria-label="Cancelar"
+						className="cancel-x"
+						onClick={hideModal}
+						onKeyDown={hideModal}
 						tabIndex={0}
 						role="button"
 					>
@@ -100,7 +110,6 @@ const EditTask = ({ projects, selectedProject, selectedTask, updateTask }) => {
 				<input
 					aria-label="Nombre"
 					className="add-task__content"
-					data-testid="add-task-content"
 					placeholder="Nombre"
 					type="text"
 					value={taskName}
@@ -120,30 +129,41 @@ const EditTask = ({ projects, selectedProject, selectedTask, updateTask }) => {
 					))}
 				</select>
 
-				<span>{readableDate}</span>
-				<span
-					className="add-task__date"
-					data-testid="show-task-date-overlay"
-					onClick={() => setShowTaskDate(!showTaskDate)}
-					onKeyDown={() => setShowTaskDate(!showTaskDate)}
-					tabIndex={0}
-					role="button"
-				>
-					<FaRegCalendarAlt />
-				</span>
+				<div className="add-task__date-container">
+					<span>{readableDate}</span>
+					<span
+						className="add-task__date"
+						data-testid="show-task-date-overlay"
+						onClick={() => setShowTaskDate(!showTaskDate)}
+						onKeyDown={() => setShowTaskDate(!showTaskDate)}
+						tabIndex={0}
+						role="button"
+					>
+						<FaRegCalendarAlt />
+					</span>
 
-				<DatePicker
-					selected={date}
-					open={showTaskCalendar}
-					locale="es"
-					dateFormat="dd/MM/yyyy"
-					onChange={(date) => handleDateChange(date)}
-				/>
+					<DatePicker
+						selected={date}
+						open={showTaskCalendar}
+						locale="es"
+						dateFormat="dd/MM/yyyy"
+						onChange={(date) => handleDateChange(date)}
+					/>
+				</div>
 
-				<div className="add-task__btns">
+				<div className="btns">
+					<span
+						aria-label="Cancelar"
+						className="cancel"
+						onClick={hideModal}
+						onKeyDown={hideModal}
+						tabIndex={0}
+						role="button"
+					>
+						Cancelar
+					</span>
 					<button
-						className="add-task__submit"
-						data-testid="add-task"
+						className="submit"
 						type="button"
 						disabled={taskName === ""}
 						onClick={() =>
@@ -152,32 +172,8 @@ const EditTask = ({ projects, selectedProject, selectedTask, updateTask }) => {
 					>
 						Guardar
 					</button>
-
-					<span
-						aria-label="Cancelar"
-						className="add-task__cancel"
-						data-testid="add-task-main-cancel"
-						onClick={() => setShowEditTask(false)}
-						onKeyDown={() => setShowEditTask(false)}
-						tabIndex={0}
-						role="button"
-					>
-						Cancelar
-					</span>
 				</div>
 			</div>
-		</div>
+		</Overlay>
 	);
-};
-
-const mapStateToProps = (state) => ({
-	projects: state.data.projects,
-	selectedProject: state.data.selectedProject,
-	selectedTask: state.data.selectedTask,
-});
-
-const mapActionsToProps = {
-	updateTask,
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(EditTask);
+}

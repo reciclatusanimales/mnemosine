@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
 	FaChevronDown,
 	FaInbox,
@@ -10,24 +10,59 @@ import AddProject from "../AddProject";
 import EditProject from "../EditProject";
 import Projects from "../Projects";
 import { useUI } from "../../context";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setProject } from "../../redux/actions/dataActions";
 import { defaultProjects } from "../../constants";
 
-const Sidebar = ({ selectedProject, setProject }) => {
+export default function Sidebar() {
+	const sidebarRef = useRef(null);
 	const [showProjects, setShowProjects] = useState(true);
 	const { showSidebar, setShowSidebar, showEditProject } = useUI();
 
+	const selectedProject = useSelector((state) => state.data.selectedProject);
+	const dispatch = useDispatch();
+
 	const handleChange = (project) => {
 		const defaultProject = defaultProjects.find((p) => p.id === project);
-		setProject(defaultProject);
+		dispatch(setProject(defaultProject));
 		setShowSidebar(false);
 	};
+
+	useEffect(() => {
+		const handleOutsideClick = (event) => {
+			if (!sidebarRef.current?.contains(event.target)) {
+				if (!showSidebar) return;
+				setShowSidebar(false);
+			}
+		};
+
+		if (typeof window !== "undefined") {
+			window.addEventListener("click", handleOutsideClick);
+		}
+
+		if (typeof window !== "undefined") {
+			return () =>
+				window.removeEventListener("click", handleOutsideClick);
+		}
+	}, [showSidebar, setShowSidebar]);
+
+	useEffect(() => {
+		const handleEscape = (event) => {
+			if (!showSidebar) return;
+			if (event.key === "Escape") {
+				setShowSidebar(false);
+			}
+		};
+
+		document.addEventListener("keyup", handleEscape);
+		return () => document.removeEventListener("keyup", handleEscape);
+	}, [showSidebar, setShowSidebar]);
 
 	return (
 		<div
 			className={showSidebar ? "sidebar show-sidebar" : "sidebar"}
 			data-testid="sidebar"
+			ref={sidebarRef}
 		>
 			<ul className="sidebar__generic">
 				<li
@@ -105,7 +140,7 @@ const Sidebar = ({ selectedProject, setProject }) => {
 				</div>
 
 				<ul className="sidebar__projects">
-					{showProjects && <Projects />}
+					<Projects showProjects={showProjects} />
 				</ul>
 			</ul>
 
@@ -114,14 +149,4 @@ const Sidebar = ({ selectedProject, setProject }) => {
 			{showEditProject && <EditProject />}
 		</div>
 	);
-};
-
-const mapStateToProps = (state) => ({
-	selectedProject: state.data.selectedProject,
-});
-
-const mapActionsToProps = {
-	setProject,
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(Sidebar);
+}

@@ -1,22 +1,21 @@
-import { useState } from "react";
 import { FaPen, FaTrash } from "react-icons/fa";
 
-import { connect } from "react-redux";
-import { setProject, deleteProject } from "../redux/actions/dataActions";
+import { useDispatch } from "react-redux";
+import { setProject } from "../redux/actions/dataActions";
 import { useUI } from "../context";
 
-const Project = ({ project, setProject, deleteProject }) => {
-	const { id, name } = project;
-	const [showConfirm, setShowConfirm] = useState(false);
-	const { setShowEditProject, setShowAddProject } = useUI();
+export default function Project({ project }) {
+	const { name } = project;
+	const dispatch = useDispatch();
+	const { setShowEditProject, setShowDeleteProject } = useUI();
 
 	const handleDeleteProject = () => {
-		deleteProject(id);
-		setShowConfirm(false);
+		dispatch(setProject(project));
+		setShowDeleteProject(true);
 	};
 
 	const handleEditProject = (project) => {
-		setProject(project);
+		dispatch(setProject(project));
 		setShowEditProject(true);
 	};
 
@@ -39,50 +38,13 @@ const Project = ({ project, setProject, deleteProject }) => {
 			<span
 				aria-label="Confirmar"
 				className="sidebar__project-delete"
-				data-testid="delete-project"
-				onClick={() => {
-					setShowConfirm(!showConfirm);
-					setShowAddProject(false);
-				}}
-				onKeyDown={() => {
-					setShowConfirm(!showConfirm);
-					setShowAddProject(false);
-				}}
+				onClick={handleDeleteProject}
+				onKeyDown={handleDeleteProject}
 				tabIndex={0}
 				role="button"
 			>
 				<FaTrash />
-				{showConfirm && (
-					<div className="project-delete-modal">
-						<span className="project-delete-modal__inner">
-							<p>¿Deseas eliminar este projecto?</p>
-							<button
-								type="button"
-								onClick={handleDeleteProject}
-								onKeyDown={handleDeleteProject}
-							>
-								Eliminar
-							</button>
-							<span
-								aria-label="Cancelar"
-								onClick={() => setShowConfirm(!showConfirm)}
-								onKeyDown={() => setShowConfirm(!showConfirm)}
-								tabIndex={0}
-								role="button"
-							>
-								Cancelar
-							</span>
-						</span>
-					</div>
-				)}
 			</span>
 		</>
 	);
-};
-
-const mapActionsToProps = {
-	setProject,
-	deleteProject,
-};
-
-export default connect(null, mapActionsToProps)(Project);
+}

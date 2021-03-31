@@ -1,4 +1,4 @@
-const { Project } = require("../models");
+const { Project, Task } = require("../models");
 
 exports.getProjects = async (request, response) => {
 	const user = response.locals.user;
@@ -53,6 +53,11 @@ exports.deleteProject = async (request, response) => {
 			return response.status(404).json({ error: "Project not found." });
 
 		await project.destroy();
+		await Task.destroy({
+			where: {
+				projectId: project.id,
+			},
+		});
 
 		return response.status(200).json(id);
 	} catch (error) {
