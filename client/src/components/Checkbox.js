@@ -1,16 +1,17 @@
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { archiveTask } from "../redux/actions/dataActions";
 
-const Checkbox = ({ id, taskDesc, archiveTask }) => {
+export default function Checkbox({ id, taskDesc }) {
+	const dispatch = useDispatch();
+
 	const handleArchiveTask = () => {
-		archiveTask(id);
+		dispatch(archiveTask(id));
 	};
 
 	return (
 		<div
 			aria-label={`¿Marcar ${taskDesc} como realizada?`}
 			className="checkbox-holder"
-			data-testid="checkbox-action"
 			onClick={handleArchiveTask}
 			onKeyDown={handleArchiveTask}
 			role="button"
@@ -19,10 +20,4 @@ const Checkbox = ({ id, taskDesc, archiveTask }) => {
 			<span className="checkbox" />
 		</div>
 	);
-};
-
-const mapActionsToProps = {
-	archiveTask,
-};
-
-export default connect(null, mapActionsToProps)(Checkbox);
+}

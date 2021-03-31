@@ -38,9 +38,7 @@ exports.login = async (request, response) => {
 			imageUrl: user.imageUrl,
 		};
 
-		const token = jwt.sign(userObject, process.env.JWT_SECRET, {
-			expiresIn: 60 * 60,
-		});
+		const token = jwt.sign(userObject, process.env.JWT_SECRET);
 
 		return response.status(200).json({
 			...userObject,
@@ -84,9 +82,7 @@ exports.loginWithGoogle = async (request, response) => {
 			imageUrl: photoURL,
 		};
 
-		const token = jwt.sign(userObject, process.env.JWT_SECRET, {
-			expiresIn: 60 * 60,
-		});
+		const token = jwt.sign(userObject, process.env.JWT_SECRET);
 
 		return response.status(200).json({
 			...userObject,
@@ -132,9 +128,7 @@ exports.register = async (request, response) => {
 			imageUrl: user.imageUrl,
 		};
 
-		const token = jwt.sign(userObject, process.env.JWT_SECRET, {
-			expiresIn: 60 * 60,
-		});
+		const token = jwt.sign(userObject, process.env.JWT_SECRET);
 
 		return response.status(200).json({
 			...userObject,

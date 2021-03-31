@@ -25,7 +25,6 @@ export default function Login() {
 			})
 		)
 			.then((res) => {
-				console.log(res);
 				localStorage.setItem("token", res.token);
 			})
 			.catch((err) => {
@@ -40,8 +39,6 @@ export default function Login() {
 			.signInWithPopup(provider)
 			.then(async (result) => {
 				const { displayName, email, photoURL } = result.user;
-				console.log(result);
-				console.log(displayName, email, photoURL);
 				await dispatch(
 					loginWithGoogle({ displayName, email, photoURL })
 				)
@@ -66,39 +63,39 @@ export default function Login() {
 
 	return (
 		<div className="auth__content">
-			<h1>Login</h1>
+			<div className="auth__form__container">
+				<h1>Login</h1>
+				<form onSubmit={handleSubmit} className="auth__form" noValidate>
+					<label>{errors.username ?? "Nombre de usuario"}</label>
+					<input
+						type="text"
+						name="username"
+						value={username}
+						onChange={(e) => setUsername(e.target.value)}
+					/>
 
-			<form onSubmit={handleSubmit} className="auth__form" noValidate>
-				<label>{errors.username ?? "Nombre de usuario"}</label>
-				<input
-					type="text"
-					name="username"
-					value={username}
-					onChange={(e) => setUsername(e.target.value)}
-				/>
+					<label>{errors.password ?? "Contraseña"}</label>
+					<input
+						type="password"
+						name="password"
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+					/>
 
-				<label>{errors.password ?? "Contraseña"}</label>
-				<input
-					type="password"
-					name="password"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-				/>
+					<div>
+						<button type="submit">Entrar</button>
+					</div>
 
-				<div>
-					<button type="submit">Entrar</button>
+					<span>{errors.general}</span>
+				</form>
+				<div className="auth__options">
+					<button onClick={() => socialLogin(googleAuthProvider)}>
+						<FaGoogle /> Entra con Google
+					</button>
+					<a href="/" onClick={handleRegister}>
+						Registrarse
+					</a>
 				</div>
-
-				<span>{errors.general}</span>
-			</form>
-
-			<div className="auth__options">
-				<button onClick={() => socialLogin(googleAuthProvider)}>
-					<FaGoogle /> Entra con Google
-				</button>
-				<a href="/" onClick={handleRegister}>
-					Registrarse
-				</a>
 			</div>
 		</div>
 	);

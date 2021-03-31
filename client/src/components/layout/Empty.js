@@ -1,7 +1,12 @@
 import empty from "../../assets/empty.gif";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
-const Empty = ({ isProjectsLoading, isTasksLoading }) => {
+export default function Empty() {
+	const isProjectsLoading = useSelector(
+		(state) => state.data.isProjectsLoading
+	);
+	const isTasksLoading = useSelector((state) => state.data.isTasksLoading);
+
 	return !isProjectsLoading && !isTasksLoading ? (
 		<div className="empty-container fadein">
 			<figure>
@@ -10,11 +15,4 @@ const Empty = ({ isProjectsLoading, isTasksLoading }) => {
 			</figure>
 		</div>
 	) : null;
-};
-
-const mapStateToProps = (state) => ({
-	isProjectsLoading: state.data.isProjectsLoading,
-	isTasksLoading: state.data.isTasksLoading,
-});
-
-export default connect(mapStateToProps)(Empty);
+}

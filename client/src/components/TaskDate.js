@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import {
 	FaRegCalendarPlus,
 	FaRegPaperPlane,
@@ -11,25 +12,58 @@ export default function TaskDate({
 	setShowTaskDate,
 	setShowTaskCalendar,
 }) {
+	const modalRef = useRef(null);
+
+	useEffect(() => {
+		const handleOutsideClick = (event) => {
+			if (!modalRef.current?.contains(event.target)) {
+				if (!showTaskDate) return;
+				setShowTaskDate(false);
+			}
+		};
+
+		if (typeof window !== "undefined") {
+			window.addEventListener("click", handleOutsideClick);
+		}
+
+		if (typeof window !== "undefined") {
+			return () =>
+				window.removeEventListener("click", handleOutsideClick);
+		}
+	}, [showTaskDate, setShowTaskDate]);
+
+	useEffect(() => {
+		const handleEscape = (event) => {
+			if (!showTaskDate) return;
+
+			if (event.key === "Escape") {
+				setShowTaskDate(false);
+			}
+		};
+
+		document.addEventListener("keyup", handleEscape);
+		return () => document.removeEventListener("keyup", handleEscape);
+	}, [showTaskDate, setShowTaskDate]);
+
 	return (
 		showTaskDate && (
-			<div className="task-date" data-testid="task-date-overlay">
+			<div className="task-date" ref={modalRef}>
 				<ul className="task-date__list">
-					<li key="today">
-						<div
-							data-testid="task-date-today"
-							aria-label="Select today as the task date"
-							onClick={() => {
-								setShowTaskDate(false);
-								setTaskDate("today");
-							}}
-							onKeyDown={() => {
-								setShowTaskDate(false);
-								setTaskDate("today");
-							}}
-							tabIndex={0}
-							role="button"
-						>
+					<li
+						key="today"
+						aria-label="Selecciona"
+						onClick={() => {
+							setShowTaskDate(false);
+							setTaskDate("today");
+						}}
+						onKeyDown={() => {
+							setShowTaskDate(false);
+							setTaskDate("today");
+						}}
+						tabIndex={0}
+						role="button"
+					>
+						<div>
 							<span>
 								<FaSpaceShuttle />
 							</span>
@@ -37,63 +71,63 @@ export default function TaskDate({
 						</div>
 					</li>
 
-					<li key="tomorrow">
-						<div
-							data-testid="task-date-tomorrow"
-							aria-label="Select tomorrow as the task date"
-							onClick={() => {
-								setShowTaskDate(false);
-								setTaskDate("tomorrow");
-							}}
-							onKeyDown={() => {
-								setShowTaskDate(false);
-								setTaskDate("tomorrow");
-							}}
-							tabIndex={0}
-							role="button"
-						>
+					<li
+						key="tomorrow"
+						aria-label="Selecciona"
+						onClick={() => {
+							setShowTaskDate(false);
+							setTaskDate("tomorrow");
+						}}
+						onKeyDown={() => {
+							setShowTaskDate(false);
+							setTaskDate("tomorrow");
+						}}
+						tabIndex={0}
+						role="button"
+					>
+						<div>
 							<span>
 								<FaSun />
 							</span>
 							<span>Mañana</span>
 						</div>
 					</li>
-					<li key="next_7">
-						<div
-							data-testid="task-date-next-week"
-							aria-label="Select next week as the task date"
-							onClick={() => {
-								setShowTaskDate(false);
-								setTaskDate("next_7");
-							}}
-							onKeyDown={() => {
-								setShowTaskDate(false);
-								setTaskDate("next_7");
-							}}
-							tabIndex={0}
-							role="button"
-						>
+					<li
+						key="next_7"
+						aria-label="Selecciona"
+						onClick={() => {
+							setShowTaskDate(false);
+							setTaskDate("next_7");
+						}}
+						onKeyDown={() => {
+							setShowTaskDate(false);
+							setTaskDate("next_7");
+						}}
+						tabIndex={0}
+						role="button"
+					>
+						<div>
 							<span>
 								<FaRegPaperPlane />
 							</span>
 							<span>Próxima Semana</span>
 						</div>
 					</li>
-					<li key="another">
-						<div
-							data-testid="task-date-next-week"
-							aria-label="Select next week as the task date"
-							onClick={() => {
-								setShowTaskDate(false);
-								setShowTaskCalendar(true);
-							}}
-							onKeyDown={() => {
-								setShowTaskDate(false);
-								setShowTaskCalendar(true);
-							}}
-							tabIndex={0}
-							role="button"
-						>
+					<li
+						key="another"
+						aria-label="Selecciona"
+						onClick={() => {
+							setShowTaskDate(false);
+							setShowTaskCalendar(true);
+						}}
+						onKeyDown={() => {
+							setShowTaskDate(false);
+							setShowTaskCalendar(true);
+						}}
+						tabIndex={0}
+						role="button"
+					>
+						<div>
 							<span>
 								<FaRegCalendarPlus />
 							</span>

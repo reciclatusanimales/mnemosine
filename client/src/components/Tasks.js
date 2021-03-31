@@ -1,22 +1,18 @@
 import { useEffect } from "react";
-import { connect } from "react-redux";
 import { getTasks } from "../redux/actions/dataActions";
 import Task from "./Task";
 import Empty from "./layout/Empty";
+import { useDispatch, useSelector } from "react-redux";
 
-const Tasks = ({
-	selectedTasks,
-	selectedProject,
-	getTasks,
-	setTask,
-	archiveTask,
-	deleteTask,
-}) => {
+export default function Tasks() {
+	const selectedTasks = useSelector((state) => state.data.selectedTasks);
+	const selectedProject = useSelector((state) => state.data.selectedProject);
+	const dispatch = useDispatch();
+
 	if (selectedProject) document.title = `${selectedProject.name}: Mnemosine`;
 
 	useEffect(() => {
-		getTasks();
-
+		dispatch(getTasks());
 		// eslint-disable-next-line
 	}, []);
 
@@ -37,15 +33,4 @@ const Tasks = ({
 			)}
 		</div>
 	);
-};
-
-const mapStateToProps = (state) => ({
-	selectedTasks: state.data.selectedTasks,
-	selectedProject: state.data.selectedProject,
-});
-
-const mapActionsToProps = {
-	getTasks,
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(Tasks);
+}
