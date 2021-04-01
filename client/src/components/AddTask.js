@@ -134,7 +134,6 @@ export default function AddTask() {
 					<span>{readableDate}</span>
 					<span
 						className="add-task__date"
-						data-testid="show-task-date-overlay"
 						onClick={() => {
 							setShowTaskDate(!showTaskDate);
 							setShowTaskCalendar(false);

@@ -133,7 +133,6 @@ export default function EditTask() {
 					<span>{readableDate}</span>
 					<span
 						className="add-task__date"
-						data-testid="show-task-date-overlay"
 						onClick={() => setShowTaskDate(!showTaskDate)}
 						onKeyDown={() => setShowTaskDate(!showTaskDate)}
 						tabIndex={0}

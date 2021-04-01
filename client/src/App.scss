@@ -163,8 +163,8 @@ $secondary: #f1f1f1;
 		color: $dark-primary;
 	}
 
-	.add-project__submit,
-	.add-task__submit,
+	.submit,
+	.submit,
 	.task-delete-modal__inner button,
 	.project-delete-modal__inner button {
 		background-color: $dark-primary;
@@ -225,7 +225,7 @@ $secondary: #f1f1f1;
 	top: 0;
 	left: 0;
 	right: 0;
-	overflow-y: hidden;
+	overflow-y: auto;
 	z-index: 1001;
 	background: #fff;
 	-moz-transition: all 0.5s ease;
@@ -637,7 +637,7 @@ header {
 	padding-top: 74px;
 	position: fixed;
 	overflow-x: hidden;
-	overflow-y: hidden;
+	overflow-y: auto;
 	border-right: $generic-border;
 	background-color: #fafafa;
 

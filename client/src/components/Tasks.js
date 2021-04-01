@@ -17,10 +17,8 @@ export default function Tasks() {
 	}, []);
 
 	return (
-		<div className="tasks" data-testid="tasks">
-			<h2 data-testid="project-name">
-				{selectedProject && selectedProject.name}
-			</h2>
+		<div className="tasks">
+			<h2>{selectedProject && selectedProject.name}</h2>
 
 			{selectedTasks.length ? (
 				<ul className="tasks__list">

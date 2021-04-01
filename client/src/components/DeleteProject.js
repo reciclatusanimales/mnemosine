@@ -44,6 +44,7 @@ export default function DeleteProject() {
 							onKeyDown={hideModal}
 							tabIndex={0}
 							role="button"
+							data-type="action"
 						>
 							Cancelar
 						</span>
@@ -52,6 +53,7 @@ export default function DeleteProject() {
 							className="submit"
 							type="button"
 							onClick={handleDeleteProject}
+							data-type="action"
 						>
 							Eliminar
 						</button>

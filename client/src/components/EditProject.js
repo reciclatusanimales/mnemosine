@@ -56,7 +56,6 @@ export default function EditProject() {
 					value={name}
 					onChange={(e) => setName(e.target.value)}
 					className="add-project__name"
-					data-testid="project-name"
 					type="text"
 					placeholder="Nombre"
 				/>
@@ -64,7 +63,7 @@ export default function EditProject() {
 				<span
 					aria-label="Cancel adding project"
 					className="add-project__cancel"
-					data-testid="hide-project-overlay"
+					data-type="action"
 					onClick={() => setShowEditProject(null)}
 					onKeyDown={() => setShowEditProject(null)}
 					role="button"
@@ -76,8 +75,8 @@ export default function EditProject() {
 				<button
 					className="add-project__submit"
 					type="button"
+					data-type="action"
 					onClick={() => handleUpdateProject()}
-					data-testid="add-project-submit"
 				>
 					Guardar
 				</button>

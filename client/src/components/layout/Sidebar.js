@@ -30,7 +30,11 @@ export default function Sidebar() {
 
 	useEffect(() => {
 		const handleOutsideClick = (event) => {
-			if (!sidebarRef.current?.contains(event.target)) {
+			console.log(event.target);
+			if (
+				!sidebarRef.current?.contains(event.target) &&
+				event.target.getAttribute("data-type") !== "action"
+			) {
 				if (!showSidebar) return;
 				setShowSidebar(false);
 			}
@@ -61,7 +65,6 @@ export default function Sidebar() {
 	return (
 		<div
 			className={showSidebar ? "sidebar show-sidebar" : "sidebar"}
-			data-testid="sidebar"
 			ref={sidebarRef}
 		>
 			<ul className="sidebar__generic">
@@ -71,7 +74,6 @@ export default function Sidebar() {
 					}
 				>
 					<div
-						data-testid="inbox"
 						onClick={() => handleChange("all")}
 						onKeyDown={() => handleChange("all")}
 						tabIndex={0}
@@ -89,7 +91,6 @@ export default function Sidebar() {
 					}
 				>
 					<div
-						data-testid="today"
 						aria-label="Show today's tasks"
 						onClick={() => handleChange("today")}
 						onKeyDown={() => handleChange("today")}
@@ -108,7 +109,6 @@ export default function Sidebar() {
 					}
 				>
 					<div
-						data-testid="next_7"
 						aria-label="Show tasks for the next 7 days"
 						onClick={() => handleChange("next_7")}
 						onKeyDown={() => handleChange("next_7")}
