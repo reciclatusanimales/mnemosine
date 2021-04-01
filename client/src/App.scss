@@ -1,6 +1,3 @@
-/* ==========================================================================
-   LETS BUILD TODOIST
-   ========================================================================== */
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,700,900");
 
 // General Settings
@@ -41,11 +38,11 @@ $generic-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
 	rgba(0, 0, 0, 0.1) 0px 4px 11px;
 $generic-border: 1px solid #f1f1f1;
 $generic-dark-bg-secondary: #f8dbd9;
-$generic-dark-bg: #db4c3f;
+$generic-dark-bg: #ff6347;
 $generic-bg-secondary: #fff6e2;
 $generic-bg: hsl(42, 78%, 60%);
-$dark-primary: #db4c3f;
-$dark-primary-1: #db4c3f;
+$dark-primary: #ff6347;
+$dark-primary-1: #ff6347;
 $dark-primary-2: #e27065;
 $primary: hsl(42, 78%, 60%);
 $primary-1: #e9b949;
@@ -164,7 +161,6 @@ $secondary: #f1f1f1;
 	}
 
 	.submit,
-	.submit,
 	.task-delete-modal__inner button,
 	.project-delete-modal__inner button {
 		background-color: $dark-primary;
@@ -188,12 +184,18 @@ $secondary: #f1f1f1;
 
 	.auth {
 		background-color: $generic-dark-bg-secondary;
-		&__form button {
-			background-color: $generic-dark-bg;
-			&:hover {
-				background-color: $dark-primary-2;
+		&__form {
+			button {
+				background-color: $generic-dark-bg;
+				&:hover {
+					background-color: $dark-primary-2;
+				}
+			}
+			&__container h1 {
+				color: $generic-dark-bg;
 			}
 		}
+
 		&__options {
 			a {
 				color: $generic-dark-bg;
@@ -491,8 +493,11 @@ $secondary: #f1f1f1;
 header {
 	border-bottom: solid 1px $primary;
 	background-color: $generic-bg;
-	-webkit-transition: height 200ms ease-in;
-	transition: height 200ms ease-in;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	-webkit-transition: all 0.5s ease;
+	-ms-transition: all 0.5s ease;
+	transition: all 0.5s ease;
 	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 	height: 44px;
@@ -535,6 +540,7 @@ header {
 				grid-area: 1 / 2;
 				text-align: right;
 				margin-right: 10px;
+
 				ul {
 					float: right;
 				}
@@ -660,13 +666,18 @@ header {
 		justify-content: space-around;
 		align-content: center;
 		padding: 5px 10px;
+		margin-top: 5px;
 
 		&-name {
 			display: flex;
+			margin: 0 auto;
+			width: 100%;
 			align-items: center;
+			cursor: pointer;
 		}
 
 		&-delete {
+			cursor: pointer;
 			margin-left: 10px;
 			display: none;
 
@@ -676,6 +687,7 @@ header {
 		}
 
 		&-edit {
+			cursor: pointer;
 			margin-left: auto;
 			display: none;
 
@@ -786,7 +798,6 @@ header {
 
 	&__generic {
 		li {
-			cursor: pointer;
 			list-style-type: none;
 			color: #333;
 			display: -webkit-box;
@@ -795,6 +806,7 @@ header {
 			line-height: 1.5;
 			font-size: 15px;
 			border-radius: 5px;
+			cursor: pointer;
 
 			div:nth-child(1) {
 				display: -webkit-box;
@@ -900,36 +912,6 @@ header {
 	@include btn("90px");
 }
 
-.task-delete-modal {
-	position: relative;
-
-	&__inner {
-		@include box-overlay();
-		z-index: 100;
-		width: 220px;
-		padding: 10px;
-		top: 10px;
-		right: 2px;
-		background-color: white;
-
-		p {
-			margin-top: 5px;
-			margin-bottom: 5px;
-			line-height: normal;
-			font-weight: normal;
-			font-size: 15px;
-		}
-
-		button {
-			@include btn("50px");
-		}
-		span {
-			@include cancel();
-			font-weight: normal;
-		}
-	}
-}
-
 /* Main Content
 	 ============================================ */
 .content {
@@ -938,7 +920,8 @@ header {
 	-ms-flex-align: center;
 	align-items: center;
 	grid-template-columns: 1fr auto;
-	max-width: 922px;
+	max-width: 100vw;
+	height: 100vh;
 	margin: auto;
 }
 
@@ -1301,6 +1284,11 @@ header {
 	justify-content: center;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	-webkit-transition: all 0.5s ease;
+	-ms-transition: all 0.5s ease;
+	transition: all 0.5s ease;
 
 	&__content {
 		position: relative;
@@ -1323,6 +1311,7 @@ header {
 
 			> h1 {
 				align-self: center;
+				color: $generic-bg;
 			}
 		}
 

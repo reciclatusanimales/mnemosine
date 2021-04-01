@@ -59,27 +59,28 @@ export default function EditProject() {
 					type="text"
 					placeholder="Nombre"
 				/>
+				<div className="add-project__btns">
+					<span
+						aria-label="Cancelar"
+						className="add-project__cancel"
+						data-type="action"
+						onClick={() => setShowEditProject(null)}
+						onKeyDown={() => setShowEditProject(null)}
+						role="button"
+						tabIndex={0}
+					>
+						Cancel
+					</span>
 
-				<span
-					aria-label="Cancel adding project"
-					className="add-project__cancel"
-					data-type="action"
-					onClick={() => setShowEditProject(null)}
-					onKeyDown={() => setShowEditProject(null)}
-					role="button"
-					tabIndex={0}
-				>
-					Cancel
-				</span>
-
-				<button
-					className="add-project__submit"
-					type="button"
-					data-type="action"
-					onClick={() => handleUpdateProject()}
-				>
-					Guardar
-				</button>
+					<button
+						className="add-project__submit"
+						type="button"
+						data-type="action"
+						onClick={() => handleUpdateProject()}
+					>
+						Guardar
+					</button>
+				</div>
 			</div>
 		</div>
 	);

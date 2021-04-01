@@ -81,7 +81,7 @@ export default function Header() {
 						{user && (
 							<li className="settings__add">
 								<button
-									aria-label="Quick add task"
+									aria-label="Nueva Tarea"
 									onClick={() => {
 										setShowAddTask(true);
 									}}
