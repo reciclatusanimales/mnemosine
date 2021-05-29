@@ -30,7 +30,6 @@ export default function Sidebar() {
 
 	useEffect(() => {
 		const handleOutsideClick = (event) => {
-			console.log(event.target);
 			if (
 				!sidebarRef.current?.contains(event.target) &&
 				event.target.getAttribute("data-type") !== "action"

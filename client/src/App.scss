@@ -932,11 +932,11 @@ header {
 	background-color: white;
 	margin-left: 266px;
 	border-right: $generic-border;
-	min-height: calc(100vh);
 	vertical-align: top;
 	padding-left: 40px;
 	padding-right: 40px;
 	padding-top: 80px;
+	height: calc(100vh);
 	padding-bottom: 84px;
 
 	@include mq("767.98px") {

@@ -37,10 +37,13 @@ const getProjectTasks = (project, tasks) => {
 				(task) => task.date === moment().format("DD/MM/YYYY")
 			);
 		case "next_7":
-			return tasks.filter(
-				(task) =>
-					moment(task.date, "DD/MM/YYYY").diff(moment(), "days") <= 7
-			);
+			return tasks.filter((task) => {
+				const diff = moment(task.date, "DD/MM/YYYY").diff(
+					moment(),
+					"days"
+				);
+				return diff <= 7 && diff >= 0;
+			});
 		default:
 			return tasks.filter((task) => task.projectId === project.id);
 	}

@@ -81,7 +81,6 @@ export const addTask = (task) => (dispatch) => {
 	axios
 		.post("/add-task", task)
 		.then((response) => {
-			console.log(response.data);
 			dispatch({ type: ADD_TASK, payload: response.data });
 		})
 		.catch((error) => {

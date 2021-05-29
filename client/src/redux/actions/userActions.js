@@ -12,7 +12,6 @@ export const login = (userData) => (dispatch) => {
 		.post("/login", userData)
 		.then((res) => {
 			setAuthorizationHeader(res.data.token);
-			console.log(res);
 			localStorage.setItem("token", res.data.token);
 			dispatch({ type: SET_USER, payload: res.data });
 			return res.data;
@@ -26,7 +25,6 @@ export const loginWithGoogle = (userData) => (dispatch) => {
 	return axios
 		.post("/login-with-google", userData)
 		.then((res) => {
-			console.log(res);
 			setAuthorizationHeader(res.data.token);
 			localStorage.setItem("token", res.data.token);
 			dispatch({ type: SET_USER, payload: res.data });
