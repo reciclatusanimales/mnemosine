@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useUI } from "../context";
-import { register } from "../redux/actions/userActions";
+import { register } from "../redux/userSlice";
 
 export default function Register() {
 	const { setShowRegister } = useUI();
@@ -13,7 +13,7 @@ export default function Register() {
 	const [email, setEmail] = useState("");
 	const [errors, setErrors] = useState({});
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		if (
@@ -24,21 +24,14 @@ export default function Register() {
 		)
 			return;
 
-		await dispatch(
+		dispatch(
 			register({
 				email,
 				username,
 				password,
 				confirmPassword,
 			})
-		)
-			.then((res) => {
-				console.log(res);
-			})
-			.catch((err) => {
-				console.log(err);
-				setErrors(err.error);
-			});
+		);
 	};
 
 	const handleLogin = (e) => {

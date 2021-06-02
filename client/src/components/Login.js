@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useUI } from "../context";
-import { login, loginWithGoogle } from "../redux/actions/userActions";
+import { login, loginWithGoogle } from "../redux/userSlice";
 import app, { googleAuthProvider } from "../firebase/config";
 import { FaGoogle } from "react-icons/fa";
 
@@ -18,19 +18,12 @@ export default function Login() {
 
 		if (username === "" || password === "") return;
 
-		await dispatch(
+		dispatch(
 			login({
 				username,
 				password,
 			})
-		)
-			.then((res) => {
-				localStorage.setItem("token", res.token);
-			})
-			.catch((err) => {
-				console.log(err.error);
-				setErrors(err.error);
-			});
+		);
 	};
 
 	const socialLogin = async (provider) => {
@@ -39,17 +32,7 @@ export default function Login() {
 			.signInWithPopup(provider)
 			.then(async (result) => {
 				const { displayName, email, photoURL } = result.user;
-				await dispatch(
-					loginWithGoogle({ displayName, email, photoURL })
-				)
-					.then((res) => {
-						console.log(res);
-						localStorage.setItem("token", res.token);
-					})
-					.catch((err) => {
-						console.log(err);
-						setErrors(err.response.data.error);
-					});
+				dispatch(loginWithGoogle({ displayName, email, photoURL }));
 			})
 			.catch((error) => {
 				console.log(error.message);

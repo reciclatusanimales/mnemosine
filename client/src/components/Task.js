@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setTask, archiveTask } from "../redux/actions/dataActions";
+import { setTask, archiveTask } from "../redux/dataSlice";
 import { FaPen, FaTrash } from "react-icons/fa";
 import { useUI } from "../context";
 
@@ -45,7 +45,7 @@ export default function Task({ task }) {
 			</div>
 			<span>{task.name}</span>
 			{!selectedProject.uuid && (
-				<span className="tasks__list-project">
+				<span className="tasks__list-project tasks__list-project-0">
 					<small>{task.project?.name}</small>
 				</span>
 			)}

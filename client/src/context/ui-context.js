@@ -1,9 +1,10 @@
 import { createContext, useContext, useState } from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 export const UIContext = createContext();
 
 export const UIProvider = ({ children }) => {
-	const [darkMode, setDarkMode] = useState(false);
+	const [darkMode, setDarkMode] = useLocalStorage("dark-mode", false);
 	const [showSidebar, setShowSidebar] = useState(false);
 	const [showProfileMenu, setShowProfileMenu] = useState(false);
 	const [showRegister, setShowRegister] = useState(false);

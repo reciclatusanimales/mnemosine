@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useUI } from "../context";
-import { deleteProject } from "../redux/actions/dataActions";
+import { deleteProject } from "../redux/dataSlice";
 import Overlay from "./layout/Overlay";
 
 export default function DeleteProject() {

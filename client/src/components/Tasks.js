@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { getTasks } from "../redux/actions/dataActions";
 import Task from "./Task";
 import Empty from "./layout/Empty";
 import { useDispatch, useSelector } from "react-redux";
+import { loadTasks } from "../redux/dataSlice";
 
 export default function Tasks() {
 	const selectedTasks = useSelector((state) => state.data.selectedTasks);
@@ -12,9 +12,8 @@ export default function Tasks() {
 	if (selectedProject) document.title = `${selectedProject.name}: Mnemosine`;
 
 	useEffect(() => {
-		dispatch(getTasks());
-		// eslint-disable-next-line
-	}, []);
+		dispatch(loadTasks());
+	}, [dispatch]);
 
 	return (
 		<div className="tasks">

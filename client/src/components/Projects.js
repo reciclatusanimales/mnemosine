@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Project from "./Project";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getProjects } from "../redux/actions/dataActions";
+import { loadProjects } from "../redux/dataSlice";
 
 export default function Projects({ showProjects }) {
 	const projects = useSelector((state) => state.data.projects);
@@ -10,9 +10,8 @@ export default function Projects({ showProjects }) {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(getProjects());
-		// eslint-disable-next-line
-	}, []);
+		dispatch(loadProjects());
+	}, [dispatch]);
 
 	if (!showProjects) return null;
 

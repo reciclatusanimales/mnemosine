@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import TaskDate from "./TaskDate";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addTask } from "../redux/actions/dataActions";
+import { addTask } from "../redux/dataSlice";
 import { useUI } from "../context";
 
 import DatePicker from "react-datepicker";

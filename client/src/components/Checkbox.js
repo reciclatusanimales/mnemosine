@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { archiveTask } from "../redux/actions/dataActions";
+import { archiveTask } from "../redux/dataSlice";
 
 export default function Checkbox({ id, taskDesc }) {
 	const dispatch = useDispatch();

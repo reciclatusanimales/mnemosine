@@ -11,7 +11,7 @@ import EditProject from "../EditProject";
 import Projects from "../Projects";
 import { useUI } from "../../context";
 import { useDispatch, useSelector } from "react-redux";
-import { setProject } from "../../redux/actions/dataActions";
+import { setProject } from "../../redux/dataSlice";
 import { defaultProjects } from "../../constants";
 
 export default function Sidebar() {

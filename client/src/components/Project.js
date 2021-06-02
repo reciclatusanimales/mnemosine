@@ -1,17 +1,14 @@
 import { FaPen, FaTrash } from "react-icons/fa";
 
 import { useDispatch } from "react-redux";
-import { setProject } from "../redux/actions/dataActions";
+import { setProject } from "../redux/dataSlice";
 import { useUI } from "../context";
 
 export default function Project({ project }) {
 	const { name } = project;
 	const dispatch = useDispatch();
-	const {
-		setShowSidebar,
-		setShowEditProject,
-		setShowDeleteProject,
-	} = useUI();
+	const { setShowSidebar, setShowEditProject, setShowDeleteProject } =
+		useUI();
 
 	const handleDeleteProject = () => {
 		dispatch(setProject(project));

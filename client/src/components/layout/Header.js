@@ -5,7 +5,7 @@ import DeleteTask from "../DeleteTask";
 import { useUI } from "../../context";
 import { FaPalette, FaSignOutAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "../../redux/actions/userActions";
+import { logoutUser } from "../../redux/userSlice";
 import { useEffect, useRef } from "react";
 
 export default function Header() {

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { updateProject } from "../redux/actions/dataActions";
+import { updateProject } from "../redux/dataSlice";
 import { useUI } from "../context";
 
 export default function EditProject() {
