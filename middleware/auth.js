@@ -1,24 +1,29 @@
 const jwt = require("jsonwebtoken");
+const ErrorResponse = require("../utils/errorResponse");
+const asyncHandler = require("./async");
 
-exports.auth = (request, response, next) => {
-	try {
-		let token;
+exports.auth = asyncHandler(async (req, res, next) => {
+	let token;
 
-		if (request.headers.authorization) {
-			token = request.headers.authorization.split("Bearer ")[1];
-		}
-
-		if (token) {
-			jwt.verify(token, process.env.JWT_SECRET, (error, decodedToken) => {
-				response.locals.user = decodedToken;
-			});
-		}
-
-		if (!response.locals.user) throw new Error("Unauthenticated.");
-
-		return next();
-	} catch (error) {
-		console.error(error);
-		return response.status(401).json({ error: "Unauthenticated." });
+	if (req.headers.authorization) {
+		token = req.headers.authorization.split("Bearer ")[1];
 	}
-};
+
+	if (!token) {
+		return next(
+			new ErrorResponse("No estás autorizado para ver esta ruta.", 401)
+		);
+	}
+
+	try {
+		jwt.verify(token, process.env.JWT_SECRET, (error, decodedToken) => {
+			res.locals.user = decodedToken;
+		});
+
+		next();
+	} catch (error) {
+		return next(
+			new ErrorResponse("No estás autorizado para ver esta ruta.", 401)
+		);
+	}
+});

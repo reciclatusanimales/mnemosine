@@ -1,66 +1,23 @@
-const { Project, Task } = require("../models");
+const express = require("express");
 
-exports.getProjects = async (request, response) => {
-	const user = response.locals.user;
+const {
+	getProjects,
+	addProject,
+	updateProject,
+	deleteProject,
+} = require("../controllers/projects");
 
-	try {
-		const data = await Project.findAll({ where: { userId: user.id } });
-		return response.status(200).json(data);
-	} catch (error) {
-		console.log(error);
-		return response.status(500).json({ error: error });
-	}
-};
+const { auth } = require("../middleware/auth");
 
-exports.addProject = async (request, response) => {
-	const user = response.locals.user;
-	const { name } = request.body;
+const tasksRouter = require("./tasks");
 
-	try {
-		const data = await Project.create({
-			name,
-			userId: user.id,
-		});
-		return response.status(200).json(data);
-	} catch (error) {
-		return response.status(500).json({ error: error });
-	}
-};
+const router = express.Router();
 
-exports.updateProject = async (request, response) => {
-	const { id, name } = request.body;
+// Re-route into other resource routers
+router.use("/:projectId/tasks", tasksRouter);
 
-	try {
-		const project = await Project.findByPk(id);
-		if (!project)
-			return response.status(404).json({ error: "Project not found." });
+router.route("/").get(auth, getProjects).post(auth, addProject);
 
-		project.name = name;
-		await project.save();
+router.route("/:id").put(auth, updateProject).delete(auth, deleteProject);
 
-		return response.status(200).json(project);
-	} catch (error) {
-		return response.status(500).json({ error: error });
-	}
-};
-
-exports.deleteProject = async (request, response) => {
-	const { id } = request.body;
-
-	try {
-		const project = await Project.findByPk(id);
-		if (!project)
-			return response.status(404).json({ error: "Project not found." });
-
-		await project.destroy();
-		await Task.destroy({
-			where: {
-				projectId: project.id,
-			},
-		});
-
-		return response.status(200).json(id);
-	} catch (error) {
-		return response.status(500).json({ error: error });
-	}
-};
+module.exports = router;

@@ -11,20 +11,22 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	Task.init(
 		{
-			uuid: {
+			id: {
 				type: DataTypes.UUID,
 				defaultValue: DataTypes.UUIDV4,
+				allowNull: false,
+				primaryKey: true,
 			},
 			name: {
 				type: DataTypes.STRING,
 				allowNull: false,
 			},
 			userId: {
-				type: DataTypes.INTEGER,
+				type: DataTypes.UUID,
 				allowNull: false,
 			},
 			projectId: {
-				type: DataTypes.INTEGER,
+				type: DataTypes.UUID,
 				allowNull: false,
 			},
 			date: {

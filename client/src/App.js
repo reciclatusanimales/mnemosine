@@ -17,9 +17,7 @@ if (token) {
 
 	if (new Date() > expiresAt) {
 		localStorage.removeItem("token");
-		console.log("NOTOK");
 	} else {
-		console.log(decodedToken);
 		store.dispatch({ type: setUser.type, payload: decodedToken });
 		axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 	}

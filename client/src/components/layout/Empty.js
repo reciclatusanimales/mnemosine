@@ -2,8 +2,10 @@ import empty from "../../assets/empty.gif";
 import { useSelector } from "react-redux";
 
 export default function Empty() {
-	const isProjectsLoading = useSelector((state) => state.data.loading);
-	const isTasksLoading = useSelector((state) => state.data.loading);
+	const isProjectsLoading = useSelector(
+		(state) => state.data.projectsLoading
+	);
+	const isTasksLoading = useSelector((state) => state.data.tasksLoading);
 
 	return !isProjectsLoading && !isTasksLoading ? (
 		<div className="empty-container fadein">

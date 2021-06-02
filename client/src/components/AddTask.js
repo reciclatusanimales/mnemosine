@@ -26,7 +26,7 @@ export default function AddTask() {
 	const projects = useSelector((state) => state.data.projects);
 
 	const [project, setProject] = useState(
-		selectedProject && selectedProject.uuid ? selectedProject.id : ""
+		selectedProject && selectedProject.userId ? selectedProject.id : ""
 	);
 
 	const dispatch = useDispatch();
@@ -70,11 +70,10 @@ export default function AddTask() {
 
 		const task = {
 			name: taskName,
-			projectId: project,
 			date: moment(date).format("DD/MM/YYYY"),
 		};
 
-		dispatch(addTask(task));
+		dispatch(addTask({ projectId: project, task }));
 
 		setTaskName("");
 		setShowAddTask(false);

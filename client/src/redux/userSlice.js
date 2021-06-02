@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { routes } from "../constants";
 import { setAuthorizationHeader, unauthenticateUser } from "../utils";
 import { apiStart } from "./middlewares";
 
@@ -11,9 +12,11 @@ const userSlice = createSlice({
 	initialState,
 	reducers: {
 		setAuthenticated: (state, { payload }) => {
-			const { token, id, username, email, imageUrl } = payload;
+			const {
+				token,
+				user: { id, username, email, imageUrl },
+			} = payload;
 			setAuthorizationHeader(token);
-			localStorage.setItem("token", token);
 			state.user = { id, username, email, imageUrl };
 		},
 		setUser: (state, { payload }) => {
@@ -35,7 +38,7 @@ export default reducer;
 export const login = (userData) => (dispatch) => {
 	return dispatch(
 		apiStart({
-			url: "/login",
+			url: routes.LOGIN,
 			method: "POST",
 			data: userData,
 			onSuccess: setAuthenticated.type,
@@ -46,7 +49,7 @@ export const login = (userData) => (dispatch) => {
 export const loginWithGoogle = (userData) => (dispatch) => {
 	return dispatch(
 		apiStart({
-			url: "/login-with-google",
+			url: routes.LOGIN_WITH_GOOGLE,
 			method: "POST",
 			data: userData,
 			onSuccess: setAuthenticated.type,
@@ -57,7 +60,7 @@ export const loginWithGoogle = (userData) => (dispatch) => {
 export const register = (userData) => (dispatch) => {
 	return dispatch(
 		apiStart({
-			url: "/register",
+			url: routes.REGISTER,
 			method: "POST",
 			data: userData,
 			onSuccess: setAuthenticated.type,
@@ -65,7 +68,13 @@ export const register = (userData) => (dispatch) => {
 	);
 };
 
-export const logoutUser = () => (dispatch) => {
+export const logoutUser = () => async (dispatch) => {
+	await dispatch(
+		apiStart({
+			url: routes.LOGOUT,
+			onSuccess: setUnauthenticated.type,
+		})
+	);
 	unauthenticateUser();
-	dispatch(setUnauthenticated());
+	window.location.reload();
 };

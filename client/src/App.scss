@@ -162,8 +162,9 @@ $secondary: #f1f1f1;
 
 	.submit,
 	.task-delete-modal__inner button,
+	.add-project__submit,
 	.project-delete-modal__inner button {
-		background-color: $dark-primary;
+		background-color: $dark-primary !important;
 	}
 
 	.react-datepicker__day--selected,

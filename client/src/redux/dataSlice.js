@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { defaultProject } from "../constants";
-import { getProjectTasks } from "../utils";
+import { defaultProject, routes } from "../constants";
+import { arraySort, getProjectTasks } from "../utils";
 import { apiStart } from "./middlewares";
 
 const initialState = {
@@ -18,11 +18,12 @@ const dataSlice = createSlice({
 	initialState,
 	reducers: {
 		// Projects
+
 		setProjectLoading: (state) => {
 			state.projectsLoading = true;
 		},
 		projectsReceived: (state, { payload }) => {
-			state.projects = payload;
+			state.projects = arraySort(payload, "name");
 			state.projectsLoading = false;
 		},
 		setProject: (state, { payload }) => {
@@ -31,7 +32,7 @@ const dataSlice = createSlice({
 			state.selectedTask = null;
 		},
 		projectAdded: (state, { payload }) => {
-			state.projects.push(payload);
+			state.projects = arraySort([...state.projects, payload], "name");
 			state.selectedProject = payload;
 			state.projectsLoading = false;
 			state.selectedTasks = [];
@@ -42,6 +43,7 @@ const dataSlice = createSlice({
 				(project) => project.id === payload.id
 			);
 			state.projects[index] = payload;
+			arraySort(state.projects, "name");
 			state.selectedProject = payload;
 		},
 		projectDeleted: (state, { payload }) => {
@@ -49,10 +51,10 @@ const dataSlice = createSlice({
 			state.projects = state.projects.filter(
 				(project) => project.id !== payload
 			);
-			state.tasks = state.selectedTasks.filter(
+			state.tasks = state.tasks.filter(
 				(task) => task.projectId !== payload
 			);
-			state.selectedTasks = state.selectedTasks.filter(
+			state.selectedTasks = state.tasks.filter(
 				(task) => task.projectId !== payload
 			);
 			state.selectedTask = null;
@@ -64,6 +66,7 @@ const dataSlice = createSlice({
 			state.tasksLoading = true;
 		},
 		tasksReceived: (state, { payload }) => {
+			arraySort(payload, "name");
 			state.tasks = payload;
 			state.selectedTasks = payload;
 			state.selectedTask = null;
@@ -73,9 +76,12 @@ const dataSlice = createSlice({
 			state.selectedTask = payload;
 		},
 		taskAdded: (state, { payload }) => {
-			state.tasks.push(payload);
+			state.tasks = arraySort([...state.tasks, payload], "name");
 			if (state.selectedProject?.id === payload.projectId) {
-				state.selectedTasks.push(payload);
+				state.selectedTasks = arraySort(
+					[...state.selectedTasks, payload],
+					"name"
+				);
 			} else {
 				state.selectedTasks = [...state.tasks];
 			}
@@ -87,6 +93,8 @@ const dataSlice = createSlice({
 			state.selectedTasks[index] = payload;
 			index = state.tasks.findIndex((task) => task.id === payload.id);
 			state.tasks[index] = payload;
+			arraySort(state.selectedTasks, "name");
+			arraySort(state.tasks, "name");
 			state.selectedTask = null;
 		},
 		taskArchived: (state, { payload }) => {
@@ -124,14 +132,12 @@ export const {
 
 export default dataSlice.reducer;
 
-const projectsURL = "/projects";
-
 // PROJECTS
 
 export const loadProjects = () => (dispatch) => {
 	return dispatch(
 		apiStart({
-			url: projectsURL,
+			url: routes.PROJECTS,
 			onStart: setProjectLoading.type,
 			onSuccess: projectsReceived.type,
 		})
@@ -141,7 +147,7 @@ export const loadProjects = () => (dispatch) => {
 export const addProject = (data) => (dispatch) => {
 	return dispatch(
 		apiStart({
-			url: "/add-project",
+			url: routes.PROJECTS,
 			method: "POST",
 			data,
 			onStart: setProjectLoading.type,
@@ -150,23 +156,25 @@ export const addProject = (data) => (dispatch) => {
 	);
 };
 
-export const updateProject = (data) => (dispatch) => {
-	return dispatch(
-		apiStart({
-			url: "update-project",
-			method: "POST",
-			data,
-			onStart: setProjectLoading.type,
-			onSuccess: projectUpdated.type,
-		})
-	);
-};
+export const updateProject =
+	({ id, data }) =>
+	(dispatch) => {
+		return dispatch(
+			apiStart({
+				url: `${routes.PROJECTS}/${id}`,
+				method: "PUT",
+				data,
+				onStart: setProjectLoading.type,
+				onSuccess: projectUpdated.type,
+			})
+		);
+	};
 
 export const deleteProject = (id) => (dispatch) => {
 	return dispatch(
 		apiStart({
-			url: "/delete-project",
-			method: "POST",
+			url: `${routes.PROJECTS}/${id}`,
+			method: "DELETE",
 			data: { id },
 			onStart: setProjectLoading.type,
 			onSuccess: projectDeleted.type,
@@ -176,46 +184,48 @@ export const deleteProject = (id) => (dispatch) => {
 
 // TASKS
 
-const tasksURL = "/tasks";
-
 export const loadTasks = () => (dispatch) => {
 	return dispatch(
 		apiStart({
-			url: tasksURL,
+			url: routes.TASKS,
 			onStart: setTaskLoading.type,
 			onSuccess: tasksReceived.type,
 		})
 	);
 };
 
-export const addTask = (data) => (dispatch) => {
-	return dispatch(
-		apiStart({
-			url: "/add-task",
-			method: "POST",
-			data,
-			onStart: setTaskLoading.type,
-			onSuccess: taskAdded.type,
-		})
-	);
-};
+export const addTask =
+	({ projectId, data }) =>
+	(dispatch) => {
+		return dispatch(
+			apiStart({
+				url: `${routes.PROJECTS}/${projectId}/${routes.TASKS}`,
+				method: "POST",
+				data,
+				onStart: setTaskLoading.type,
+				onSuccess: taskAdded.type,
+			})
+		);
+	};
 
-export const updateTask = (data) => (dispatch) => {
-	return dispatch(
-		apiStart({
-			url: "/update-task",
-			method: "POST",
-			data,
-			onStart: setTaskLoading.type,
-			onSuccess: taskUpdated.type,
-		})
-	);
-};
+export const updateTask =
+	({ id, data }) =>
+	(dispatch) => {
+		return dispatch(
+			apiStart({
+				url: `${routes.TASKS}/${id}`,
+				method: "PUT",
+				data,
+				onStart: setTaskLoading.type,
+				onSuccess: taskUpdated.type,
+			})
+		);
+	};
 
 export const archiveTask = (id) => (dispatch) => {
 	return dispatch(
 		apiStart({
-			url: "/archive-task",
+			url: `/${routes.TASKS}/${id}/archive-task`,
 			method: "POST",
 			data: { id },
 			onStart: setTaskLoading.type,
@@ -227,8 +237,8 @@ export const archiveTask = (id) => (dispatch) => {
 export const deleteTask = (id) => (dispatch) => {
 	return dispatch(
 		apiStart({
-			url: "/delete-task",
-			method: "POST",
+			url: routes.TASKS,
+			method: "DELETE",
 			data: { id },
 			onStart: setTaskLoading.type,
 			onSuccess: taskDeleted.type,

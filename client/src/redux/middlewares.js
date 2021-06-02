@@ -20,10 +20,10 @@ export const api =
 
 		try {
 			const response = await axios.request({ url, method, data });
-			dispatch(apiSuccess(response.data));
+			dispatch(apiSuccess(response.data.data));
 
 			if (onSuccess)
-				dispatch({ type: onSuccess, payload: response.data });
+				dispatch({ type: onSuccess, payload: response.data.data });
 		} catch (error) {
 			dispatch(apiError(error.message));
 

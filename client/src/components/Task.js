@@ -44,7 +44,7 @@ export default function Task({ task }) {
 				</label>
 			</div>
 			<span>{task.name}</span>
-			{!selectedProject.uuid && (
+			{!selectedProject.id && (
 				<span className="tasks__list-project tasks__list-project-0">
 					<small>{task.project?.name}</small>
 				</span>

@@ -13,7 +13,7 @@ export default function EditProject() {
 
 	const handleUpdateProject = () => {
 		if (name === "") return;
-		dispatch(updateProject({ id: selectedProject.id, name }));
+		dispatch(updateProject({ data: { name }, id: selectedProject.id }));
 		setName("");
 		setShowEditProject(null);
 	};

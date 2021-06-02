@@ -67,13 +67,12 @@ export default function EditTask() {
 		if (taskName.trim() === "") return;
 
 		const task = {
-			id: selectedTask.id,
 			name: taskName,
 			projectId: project,
 			date: moment(date).format("DD/MM/YYYY"),
 		};
 
-		dispatch(updateTask(task));
+		dispatch(updateTask({ id: selectedTask.id, task }));
 
 		setTaskName("");
 		setShowEditTask(false);
