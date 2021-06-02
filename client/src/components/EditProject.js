@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { updateProject } from "../redux/actions/dataActions";
+import { updateProject } from "../redux/dataSlice";
 import { useUI } from "../context";
 
 export default function EditProject() {
@@ -13,7 +13,7 @@ export default function EditProject() {
 
 	const handleUpdateProject = () => {
 		if (name === "") return;
-		dispatch(updateProject({ id: selectedProject.id, name }));
+		dispatch(updateProject({ data: { name }, id: selectedProject.id }));
 		setName("");
 		setShowEditProject(null);
 	};
@@ -56,31 +56,31 @@ export default function EditProject() {
 					value={name}
 					onChange={(e) => setName(e.target.value)}
 					className="add-project__name"
-					data-testid="project-name"
 					type="text"
 					placeholder="Nombre"
 				/>
+				<div className="add-project__btns">
+					<span
+						aria-label="Cancelar"
+						className="add-project__cancel"
+						data-type="action"
+						onClick={() => setShowEditProject(null)}
+						onKeyDown={() => setShowEditProject(null)}
+						role="button"
+						tabIndex={0}
+					>
+						Cancel
+					</span>
 
-				<span
-					aria-label="Cancel adding project"
-					className="add-project__cancel"
-					data-testid="hide-project-overlay"
-					onClick={() => setShowEditProject(null)}
-					onKeyDown={() => setShowEditProject(null)}
-					role="button"
-					tabIndex={0}
-				>
-					Cancel
-				</span>
-
-				<button
-					className="add-project__submit"
-					type="button"
-					onClick={() => handleUpdateProject()}
-					data-testid="add-project-submit"
-				>
-					Guardar
-				</button>
+					<button
+						className="add-project__submit"
+						type="button"
+						data-type="action"
+						onClick={() => handleUpdateProject()}
+					>
+						Guardar
+					</button>
+				</div>
 			</div>
 		</div>
 	);

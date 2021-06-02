@@ -22,9 +22,7 @@ export default function Overlay({ children, onClickOutside, onEscape }) {
 
 	return (
 		<div className="overlay" onClick={handleOutsideClick}>
-			<div className="modal-container" ref={modalRef}>
-				{children}
-			</div>
+			<div ref={modalRef}>{children}</div>
 		</div>
 	);
 }

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useUI } from "../context";
-import { deleteTask } from "../redux/actions/dataActions";
+import { deleteTask } from "../redux/dataSlice";
 import Overlay from "./layout/Overlay";
 
 export default function DeleteTask() {

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useUI } from "../context";
-import { deleteProject } from "../redux/actions/dataActions";
+import { deleteProject } from "../redux/dataSlice";
 import Overlay from "./layout/Overlay";
 
 export default function DeleteProject() {
@@ -44,6 +44,7 @@ export default function DeleteProject() {
 							onKeyDown={hideModal}
 							tabIndex={0}
 							role="button"
+							data-type="action"
 						>
 							Cancelar
 						</span>
@@ -52,6 +53,7 @@ export default function DeleteProject() {
 							className="submit"
 							type="button"
 							onClick={handleDeleteProject}
+							data-type="action"
 						>
 							Eliminar
 						</button>

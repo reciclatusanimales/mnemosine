@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { useDispatch } from "react-redux";
-import { addProject } from "../redux/actions/dataActions";
+import { addProject } from "../redux/dataSlice";
 import { useUI } from "../context";
 
 export default function AddProject() {
@@ -64,6 +64,7 @@ export default function AddProject() {
 							<span
 								aria-label="Cancelar"
 								className="add-project__cancel"
+								data-type="action"
 								onClick={() => setShowAddProject(false)}
 								onKeyDown={() => setShowAddProject(false)}
 								role="button"
@@ -73,6 +74,7 @@ export default function AddProject() {
 							</span>
 							<button
 								className="add-project__submit"
+								data-type="action"
 								type="button"
 								onClick={() => handleAddProject()}
 								disabled={name === ""}
@@ -91,10 +93,15 @@ export default function AddProject() {
 					onClick={() => setShowAddProject(true)}
 					onKeyDown={() => setShowAddProject(true)}
 					role="button"
+					data-type="action"
 					tabIndex={0}
 				>
-					<span className="add-project__plus">+</span>{" "}
-					<span className="add-project__text">Proyecto</span>
+					<span className="add-project__plus" data-type="action">
+						+
+					</span>{" "}
+					<span className="add-project__text" data-type="action">
+						Proyecto
+					</span>
 				</div>
 			)}
 		</>

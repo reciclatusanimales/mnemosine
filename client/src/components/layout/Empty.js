@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 
 export default function Empty() {
 	const isProjectsLoading = useSelector(
-		(state) => state.data.isProjectsLoading
+		(state) => state.data.projectsLoading
 	);
-	const isTasksLoading = useSelector((state) => state.data.isTasksLoading);
+	const isTasksLoading = useSelector((state) => state.data.tasksLoading);
 
 	return !isProjectsLoading && !isTasksLoading ? (
 		<div className="empty-container fadein">

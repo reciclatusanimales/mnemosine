@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import TaskDate from "./TaskDate";
 
 import { useDispatch, useSelector } from "react-redux";
-import { updateTask } from "../redux/actions/dataActions";
+import { updateTask } from "../redux/dataSlice";
 import { useUI } from "../context";
 
 import DatePicker from "react-datepicker";
@@ -67,13 +67,12 @@ export default function EditTask() {
 		if (taskName.trim() === "") return;
 
 		const task = {
-			id: selectedTask.id,
 			name: taskName,
 			projectId: project,
 			date: moment(date).format("DD/MM/YYYY"),
 		};
 
-		dispatch(updateTask(task));
+		dispatch(updateTask({ id: selectedTask.id, task }));
 
 		setTaskName("");
 		setShowEditTask(false);
@@ -133,7 +132,6 @@ export default function EditTask() {
 					<span>{readableDate}</span>
 					<span
 						className="add-task__date"
-						data-testid="show-task-date-overlay"
 						onClick={() => setShowTaskDate(!showTaskDate)}
 						onKeyDown={() => setShowTaskDate(!showTaskDate)}
 						tabIndex={0}

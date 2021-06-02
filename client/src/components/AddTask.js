@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import TaskDate from "./TaskDate";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addTask } from "../redux/actions/dataActions";
+import { addTask } from "../redux/dataSlice";
 import { useUI } from "../context";
 
 import DatePicker from "react-datepicker";
@@ -26,7 +26,7 @@ export default function AddTask() {
 	const projects = useSelector((state) => state.data.projects);
 
 	const [project, setProject] = useState(
-		selectedProject && selectedProject.uuid ? selectedProject.id : ""
+		selectedProject && selectedProject.userId ? selectedProject.id : ""
 	);
 
 	const dispatch = useDispatch();
@@ -70,11 +70,10 @@ export default function AddTask() {
 
 		const task = {
 			name: taskName,
-			projectId: project,
 			date: moment(date).format("DD/MM/YYYY"),
 		};
 
-		dispatch(addTask(task));
+		dispatch(addTask({ projectId: project, task }));
 
 		setTaskName("");
 		setShowAddTask(false);
@@ -134,7 +133,6 @@ export default function AddTask() {
 					<span>{readableDate}</span>
 					<span
 						className="add-task__date"
-						data-testid="show-task-date-overlay"
 						onClick={() => {
 							setShowTaskDate(!showTaskDate);
 							setShowTaskCalendar(false);

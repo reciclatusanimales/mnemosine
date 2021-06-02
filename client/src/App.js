@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import { useUI } from "./context";
 import Auth from "./components/Auth";
 import jwt from "jwt-decode";
-import store from "./redux/store";
+import store from "./redux/configureStore";
+import { setUser } from "./redux/userSlice";
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 const token = localStorage.getItem("token");
@@ -17,7 +18,7 @@ if (token) {
 	if (new Date() > expiresAt) {
 		localStorage.removeItem("token");
 	} else {
-		store.dispatch({ type: "SET_USER", payload: decodedToken });
+		store.dispatch({ type: setUser.type, payload: decodedToken });
 		axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 	}
 } else {
@@ -25,7 +26,7 @@ if (token) {
 }
 
 export default function App() {
-	const user = useSelector((state: any) => state.user.user);
+	const user = useSelector((state) => state.user.user);
 	const { darkMode } = useUI();
 
 	return (
