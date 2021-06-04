@@ -22,6 +22,11 @@ module.exports = {
 				type: Sequelize.STRING,
 				allowNull: true,
 			},
+			accountType: {
+				type: Sequelize.STRING,
+				allowNull: false,
+				defaultValue: "email",
+			},
 			imageUrn: Sequelize.STRING,
 			createdAt: {
 				allowNull: false,

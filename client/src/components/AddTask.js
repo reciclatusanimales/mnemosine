@@ -73,7 +73,7 @@ export default function AddTask() {
 			date: moment(date).format("DD/MM/YYYY"),
 		};
 
-		dispatch(addTask({ projectId: project, task }));
+		dispatch(addTask({ projectId: project, data: task }));
 
 		setTaskName("");
 		setShowAddTask(false);

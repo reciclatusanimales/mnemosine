@@ -7,10 +7,12 @@ const initialState = {
 	projects: [],
 	selectedProject: defaultProject,
 	projectsLoading: false,
+	projectLoading: false,
 	tasks: [],
 	selectedTasks: [],
 	selectedTask: null,
 	tasksLoading: false,
+	taskLoading: false,
 };
 
 const dataSlice = createSlice({
@@ -19,8 +21,11 @@ const dataSlice = createSlice({
 	reducers: {
 		// Projects
 
-		setProjectLoading: (state) => {
+		setProjectsLoading: (state) => {
 			state.projectsLoading = true;
+		},
+		setProjectLoading: (state) => {
+			state.projectLoading = true;
 		},
 		projectsReceived: (state, { payload }) => {
 			state.projects = arraySort(payload, "name");
@@ -34,9 +39,9 @@ const dataSlice = createSlice({
 		projectAdded: (state, { payload }) => {
 			state.projects = arraySort([...state.projects, payload], "name");
 			state.selectedProject = payload;
-			state.projectsLoading = false;
 			state.selectedTasks = [];
 			state.selectedTask = null;
+			state.projectLoading = false;
 		},
 		projectUpdated: (state, { payload }) => {
 			const index = state.projects.findIndex(
@@ -45,6 +50,7 @@ const dataSlice = createSlice({
 			state.projects[index] = payload;
 			arraySort(state.projects, "name");
 			state.selectedProject = payload;
+			state.projectLoading = false;
 		},
 		projectDeleted: (state, { payload }) => {
 			state.selectedProject = defaultProject;
@@ -58,12 +64,16 @@ const dataSlice = createSlice({
 				(task) => task.projectId !== payload
 			);
 			state.selectedTask = null;
+			state.projectLoading = false;
 		},
 
 		// Tasks
 
-		setTaskLoading: (state) => {
+		setTasksLoading: (state) => {
 			state.tasksLoading = true;
+		},
+		setTaskLoading: (state) => {
+			state.taskLoading = true;
 		},
 		tasksReceived: (state, { payload }) => {
 			arraySort(payload, "name");
@@ -85,6 +95,7 @@ const dataSlice = createSlice({
 			} else {
 				state.selectedTasks = [...state.tasks];
 			}
+			state.taskLoading = false;
 		},
 		taskUpdated: (state, { payload }) => {
 			let index = state.selectedTasks.findIndex(
@@ -96,12 +107,14 @@ const dataSlice = createSlice({
 			arraySort(state.selectedTasks, "name");
 			arraySort(state.tasks, "name");
 			state.selectedTask = null;
+			state.taskLoading = false;
 		},
 		taskArchived: (state, { payload }) => {
-			state.tasks = state.tasks.filter((task) => task.id !== payload);
+			state.tasks = state.tasks.filter((task) => task.id !== payload.id);
 			state.selectedTasks = state.selectedTasks.filter(
-				(task) => task.id !== payload
+				(task) => task.id !== payload.id
 			);
+			state.taskLoading = false;
 		},
 		taskDeleted: (state, { payload }) => {
 			state.selectedTask = null;
@@ -109,11 +122,13 @@ const dataSlice = createSlice({
 			state.selectedTasks = state.selectedTasks.filter(
 				(task) => task.id !== payload
 			);
+			state.taskLoading = false;
 		},
 	},
 });
 
 export const {
+	setProjectsLoading,
 	setProjectLoading,
 	projectsReceived,
 	setProject,
@@ -121,6 +136,7 @@ export const {
 	projectUpdated,
 	projectDeleted,
 
+	setTasksLoading,
 	setTaskLoading,
 	tasksReceived,
 	setTask,
@@ -138,7 +154,7 @@ export const loadProjects = () => (dispatch) => {
 	return dispatch(
 		apiStart({
 			url: routes.PROJECTS,
-			onStart: setProjectLoading.type,
+			onStart: setProjectsLoading.type,
 			onSuccess: projectsReceived.type,
 		})
 	);
@@ -188,7 +204,7 @@ export const loadTasks = () => (dispatch) => {
 	return dispatch(
 		apiStart({
 			url: routes.TASKS,
-			onStart: setTaskLoading.type,
+			onStart: setTasksLoading.type,
 			onSuccess: tasksReceived.type,
 		})
 	);
@@ -225,7 +241,7 @@ export const updateTask =
 export const archiveTask = (id) => (dispatch) => {
 	return dispatch(
 		apiStart({
-			url: `/${routes.TASKS}/${id}/archive-task`,
+			url: `${routes.TASKS}/${id}/archive`,
 			method: "POST",
 			data: { id },
 			onStart: setTaskLoading.type,

@@ -1,3 +1,4 @@
+const path = require("path");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const ErrorResponse = require("../utils/errorResponse");
@@ -38,6 +39,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 		username: user.username,
 		email: user.email,
 		imageUrl: user.imageUrl,
+		accountType: user.accountType,
 	};
 
 	sendTokenResponse(userObject, 200, res);
@@ -89,6 +91,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 		username: user.username,
 		email: user.email,
 		imageUrl: user.imageUrl,
+		accountType: user.accountType,
 	};
 
 	sendTokenResponse(userObject, 200, res);
@@ -118,6 +121,7 @@ exports.loginWithGoogle = asyncHandler(async (req, res, next) => {
 	if (!user) {
 		user = await User.create({
 			username: displayName,
+			accountType: "google",
 			email,
 		});
 	}
@@ -127,6 +131,7 @@ exports.loginWithGoogle = asyncHandler(async (req, res, next) => {
 		username: user.username,
 		email: user.email,
 		imageUrl: photoURL,
+		accountType: user.accountType,
 	};
 
 	sendTokenResponse(userObject, 200, res);
@@ -157,6 +162,57 @@ exports.logout = asyncHandler(async (req, res, next) => {
 		success: true,
 		data: {},
 	});
+});
+
+// @desc    Upload profile photo
+// @route   PUT /api/v1/auth/upload-user-image
+// @access  Private
+exports.uploadUserImage = asyncHandler(async (req, res, next) => {
+	console.log(req.files);
+	if (!req.files) {
+		return next(new ErrorResponse("Archivo no encontrado.", 400));
+	}
+
+	const { file } = req.files;
+
+	if (!file.mimetype.startsWith("image"))
+		return next(new ErrorResponse("El archivo no es una imagen.", 400));
+
+	if (file.size > process.env.MAX_FILE_UPLOAD) {
+		return next(
+			new ErrorResponse(
+				`El máximo de ${process.env.MAX_FILE_UPLOAD} permitido ha sido excedido.`,
+				400
+			)
+		);
+	}
+
+	file.name = `photo_${res.locals.user.id}${path.parse(file.name).ext}`;
+	console.log(file.name);
+	file.mv(
+		`${process.env.FILE_UPLOAD_PATH}/profile_photos/${file.name}`,
+		async (err) => {
+			if (err) {
+				console.error(err);
+				return next(
+					new ErrorResponse("Hubo un problema con la carga.", 500)
+				);
+			}
+			console.log(res.locals.user.id);
+			const user = await User.findByPk(res.locals.user.id);
+			console.log(user);
+			user.imageUrn = file.name;
+			user.save();
+			console.log(user);
+
+			res.status(200).json({
+				success: true,
+				data: {
+					user,
+				},
+			});
+		}
+	);
 });
 
 // Get token from model, create cookie and send response

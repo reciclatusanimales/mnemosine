@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadTasks } from "../redux/dataSlice";
 import { removeSymbols } from "../utils";
 import { defaultIcons } from "../constants";
+import TasksSkeleton from "./layout/TasksSkeleton";
 
 export default function Tasks() {
-	const selectedTasks = useSelector((state) => state.data.selectedTasks);
-	const selectedProject = useSelector((state) => state.data.selectedProject);
+	const { selectedTasks, selectedProject, tasksLoading } = useSelector(
+		(state) => state.data
+	);
 	const dispatch = useDispatch();
 
 	if (selectedProject)
@@ -24,19 +26,25 @@ export default function Tasks() {
 
 	return (
 		<div className="tasks">
-			<h2>
-				{!selectedProject.userId && <Icon />}{" "}
-				{selectedProject && selectedProject.name}
-			</h2>
-
-			{selectedTasks.length ? (
-				<ul className="tasks__list">
-					{selectedTasks.map((task) => (
-						<Task key={task.id} task={task} />
-					))}
-				</ul>
+			{tasksLoading ? (
+				<TasksSkeleton />
 			) : (
-				<Empty />
+				<>
+					<h2>
+						{!selectedProject.userId && <Icon />}{" "}
+						{selectedProject && selectedProject.name}
+					</h2>
+
+					{selectedTasks.length ? (
+						<ul className="tasks__list">
+							{selectedTasks.map((task) => (
+								<Task key={task.id} task={task} />
+							))}
+						</ul>
+					) : (
+						<Empty />
+					)}
+				</>
 			)}
 		</div>
 	);

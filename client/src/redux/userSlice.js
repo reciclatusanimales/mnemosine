@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { routes } from "../constants";
 import { setAuthorizationHeader, unauthenticateUser } from "../utils";
-import { apiStart } from "./middlewares";
+import { apiError, apiStart, apiSuccess } from "./middlewares";
 
 export const initialState = {
 	user: null,
@@ -14,14 +15,17 @@ const userSlice = createSlice({
 		setAuthenticated: (state, { payload }) => {
 			const {
 				token,
-				user: { id, username, email, imageUrl },
+				user: { id, username, email, imageUrl, accountType },
 			} = payload;
 			setAuthorizationHeader(token);
-			state.user = { id, username, email, imageUrl };
+			state.user = { id, username, email, imageUrl, accountType };
 		},
 		setUser: (state, { payload }) => {
-			const { id, username, email, imageUrl } = payload;
-			state.user = { id, username, email, imageUrl };
+			const { id, username, email, imageUrl, accountType } = payload;
+			state.user = { id, username, email, imageUrl, accountType };
+		},
+		userImageUpdated: (state, { payload }) => {
+			state.user.imageUrl = payload.user.imageUrl;
 		},
 		setUnauthenticated: (state) => {
 			state.user = null;
@@ -31,7 +35,12 @@ const userSlice = createSlice({
 
 const { actions, reducer } = userSlice;
 
-export const { setUser, setAuthenticated, setUnauthenticated } = actions;
+export const {
+	setUser,
+	setAuthenticated,
+	setUnauthenticated,
+	userImageUpdated,
+} = actions;
 
 export default reducer;
 
@@ -77,4 +86,20 @@ export const logoutUser = () => async (dispatch) => {
 	);
 	unauthenticateUser();
 	window.location.reload();
+};
+
+export const uploadUserImage = (data) => async (dispatch) => {
+	try {
+		const response = await axios.request({
+			url: routes.UPLOAD_USER_IMAGE,
+			method: "PUT",
+			headers: { "Content-Type": "multipart/form-data" },
+			data,
+		});
+
+		dispatch(apiSuccess(response.data.data));
+		dispatch(userImageUpdated(response.data.data));
+	} catch (error) {
+		dispatch(apiError(error.message));
+	}
 };
