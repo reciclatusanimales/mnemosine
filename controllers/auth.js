@@ -1,8 +1,10 @@
+const path = require("path");
+
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const { User } = require("../models");
+const { resizeImage, sendTokenResponse } = require("../utils/misc");
 
 // @desc      Register user
 // @route     POST /api/v1/auth/register
@@ -38,6 +40,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 		username: user.username,
 		email: user.email,
 		imageUrl: user.imageUrl,
+		accountType: user.accountType,
 	};
 
 	sendTokenResponse(userObject, 200, res);
@@ -89,6 +92,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 		username: user.username,
 		email: user.email,
 		imageUrl: user.imageUrl,
+		accountType: user.accountType,
 	};
 
 	sendTokenResponse(userObject, 200, res);
@@ -118,6 +122,7 @@ exports.loginWithGoogle = asyncHandler(async (req, res, next) => {
 	if (!user) {
 		user = await User.create({
 			username: displayName,
+			accountType: "google",
 			email,
 		});
 	}
@@ -127,6 +132,7 @@ exports.loginWithGoogle = asyncHandler(async (req, res, next) => {
 		username: user.username,
 		email: user.email,
 		imageUrl: photoURL,
+		accountType: user.accountType,
 	};
 
 	sendTokenResponse(userObject, 200, res);
@@ -159,24 +165,55 @@ exports.logout = asyncHandler(async (req, res, next) => {
 	});
 });
 
-// Get token from model, create cookie and send response
-
-const sendTokenResponse = (user, statusCode, res) => {
-	// Create token
-	const token = jwt.sign(user, process.env.JWT_SECRET);
-
-	const options = {
-		expires: new Date(
-			Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-		),
-		httpOnly: true,
-	};
-
-	if (process.env.NODE_ENV === "production") {
-		options.secure = true;
+// @desc    Upload profile photo
+// @route   PUT /api/v1/auth/upload-user-image
+// @access  Private
+exports.uploadUserImage = asyncHandler(async (req, res, next) => {
+	if (!req.files) {
+		return next(new ErrorResponse("Archivo no encontrado.", 400));
 	}
 
-	res.status(statusCode)
-		.cookie("token", token, options)
-		.json({ success: true, data: { user, token } });
-};
+	const { file } = req.files;
+
+	if (!file.mimetype.startsWith("image"))
+		return next(new ErrorResponse("El archivo no es una imagen.", 400));
+
+	if (file.size > process.env.MAX_FILE_UPLOAD) {
+		return next(
+			new ErrorResponse(
+				`El máximo de ${process.env.MAX_FILE_UPLOAD} permitido ha sido excedido.`,
+				400
+			)
+		);
+	}
+
+	file.name = `photo_${res.locals.user.id}${path.parse(file.name).ext}`;
+
+	const tempFilepath = `${process.env.FILE_UPLOAD_PATH}/temp/${file.name}`;
+	const filepath = `${process.env.FILE_UPLOAD_PATH}/profile_photos/${file.name}`;
+
+	file.mv(tempFilepath, async (err) => {
+		if (err) {
+			console.error(err);
+			return next(
+				new ErrorResponse("Hubo un problema con la carga.", 500)
+			);
+		}
+
+		const user = await User.findByPk(res.locals.user.id);
+		user.imageUrn = file.name;
+		user.save();
+
+		await resizeImage(file.name, tempFilepath, filepath);
+
+		const userObject = {
+			id: user.id,
+			username: user.username,
+			email: user.email,
+			imageUrl: user.imageUrl,
+			accountType: user.accountType,
+		};
+
+		sendTokenResponse(userObject, 200, res);
+	});
+});

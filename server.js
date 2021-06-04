@@ -1,4 +1,10 @@
 const express = require("express");
+const path = require("path");
+const fileupload = require("express-fileupload");
+const cookieParser = require("cookie-parser");
+
+const colors = require("colors");
+
 require("dotenv").config();
 const PORT = process.env.PORT;
 const { Client } = require("pg");
@@ -8,11 +14,18 @@ const { sequelize } = require("./models");
 const app = express();
 
 app.use(cors());
+
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.get("/api", (req, res) => {
 	res.send("Hello Friend...");
 });
+
+app.use(fileupload());
 
 const errorHandler = require("./middleware/error");
 

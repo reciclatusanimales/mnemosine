@@ -11,7 +11,7 @@ export const api =
 	async (action) => {
 		if (action.type !== apiStart.type) return next(action);
 
-		const { url, method, data, onStart, onSuccess, onError } =
+		const { url, method, headers, data, onStart, onSuccess, onError } =
 			action.payload;
 
 		if (onStart) dispatch({ type: onStart });
@@ -19,7 +19,12 @@ export const api =
 		next(action);
 
 		try {
-			const response = await axios.request({ url, method, data });
+			const response = await axios.request({
+				url,
+				headers,
+				method,
+				data,
+			});
 			dispatch(apiSuccess(response.data.data));
 
 			if (onSuccess)

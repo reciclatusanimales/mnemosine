@@ -5,6 +5,7 @@ const {
 	register,
 	me,
 	logout,
+	uploadUserImage,
 } = require("../controllers/auth");
 
 const { auth } = require("../middleware/auth");
@@ -16,5 +17,6 @@ router.post("/login", login);
 router.post("/login-with-google", loginWithGoogle);
 router.get("/me", auth, me);
 router.get("/logout", logout);
+router.put("/upload-user-image", auth, uploadUserImage);
 
 module.exports = router;

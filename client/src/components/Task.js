@@ -24,22 +24,19 @@ export default function Task({ task }) {
 		setIsFadingOut(true);
 		setTimeout(() => {
 			dispatch(archiveTask(task.id));
-			setIsFadingOut(false);
-		}, 700);
+		}, 500);
 	};
 
 	return (
 		<li key={task.id} className={isFadingOut ? "item-fadeout" : "item"}>
-			<div
-				aria-label={`¿Marcar ${task.name} como realizada?`}
-				className="checkbox-holder"
-				onClick={handleArchiveTask}
-				onKeyDown={handleArchiveTask}
-				role="button"
-				tabIndex={0}
-			>
+			<div className="checkbox-holder">
 				<label className="checkbox-container">
-					<input type="checkbox" />
+					<input
+						type="checkbox"
+						aria-label={`¿Marcar ${task.name} como realizada?`}
+						onClick={handleArchiveTask}
+						onKeyDown={handleArchiveTask}
+					/>
 					<span className="checkmark"></span>
 				</label>
 			</div>

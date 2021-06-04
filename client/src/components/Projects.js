@@ -3,10 +3,13 @@ import Project from "./Project";
 
 import { useDispatch, useSelector } from "react-redux";
 import { loadProjects } from "../redux/dataSlice";
+import ProjectSkeleton from "./layout/ProjectsSkeleton";
 
 export default function Projects({ showProjects }) {
 	const projects = useSelector((state) => state.data.projects);
-	const selectedProject = useSelector((state) => state.data.selectedProject);
+	const { selectedProject, projectsLoading } = useSelector(
+		(state) => state.data
+	);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -14,6 +17,8 @@ export default function Projects({ showProjects }) {
 	}, [dispatch]);
 
 	if (!showProjects) return null;
+
+	if (projectsLoading) return <ProjectSkeleton />;
 
 	return (
 		projects &&

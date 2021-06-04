@@ -38,13 +38,21 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.STRING,
 				allowNull: true,
 			},
-			imageUrn: DataTypes.STRING,
+			accountType: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				defaultValue: "email",
+			},
+			imageUrn: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
 			imageUrl: {
 				type: DataTypes.VIRTUAL,
 				get() {
 					return this.imageUrn
-						? `${process.env.BASE_URL}/images/profiles/${this.imageUrn}`
-						: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
+						? `${process.env.BASE_URL}/uploads/profile_photos/${this.imageUrn}`
+						: null;
 				},
 			},
 		},
