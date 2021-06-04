@@ -1,29 +1,36 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useUI } from "../context";
-import { login, loginWithGoogle } from "../redux/userSlice";
+import { login, loginWithGoogle, cleanErrors } from "../redux/userSlice";
 import app, { googleAuthProvider } from "../firebase/config";
 import { FaGoogle } from "react-icons/fa";
+import useForm from "../hooks/useForm";
+import FormField from "./layout/FormField";
+import Button from "./layout/Button";
+
+const fields = {
+	username: "",
+	password: "",
+};
+
+const rules = {
+	username: {
+		type: "text",
+		required: true,
+	},
+	password: { type: "text", required: true },
+};
 
 export default function Login() {
 	const dispatch = useDispatch();
 	const { setShowRegister } = useUI();
+	const { error, isLoading } = useSelector((state) => state.user);
 
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [errors, setErrors] = useState({});
+	const handleLogin = () => {
+		dispatch(login(values));
+	};
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-
-		if (username === "" || password === "") return;
-
-		dispatch(
-			login({
-				username,
-				password,
-			})
-		);
+	const handleCleanErrors = () => {
+		if (error) dispatch(cleanErrors());
 	};
 
 	const socialLogin = async (provider) => {
@@ -39,8 +46,15 @@ export default function Login() {
 			});
 	};
 
+	const { handleChange, handleSubmit, values, errors } = useForm(
+		{ fields, rules },
+		handleLogin,
+		handleCleanErrors
+	);
+
 	const handleRegister = (e) => {
 		e.preventDefault();
+		dispatch(cleanErrors());
 		setShowRegister(true);
 	};
 
@@ -49,27 +63,36 @@ export default function Login() {
 			<div className="auth__form__container">
 				<h1>Login</h1>
 				<form onSubmit={handleSubmit} className="auth__form" noValidate>
-					<label>{errors.username ?? "Nombre de usuario"}</label>
-					<input
-						type="text"
+					<FormField
+						error={errors.username}
+						label="Nombre de usuario"
 						name="username"
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
+						placeholder="Tu nombre de usuario"
+						onChange={handleChange}
+						value={values.username}
 					/>
 
-					<label>{errors.password ?? "Contraseña"}</label>
-					<input
-						type="password"
+					<FormField
+						error={errors.password}
+						label="Contraseña"
 						name="password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
+						type="password"
+						placeholder="••••••"
+						onChange={handleChange}
+						value={values.password}
 					/>
 
 					<div>
-						<button type="submit">Entrar</button>
+						<Button type="submit" isLoading={isLoading}>
+							entrar
+						</Button>
 					</div>
 
 					<span>{errors.general}</span>
+
+					<p className={`error-message${error ? "" : " hide"}`}>
+						{error}
+					</p>
 				</form>
 				<div className="auth__options">
 					<button onClick={() => socialLogin(googleAuthProvider)}>

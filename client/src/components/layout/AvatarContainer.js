@@ -5,8 +5,8 @@ import { uploadUserImage } from "../../redux/userSlice";
 const AvatarContainer = ({ children }) => {
 	const dispatch = useDispatch();
 	const fileInputRef = createRef();
+
 	const openFileInput = () => {
-		console.log("CLICK");
 		fileInputRef.current.click();
 	};
 

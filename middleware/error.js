@@ -16,6 +16,9 @@ const errorHandler = (err, req, res, next) => {
 		message = Object.values(err.errors).map((e) => e.message);
 		status = 400;
 	}
+
+	console.log(error);
+
 	error = new ErrorResponse(message, status);
 	res.status(status || 500).json({
 		success: false,

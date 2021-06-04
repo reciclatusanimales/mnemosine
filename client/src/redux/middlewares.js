@@ -25,6 +25,7 @@ export const api =
 				method,
 				data,
 			});
+
 			dispatch(apiSuccess(response.data.data));
 
 			if (onSuccess)
@@ -32,6 +33,7 @@ export const api =
 		} catch (error) {
 			dispatch(apiError(error.message));
 
-			if (onError) dispatch({ type: onError, payload: error.message });
+			if (onError)
+				dispatch({ type: onError, payload: error.response.data });
 		}
 	};

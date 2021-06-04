@@ -1,43 +1,56 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useUI } from "../context";
-import { register } from "../redux/userSlice";
+import useForm from "../hooks/useForm";
+import { register, cleanErrors } from "../redux/userSlice";
+import FormField from "./layout/FormField";
+import Button from "./layout/Button";
+
+const fields = {
+	username: "",
+	email: "",
+	password: "",
+	confirmPassword: "",
+};
+
+const rules = {
+	username: {
+		type: "text",
+		required: true,
+		min: 3,
+	},
+	email: { type: "email", required: true },
+	password: { type: "text", required: true, min: 6 },
+	confirmPassword: {
+		type: "text",
+		required: true,
+		match: { field: "password", message: "Las contraseñas no coinciden." },
+	},
+};
 
 export default function Register() {
-	const { setShowRegister } = useUI();
 	const dispatch = useDispatch();
-
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
-	const [email, setEmail] = useState("");
-	const [errors, setErrors] = useState({});
-
-	const handleSubmit = (e) => {
-		e.preventDefault();
-
-		if (
-			email === "" ||
-			username === "" ||
-			password === "" ||
-			confirmPassword === ""
-		)
-			return;
-
-		dispatch(
-			register({
-				email,
-				username,
-				password,
-				confirmPassword,
-			})
-		);
-	};
+	const { setShowRegister } = useUI();
+	const { error, isLoading } = useSelector((state) => state.user);
 
 	const handleLogin = (e) => {
 		e.preventDefault();
+		dispatch(cleanErrors());
 		setShowRegister(false);
 	};
+
+	const handleRegister = async () => {
+		await dispatch(register(values));
+	};
+
+	const handleCleanErrors = () => {
+		if (error) dispatch(cleanErrors());
+	};
+
+	const { handleChange, handleSubmit, values, errors } = useForm(
+		{ fields, rules },
+		handleRegister,
+		handleCleanErrors
+	);
 
 	return (
 		<div className="auth__content">
@@ -45,44 +58,56 @@ export default function Register() {
 				<h1>Registro</h1>
 
 				<form onSubmit={handleSubmit} className="auth__form" noValidate>
-					<label>{errors.email ?? "Email"}</label>
-					<input
-						type="email"
+					<FormField
+						error={errors.email}
+						label="Email"
 						name="email"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
+						onChange={handleChange}
+						placeholder="Tu correo"
+						type="email"
+						value={values.email}
 					/>
 
-					<label>{errors.username ?? "Nombre de usuario"}</label>
-					<input
-						type="text"
+					<FormField
+						error={errors.username}
+						label="Nombre de usuario"
 						name="username"
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
+						placeholder="Tu nombre de usuario"
+						onChange={handleChange}
+						value={values.username}
 					/>
 
-					<label>{errors.password ?? "Contraseña"}</label>
-					<input
-						type="password"
+					<FormField
+						error={errors.password}
+						label="Contraseña"
 						name="password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
+						placeholder="••••••"
+						type="password"
+						onChange={handleChange}
+						value={values.password}
 					/>
 
-					<label>
-						{errors.confirmPassword ?? "Confirmar Contraseña"}
-					</label>
-					<input
-						type="password"
+					<FormField
+						error={errors.confirmPassword}
+						label="Confirmar Contraseña"
 						name="confirmPassword"
-						value={confirmPassword}
-						onChange={(e) => setConfirmPassword(e.target.value)}
+						placeholder="••••••"
+						type="password"
+						onChange={handleChange}
+						value={values.confirmPassword}
 					/>
+
 					<div>
-						<button type="submit">Registrarse</button>
+						<Button type="submit" isLoading={isLoading}>
+							registrarse
+						</Button>
 					</div>
 
 					<span>{errors.general}</span>
+
+					<p className={`error-message${error ? "" : " hide"}`}>
+						{error}
+					</p>
 				</form>
 
 				<div className="auth__options">

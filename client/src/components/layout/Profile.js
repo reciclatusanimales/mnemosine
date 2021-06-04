@@ -13,7 +13,7 @@ const Profile = () => {
 	const dispatch = useDispatch();
 
 	const user = useSelector((state) => state.user.user);
-	const { showProfileMenu, setShowProfileMenu } = useUI();
+	const { showProfileMenu, setShowProfileMenu, setShowRegister } = useUI();
 
 	const handleProfile = (e) => {
 		if (showProfileMenu && e.target !== profileRef.current) return;
@@ -22,6 +22,7 @@ const Profile = () => {
 	};
 
 	const handleLogout = () => {
+		setShowRegister(false);
 		dispatch(logoutUser());
 	};
 
