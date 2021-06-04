@@ -97,8 +97,8 @@ export const uploadUserImage = (data) => async (dispatch) => {
 			data,
 		});
 
-		dispatch(apiSuccess(response.data.data));
-		dispatch(userImageUpdated(response.data.data));
+		dispatch({ type: apiSuccess.type, payload: response.data.data });
+		dispatch({ type: setAuthenticated.type, payload: response.data.data });
 	} catch (error) {
 		dispatch(apiError(error.message));
 	}

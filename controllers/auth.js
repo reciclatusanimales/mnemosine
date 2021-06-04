@@ -1,9 +1,10 @@
 const path = require("path");
+
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const { User } = require("../models");
+const { resizeImage, sendTokenResponse } = require("../utils/misc");
 
 // @desc      Register user
 // @route     POST /api/v1/auth/register
@@ -168,7 +169,6 @@ exports.logout = asyncHandler(async (req, res, next) => {
 // @route   PUT /api/v1/auth/upload-user-image
 // @access  Private
 exports.uploadUserImage = asyncHandler(async (req, res, next) => {
-	console.log(req.files);
 	if (!req.files) {
 		return next(new ErrorResponse("Archivo no encontrado.", 400));
 	}
@@ -188,51 +188,32 @@ exports.uploadUserImage = asyncHandler(async (req, res, next) => {
 	}
 
 	file.name = `photo_${res.locals.user.id}${path.parse(file.name).ext}`;
-	console.log(file.name);
-	file.mv(
-		`${process.env.FILE_UPLOAD_PATH}/profile_photos/${file.name}`,
-		async (err) => {
-			if (err) {
-				console.error(err);
-				return next(
-					new ErrorResponse("Hubo un problema con la carga.", 500)
-				);
-			}
-			console.log(res.locals.user.id);
-			const user = await User.findByPk(res.locals.user.id);
-			console.log(user);
-			user.imageUrn = file.name;
-			user.save();
-			console.log(user);
 
-			res.status(200).json({
-				success: true,
-				data: {
-					user,
-				},
-			});
+	const tempFilepath = `${process.env.FILE_UPLOAD_PATH}/temp/${file.name}`;
+	const filepath = `${process.env.FILE_UPLOAD_PATH}/profile_photos/${file.name}`;
+
+	file.mv(tempFilepath, async (err) => {
+		if (err) {
+			console.error(err);
+			return next(
+				new ErrorResponse("Hubo un problema con la carga.", 500)
+			);
 		}
-	);
+
+		const user = await User.findByPk(res.locals.user.id);
+		user.imageUrn = file.name;
+		user.save();
+
+		await resizeImage(file.name, tempFilepath, filepath);
+
+		const userObject = {
+			id: user.id,
+			username: user.username,
+			email: user.email,
+			imageUrl: user.imageUrl,
+			accountType: user.accountType,
+		};
+
+		sendTokenResponse(userObject, 200, res);
+	});
 });
-
-// Get token from model, create cookie and send response
-
-const sendTokenResponse = (user, statusCode, res) => {
-	// Create token
-	const token = jwt.sign(user, process.env.JWT_SECRET);
-
-	const options = {
-		expires: new Date(
-			Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-		),
-		httpOnly: true,
-	};
-
-	if (process.env.NODE_ENV === "production") {
-		options.secure = true;
-	}
-
-	res.status(statusCode)
-		.cookie("token", token, options)
-		.json({ success: true, data: { user, token } });
-};
