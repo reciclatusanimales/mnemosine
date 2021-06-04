@@ -6,12 +6,22 @@ import { apiError, apiStart, apiSuccess } from "./middlewares";
 
 export const initialState = {
 	user: null,
+	error: null,
+	isLoading: false,
 };
 
 const userSlice = createSlice({
 	name: "user",
 	initialState,
 	reducers: {
+		setLoading: (state) => {
+			state.error = null;
+			state.isLoading = true;
+		},
+		cleanErrors: (state) => {
+			state.error = null;
+			state.isLoading = false;
+		},
 		setAuthenticated: (state, { payload }) => {
 			const {
 				token,
@@ -19,6 +29,7 @@ const userSlice = createSlice({
 			} = payload;
 			setAuthorizationHeader(token);
 			state.user = { id, username, email, imageUrl, accountType };
+			state.isLoading = false;
 		},
 		setUser: (state, { payload }) => {
 			const { id, username, email, imageUrl, accountType } = payload;
@@ -26,9 +37,15 @@ const userSlice = createSlice({
 		},
 		userImageUpdated: (state, { payload }) => {
 			state.user.imageUrl = payload.user.imageUrl;
+			state.isLoading = false;
 		},
 		setUnauthenticated: (state) => {
 			state.user = null;
+			state.isLoading = false;
+		},
+		setErrors: (state, { payload }) => {
+			state.error = payload.error;
+			state.isLoading = false;
 		},
 	},
 });
@@ -40,6 +57,9 @@ export const {
 	setAuthenticated,
 	setUnauthenticated,
 	userImageUpdated,
+	setErrors,
+	setLoading,
+	cleanErrors,
 } = actions;
 
 export default reducer;
@@ -51,6 +71,8 @@ export const login = (userData) => (dispatch) => {
 			method: "POST",
 			data: userData,
 			onSuccess: setAuthenticated.type,
+			onStart: setLoading.type,
+			onError: setErrors.type,
 		})
 	);
 };
@@ -62,6 +84,8 @@ export const loginWithGoogle = (userData) => (dispatch) => {
 			method: "POST",
 			data: userData,
 			onSuccess: setAuthenticated.type,
+			onStart: setLoading.type,
+			onError: setErrors.type,
 		})
 	);
 };
@@ -73,6 +97,8 @@ export const register = (userData) => (dispatch) => {
 			method: "POST",
 			data: userData,
 			onSuccess: setAuthenticated.type,
+			onStart: setLoading.type,
+			onError: setErrors.type,
 		})
 	);
 };

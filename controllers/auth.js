@@ -12,6 +12,7 @@ const { resizeImage, sendTokenResponse } = require("../utils/misc");
 exports.register = asyncHandler(async (req, res, next) => {
 	let { email, username, password, confirmPassword } = req.body;
 	let errors = {};
+	let user;
 
 	if (username.trim() === "")
 		errors.username = "El nombre de usuario no puede estar vacío.";
@@ -27,9 +28,26 @@ exports.register = asyncHandler(async (req, res, next) => {
 	if (Object.keys(errors).length > 0) {
 		return next(new ErrorResponse("Datos incorrectos.", 400, errors));
 	}
+
+	user = await User.findOne({
+		where: { username },
+	});
+
+	if (user) {
+		return next(new ErrorResponse("El nombre de usuario ya existe.", 401));
+	}
+
+	user = await User.findOne({
+		where: { email },
+	});
+
+	if (user) {
+		return next(new ErrorResponse("El correo ya está registrado.", 401));
+	}
+
 	password = await bcrypt.hash(password, 6);
 
-	const user = await User.create({
+	user = await User.create({
 		username,
 		email,
 		password,
