@@ -1,0 +1,151 @@
+@import "./variables";
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,700,900");
+
+html {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+	-webkit-box-sizing: inherit;
+	box-sizing: inherit;
+}
+
+*:focus {
+	outline: none;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	line-height: 1;
+	font-family: "Roboto", sans-serif;
+	color: #202020;
+	background-color: #fafafa;
+	font-smooth: always;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+.error {
+	color: #ff6347;
+	font-size: 0.8em;
+}
+
+.input-error {
+	border: 1px solid #ff6347 !important;
+}
+
+.hide {
+	visibility: hidden;
+}
+
+.error-message {
+	color: #ff6347;
+	text-align: center;
+	height: 1rem;
+}
+
+// Datepicker
+
+.react-datepicker__input-container input {
+	visibility: hidden !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--keyboard-selected {
+	background-color: $primary;
+}
+
+.darkmode {
+	header {
+		-webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+		background-color: $dark-primary;
+		border-color: transparent;
+	}
+
+	.tasks__list-project,
+	.add-task__plus,
+	.add-project__plus {
+		color: $dark-primary;
+	}
+
+	.submit,
+	.task-delete-modal__inner button,
+	.add-project__submit,
+	.edit-project__submit,
+	.add-task__submit,
+	.edit-task__submit,
+	.delete__submit,
+	.project-delete-modal__inner button {
+		background-color: $dark-primary !important;
+	}
+
+	.button {
+		background-color: $dark-primary !important;
+		:hover {
+			background-color: $dark-primary-2 !important;
+		}
+	}
+
+	.spinner {
+		border-top-color: $generic-dark-bg-secondary !important;
+		border-left-color: $generic-dark-bg-secondary !important;
+	}
+
+	.react-datepicker__day--selected,
+	.react-datepicker__day--keyboard-selected,
+	.react-datepicker__month-text--keyboard-selected,
+	.react-datepicker__quarter-text--keyboard-selected,
+	.react-datepicker__year-text--keyboard-selected {
+		background-color: $dark-primary !important;
+	}
+
+	.checkbox-container:hover input ~ .checkmark {
+		border: 1px solid $dark-primary !important;
+	}
+
+	.checkbox-container input:checked ~ .checkmark {
+		background-color: $dark-primary !important;
+	}
+
+	.auth {
+		background-color: $generic-dark-bg-secondary;
+		&__form {
+			button {
+				background-color: $generic-dark-bg;
+				&:hover {
+					background-color: $dark-primary-2;
+				}
+			}
+			&__container h1 {
+				color: $generic-dark-bg;
+			}
+		}
+
+		&__options {
+			a {
+				color: $generic-dark-bg;
+				&:hover {
+					color: $dark-primary-2;
+				}
+			}
+			button {
+				background-color: $generic-dark-bg;
+				&:hover {
+					background-color: $dark-primary-2;
+				}
+			}
+		}
+	}
+}

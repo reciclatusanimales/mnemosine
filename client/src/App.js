@@ -1,12 +1,12 @@
 import axios from "axios";
-import Content from "./components/layout/Content";
-import Header from "./components/layout/Header";
+import Content from "./components/Content";
+import Header from "./components/Header";
 import { useSelector } from "react-redux";
 import { useUI } from "./context";
-import Auth from "./components/Auth";
+import Auth from "./pages/Auth";
 import jwt from "jwt-decode";
-import store from "./redux/configureStore";
-import { setUser } from "./redux/userSlice";
+import store from "./store/configureStore";
+import { setUser } from "./store/userSlice";
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 const token = localStorage.getItem("token");

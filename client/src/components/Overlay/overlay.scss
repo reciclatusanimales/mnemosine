@@ -1,0 +1,14 @@
+.overlay {
+	background: rgba(102, 102, 102, 0.5);
+	position: absolute;
+	margin: 0;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+	z-index: 10;
+	-webkit-transition: opacity 0.2s ease-in;
+	transition: opacity 0.2s ease-in;
+	height: calc(100vh);
+}
