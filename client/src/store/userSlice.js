@@ -128,8 +128,7 @@ export const logoutUser = () => async (dispatch) => {
 			onSuccess: setUnauthenticated.type,
 		})
 	);
-	await unauthenticateUser();
-	window.location.reload();
+	unauthenticateUser();
 };
 
 export const uploadUserImage = (data) => async (dispatch) => {
