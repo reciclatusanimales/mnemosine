@@ -1,0 +1,56 @@
+.AddProject {
+	@include no-select;
+	margin-top: 20px;
+	margin-bottom: 20px;
+
+	&__plus {
+		@include theme-aware("color", "primary");
+	}
+
+	&__input {
+		input {
+			margin-bottom: 20px;
+		}
+	}
+
+	&__btns {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+	}
+
+	&__name {
+		width: 100%;
+		border: 1px solid #ddd;
+		background-color: white !important;
+		border-radius: 3px;
+		height: 35px;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+	&__submit {
+		@include btn("100px");
+	}
+
+	&__cancel {
+		@include cancel();
+	}
+
+	&__plus {
+		color: $primary;
+		font-size: 18px;
+	}
+
+	&__text {
+		display: inline-block;
+		color: #545454;
+		font-size: 14px;
+		margin-left: 5px;
+	}
+
+	&__action {
+		cursor: pointer;
+		padding-left: 1em;
+	}
+}

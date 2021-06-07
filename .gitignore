@@ -23,6 +23,8 @@ yarn-debug.log*
 yarn-error.log*
 .eslintcache
 
+# uploads
+/public/uploads
 
 /client/node_modules
 /client/build

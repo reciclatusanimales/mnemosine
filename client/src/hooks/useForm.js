@@ -1,12 +1,17 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import validate from "../utils/validate";
 
 const useForm = ({ fields, rules }, callback, clearFn) => {
 	const [values, setValues] = useState(fields);
+
 	const [errors, setErrors] = useState({});
 	const submitCallback = useCallback(() => {
 		callback();
 	}, [callback]);
+
+	useEffect(() => {
+		setValues(fields);
+	}, [fields]);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;

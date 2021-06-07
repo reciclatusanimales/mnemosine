@@ -2,9 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import App from "./App";
-import "./App.scss";
+import "./sass/_global.scss";
 import { UIProvider } from "./context";
-import store from "./redux/configureStore";
+import store from "./store/configureStore";
 
 const Root = () => (
 	<Provider store={store}>
