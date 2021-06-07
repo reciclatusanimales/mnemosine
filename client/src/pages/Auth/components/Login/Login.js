@@ -1,11 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useUI } from "../../context";
-import { login, loginWithGoogle, cleanErrors } from "../../store/userSlice";
-import app, { googleAuthProvider } from "../../services/firebase/config";
+import { useUI } from "../../../../context";
+import {
+	login,
+	loginWithGoogle,
+	cleanErrors,
+} from "../../../../store/userSlice";
+import app, { googleAuthProvider } from "../../../../services/firebase/config";
 import { FaGoogle } from "react-icons/fa";
-import useForm from "../../hooks/useForm";
-import FormField from "../../components/FormField";
-import Button from "../../components/Button";
+import useForm from "../../../../hooks/useForm";
+import FormField from "../../../../components/FormField";
+import Button from "../../../../components/Button";
 
 const fields = {
 	username: "",

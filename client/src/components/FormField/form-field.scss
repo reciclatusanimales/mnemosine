@@ -1,0 +1,24 @@
+input {
+	display: block;
+	border-radius: 5px;
+	font-size: 16px;
+	background: white;
+	width: 80%;
+	border: 1px solid #545454;
+	padding: 7px;
+	margin: 20px 10px;
+}
+
+select {
+	display: block;
+	cursor: pointer;
+	color: gray;
+	margin: 20px 10px;
+	margin-right: 0;
+	width: 80%;
+	border: 1px solid #ddd;
+	background-color: white !important;
+	border-radius: 3px;
+	height: 35px;
+	padding: 7px;
+}

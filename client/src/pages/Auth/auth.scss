@@ -1,9 +1,7 @@
-@import "../../sass/variables";
-
 .auth {
 	position: relative;
 	min-height: 100vh;
-	background-color: $generic-bg-secondary;
+	@include theme-aware("background-color", "generic-bg-secondary");
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -36,7 +34,7 @@
 
 			> h1 {
 				align-self: center;
-				color: $generic-bg;
+				@include theme-aware("color", "generic-bg");
 			}
 		}
 
@@ -46,17 +44,6 @@
 		border-radius: 10px;
 
 		box-shadow: 5px 10px 10px rgba(rgba(2, 128, 144, 1), 0.2);
-
-		> input {
-			display: block;
-			border-radius: 5px;
-			font-size: 16px;
-			background: white;
-			width: 100%;
-			border: 1px solid #545454;
-			padding: 10px 10px;
-			margin: 15px -10px;
-		}
 
 		> span {
 			color: red;
@@ -78,17 +65,17 @@
 		a {
 			text-decoration: none;
 			margin-left: auto;
-			color: $generic-bg;
+			@include theme-aware("color", "generic-bg");
 
 			&:hover {
-				color: $primary-2;
+				@include theme-aware("color", "primary-2");
 			}
 		}
 
 		button {
 			position: relative;
 			cursor: pointer;
-			background-color: $generic-bg;
+			@include theme-aware("background-color", "generic-bg");
 			display: block;
 			color: white;
 			text-decoration: none;
@@ -126,7 +113,7 @@
 			}
 
 			&:hover {
-				background-color: $primary-2;
+				@include theme-aware("background-color", "primary-2");
 			}
 		}
 	}

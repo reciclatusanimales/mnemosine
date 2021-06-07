@@ -1,5 +1,3 @@
-import "./projects-skeleton.scss";
-
 const ProjectsSkeleton = () => {
 	return (
 		<div className="projects-skeleton">

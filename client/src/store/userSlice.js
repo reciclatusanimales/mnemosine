@@ -5,6 +5,9 @@ import { apiError, apiStart, apiSuccess } from "./middlewares";
 
 export const initialState = {
 	user: null,
+	config: {
+		avatarColor: "light",
+	},
 	error: null,
 	isLoading: false,
 };
@@ -29,22 +32,35 @@ const userSlice = createSlice({
 			setAuthorizationHeader(token);
 			state.user = { id, username, email, imageUrl, accountType };
 			state.isLoading = false;
+			state.error = null;
 		},
 		setUser: (state, { payload }) => {
 			const { id, username, email, imageUrl, accountType } = payload;
 			state.user = { id, username, email, imageUrl, accountType };
+			state.error = null;
 		},
 		userImageUpdated: (state, { payload }) => {
 			state.user.imageUrl = payload.user.imageUrl;
 			state.isLoading = false;
+			state.error = null;
 		},
 		setUnauthenticated: (state) => {
 			state.user = null;
 			state.isLoading = false;
+			state.error = null;
 		},
 		setErrors: (state, { payload }) => {
 			state.error = payload.error;
 			state.isLoading = false;
+		},
+
+		// Config
+		setConfig: (state, { payload }) => {
+			state.config = payload;
+		},
+		setAvatarColor: (state, { payload }) => {
+			state.config.avatarColor = payload;
+			localStorage.setItem("config", JSON.stringify(state.config));
 		},
 	},
 });
@@ -59,6 +75,9 @@ export const {
 	setErrors,
 	setLoading,
 	cleanErrors,
+
+	setConfig,
+	setAvatarColor,
 } = actions;
 
 export default reducer;
@@ -109,7 +128,6 @@ export const logoutUser = () => async (dispatch) => {
 			onSuccess: setUnauthenticated.type,
 		})
 	);
-	unauthenticateUser();
 	window.location.reload();
 };
 

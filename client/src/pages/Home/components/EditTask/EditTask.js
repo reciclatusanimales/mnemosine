@@ -1,178 +1,111 @@
-import "./edit-task.scss";
-import { FaRegCalendarAlt } from "react-icons/fa";
-import moment from "moment";
 import { useEffect, useState } from "react";
 import TaskDate from "../TaskDate";
 
 import { useDispatch, useSelector } from "react-redux";
-import { updateTask } from "../../../../store/dataSlice";
-import { useUI } from "../../../../context";
+import { updateTask, cleanErrors } from "../../../../store/dataSlice";
 
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { registerLocale } from "react-datepicker";
-import es from "date-fns/locale/es";
-import Overlay from "../../../../components/Overlay";
-registerLocale("es", es);
+import Modal from "../../../../components/Modal";
+import FormField from "../../../../components/FormField";
+import useForm from "../../../../hooks/useForm";
+import moment from "moment";
 
-export default function EditTask() {
-	const selectedTask = useSelector((state) => state.data.selectedTask);
-	const projects = useSelector((state) => state.data.projects);
+const rules = {
+	name: {
+		type: "text",
+		required: true,
+	},
+	project: {
+		type: "select",
+		required: true,
+	},
+};
+
+export default function EditTask({ isOpen, closeModal }) {
+	const { projects, selectedTask, error } = useSelector(
+		(state) => state.data
+	);
 	const dispatch = useDispatch();
-
-	const [taskName, setTaskName] = useState(selectedTask.name);
-	const [taskDate, setTaskDate] = useState(selectedTask.date);
-	const [readableDate, setReadableDate] = useState(selectedTask.date);
+	const [fields, setFields] = useState({
+		name: selectedTask?.name,
+		project: selectedTask?.project?.id,
+	});
 
 	const [date, setDate] = useState(
-		Date.parse(moment(selectedTask.date, "DD/MM/YYYY").toISOString())
+		Date.parse(moment(new Date(), "DD/MM/YYYY").toISOString())
 	);
-	const [project, setProject] = useState(selectedTask.projectId);
-
-	const { setShowEditTask } = useUI();
-
-	const [showTaskDate, setShowTaskDate] = useState(false);
-	const [showTaskCalendar, setShowTaskCalendar] = useState(false);
-
-	useEffect(() => {
-		if (taskDate === "today") {
-			setDate(Date.parse(moment(new Date(), "DD/MM/YYYY").toISOString()));
-			setReadableDate("Hoy");
-		} else if (taskDate === "tomorrow") {
-			setDate(
-				Date.parse(
-					moment(new Date(), "DD/MM/YYYY").add(1, "day").toISOString()
-				)
-			);
-			setReadableDate("Mañana");
-		} else if (taskDate === "next_7") {
-			setDate(
-				Date.parse(
-					moment(new Date(), "DD/MM/YYYY").add(7, "day").toISOString()
-				)
-			);
-			setReadableDate("Próxima Semana");
-		}
-		setShowTaskCalendar(false);
-	}, [taskDate]);
-
-	const handleDateChange = (date) => {
-		const parseDate = Date.parse(moment(date, "DD/MM/YYYY").toISOString());
-		setDate(parseDate);
-		setTaskDate(moment(date).format("DD/MM/YYYY"));
-		setReadableDate(moment(date).format("DD/MM/YYYY"));
-		setShowTaskCalendar(false);
+	const handleCleanErrors = () => {
+		if (error) dispatch(cleanErrors());
 	};
 
-	const handleUpdateTask = () => {
-		if (taskName.trim() === "") return;
-
+	const handleUpdateTask = async () => {
 		const task = {
-			name: taskName,
-			projectId: project,
+			name: values.name,
+			projectId: values.project,
 			date: moment(date).format("DD/MM/YYYY"),
 		};
-
-		dispatch(updateTask({ id: selectedTask.id, task }));
-
-		setTaskName("");
-		setShowEditTask(false);
+		await dispatch(updateTask({ id: selectedTask.id, data: task }));
+		closeModal();
 	};
 
-	const hideModal = () => {
-		setShowEditTask(false);
-	};
+	useEffect(() => {
+		if (
+			!selectedTask ||
+			(fields.name === selectedTask.name &&
+				fields.project === selectedTask.project.id)
+		)
+			return;
+
+		setFields({
+			...fields,
+			name: selectedTask.name,
+			project: selectedTask.project.id,
+		});
+	}, [fields, selectedTask]);
+
+	const { handleChange, handleSubmit, values, errors } = useForm(
+		{ fields, rules },
+		handleUpdateTask,
+		handleCleanErrors
+	);
 
 	return (
-		<Overlay onClickOutside={hideModal} onEscape={hideModal}>
-			<div className="edit-task__main">
-				<div className="edit-task__header-options">
-					<h3>Editar Tarea</h3>
-					<span
-						aria-label="Cancelar"
-						className="edit-task__cancel-x"
-						onClick={hideModal}
-						onKeyDown={hideModal}
-						tabIndex={0}
-						role="button"
-					>
-						X
-					</span>
-				</div>
-
-				<TaskDate
-					setTaskDate={setTaskDate}
-					showTaskDate={showTaskDate}
-					setShowTaskDate={setShowTaskDate}
-					setShowTaskCalendar={setShowTaskCalendar}
-				/>
-
-				<input
-					aria-label="Nombre"
-					className="edit-task__content"
-					placeholder="Nombre"
-					type="text"
-					value={taskName}
-					onChange={(e) => setTaskName(e.target.value)}
-				/>
-
-				<select
-					className="edit-task__project"
-					onChange={(e) => setProject(e.target.value)}
-					value={project}
-				>
-					<option value="">Selecciona un Projecto</option>
-					{projects?.map((project) => (
-						<option key={project.id} value={project.id}>
-							{project.name}
-						</option>
-					))}
-				</select>
-
-				<div className="edit-task__date-container">
-					<span>{readableDate}</span>
-					<span
-						className="edit-task__date"
-						onClick={() => setShowTaskDate(!showTaskDate)}
-						onKeyDown={() => setShowTaskDate(!showTaskDate)}
-						tabIndex={0}
-						role="button"
-					>
-						<FaRegCalendarAlt />
-					</span>
-
-					<DatePicker
-						selected={date}
-						open={showTaskCalendar}
-						locale="es"
-						dateFormat="dd/MM/yyyy"
-						onChange={(date) => handleDateChange(date)}
+		<Modal isOpen={isOpen} closeModal={closeModal}>
+			<Modal.Header>Nueva Tarea</Modal.Header>
+			<Modal.Content>
+				<form onSubmit={handleSubmit} noValidate>
+					<FormField
+						error={errors.name}
+						name="name"
+						placeholder="Nombre"
+						onChange={handleChange}
+						value={values.name}
 					/>
-				</div>
 
-				<div className="edit-task__btns">
-					<span
-						aria-label="Cancelar"
-						className="edit-task__cancel"
-						onClick={hideModal}
-						onKeyDown={hideModal}
-						tabIndex={0}
-						role="button"
+					<FormField
+						onChange={handleChange}
+						type="select"
+						error={errors.project}
+						name="project"
+						value={values.project}
 					>
-						Cancelar
-					</span>
-					<button
-						className="edit-task__submit"
-						type="button"
-						disabled={taskName === ""}
-						onClick={() =>
-							handleUpdateTask() && setShowEditTask(false)
-						}
-					>
-						Guardar
-					</button>
-				</div>
-			</div>
-		</Overlay>
+						<option value="">Selecciona un Projecto</option>
+						{projects?.map((project) => (
+							<option key={project.id} value={project.id}>
+								{project.name}
+							</option>
+						))}
+					</FormField>
+
+					<TaskDate date={date} setDate={setDate} />
+				</form>
+			</Modal.Content>
+			<Modal.Buttons>
+				<Modal.CancelButton />
+				<Modal.SubmitButton onSubmit={handleSubmit}>
+					Guardar
+				</Modal.SubmitButton>
+			</Modal.Buttons>
+		</Modal>
 	);
 }

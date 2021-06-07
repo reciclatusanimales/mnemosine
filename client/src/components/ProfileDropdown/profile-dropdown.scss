@@ -1,14 +1,8 @@
-.settings__avatar {
+.ProfileDropdown {
 	position: relative;
 	display: inline-block;
 
-	&.hide-dropdown {
-		& .dropdown-content {
-			display: none;
-		}
-	}
-
-	.dropdown-content {
+	&__content {
 		position: absolute;
 		right: 0px;
 		top: 37px;
@@ -35,9 +29,20 @@
 			gap: 0.2rem;
 		}
 
-		span:last-of-type {
-			cursor: pointer;
+		.avatar {
+			padding-bottom: 0;
+		}
+
+		.username {
+			&.center {
+				align-self: flex-start;
+				padding-left: 0px;
+			}
+		}
+
+		.logout {
 			justify-content: flex-end;
+			cursor: pointer;
 		}
 
 		svg {

@@ -1,3 +1,5 @@
+@use "variables";
+
 @mixin box-overlay() {
 	-webkit-box-shadow: $generic-box-shadow;
 	box-shadow: $generic-box-shadow;
@@ -36,7 +38,7 @@
 
 @mixin btn($width) {
 	width: $width;
-	background-color: $generic-bg;
+	@include theme-aware("background-color", "generic-bg");
 	color: #fff !important;
 	border: 1px solid transparent;
 	margin-right: 5px;
@@ -88,5 +90,13 @@
 @mixin mq($from) {
 	@media (max-width: $from) {
 		@content;
+	}
+}
+
+@mixin theme-aware($key, $color) {
+	@each $theme-name, $theme-color in $themes {
+		.theme-#{$theme-name} & {
+			#{$key}: map-get(map-get($themes, $theme-name), $color);
+		}
 	}
 }

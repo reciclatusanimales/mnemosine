@@ -1,0 +1,38 @@
+$themes: (
+	light: (
+		primary: hsl(42, 78%, 60%),
+		primary-2: #f0ce80,
+		generic-bg: hsl(42, 78%, 60%),
+		generic-bg-secondary: #fff6e2,
+	),
+	orange: (
+		primary: #fc5404,
+		primary-2: #fc5404,
+		generic-bg: #f9b208,
+		generic-bg-secondary: #ffe098,
+	),
+	green: (
+		primary: #2f5d62,
+		primary-2: #5e8b7e,
+		generic-bg: #a7c4bc,
+		generic-bg-secondary: #dfeeea,
+	),
+	tomato: (
+		primary: #ff6347,
+		primary-2: #e27065,
+		generic-bg: #ff6347,
+		generic-bg-secondary: #f8dbd9,
+	),
+	cuqui: (
+		primary: #f875aa,
+		primary-2: #fbaccc,
+		generic-bg: #f1d1d0,
+		generic-bg-secondary: #f4f9f9,
+	),
+	brown: (
+		primary: #a0937d,
+		primary-2: #e7d4b5,
+		generic-bg: #f6e6cb,
+		generic-bg-secondary: #e3cdc1,
+	),
+);

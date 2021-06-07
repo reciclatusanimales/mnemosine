@@ -1,46 +1,23 @@
-@import "../../../../sass/variables";
-@import "../../../../sass/mixins";
+.AddTask {
+	margin-right: 15px;
 
-.add-task {
-	&__main {
-		overflow: visible;
-		border-radius: 5px;
-		background-color: white;
-		position: absolute;
-		left: 50%;
-		min-width: 300px;
-		width: auto;
-		max-width: 500px;
-		top: 50%;
-		padding: 10px 10px 20px 20px;
-		-webkit-transform: translate(-50%, -50%);
-		transform: translate(-50%, -50%);
-	}
+	&__add {
+		font-size: 25px;
 
-	&__header-options {
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
-	}
-
-	&__date-container {
-		margin-left: 10px;
+		button {
+			@include transparent-button();
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			cursor: pointer;
+		}
 	}
 
 	&__date {
 		cursor: pointer;
 		margin-left: 40px;
 		color: gray;
-	}
-
-	&__content {
-		width: 100%;
-		border: 1px solid #ddd;
-		background-color: white !important;
-		border-radius: 3px;
-		height: 35px;
-		padding-left: 10px;
-		padding-right: 10px;
 	}
 
 	&__project {
@@ -56,26 +33,5 @@
 		height: 35px;
 		padding-left: 10px;
 		padding-right: 10px;
-	}
-
-	&__btns {
-		display: flex;
-		align-items: center;
-		justify-content: flex-end;
-	}
-
-	&__submit {
-		@include btn("100px");
-	}
-
-	&__cancel {
-		@include cancel();
-	}
-
-	&__cancel-x {
-		cursor: pointer;
-		color: gray;
-		font-weight: bold;
-		font-size: 12px;
 	}
 }

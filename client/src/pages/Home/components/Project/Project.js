@@ -1,25 +1,23 @@
-import "./project.scss";
 import { FaPen, FaTrash } from "react-icons/fa";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setProject } from "../../../../store/dataSlice";
 import { useUI } from "../../../../context";
 
-export default function Project({ project }) {
+export default function Project({ project, setMode }) {
 	const { name } = project;
 	const dispatch = useDispatch();
 	const { selectedProject } = useSelector((state) => state.data);
-	const { setShowSidebar, setShowEditProject, setShowDeleteProject } =
-		useUI();
+	const { setShowSidebar } = useUI();
 
-	const handleDeleteProject = () => {
-		dispatch(setProject(project));
-		setShowDeleteProject(true);
+	const handleEditProject = async () => {
+		await dispatch(setProject(project));
+		setMode("edit");
 	};
 
-	const handleEditProject = () => {
-		dispatch(setProject(project));
-		setShowEditProject(true);
+	const handleDeleteProject = async () => {
+		await dispatch(setProject(project));
+		setMode("delete");
 	};
 
 	const handleSelectProject = () => {

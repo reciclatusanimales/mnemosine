@@ -1,4 +1,3 @@
-import "./sidebar.scss";
 import { useEffect, useRef, useState } from "react";
 import {
 	FaChevronDown,
@@ -7,8 +6,6 @@ import {
 	FaRegCalendar,
 } from "react-icons/fa";
 
-import AddProject from "../../pages/Home/components/AddProject";
-import EditProject from "../../pages/Home/components/EditProject";
 import Projects from "../../pages/Home/components/Projects";
 import { useUI } from "../../context";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +15,7 @@ import { defaultProjects } from "../../utils";
 export default function Sidebar() {
 	const sidebarRef = useRef(null);
 	const [showProjects, setShowProjects] = useState(true);
-	const { showSidebar, setShowSidebar, showEditProject } = useUI();
+	const { showSidebar, setShowSidebar } = useUI();
 
 	const selectedProject = useSelector((state) => state.data.selectedProject);
 	const dispatch = useDispatch();
@@ -141,10 +138,6 @@ export default function Sidebar() {
 
 				<Projects showProjects={showProjects} />
 			</ul>
-
-			{showProjects && !showEditProject && <AddProject />}
-
-			{showEditProject && <EditProject />}
 		</div>
 	);
 }

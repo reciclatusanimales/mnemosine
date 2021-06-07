@@ -1,24 +1,20 @@
-import "./avatar.scss";
 import { useSelector } from "react-redux";
-import { getTextColor } from "../../utils";
+import { getTextColor, getBgColor } from "../../utils";
 
 const getPercentFromValue = (percent, value) => (value * percent) / 100;
 const getInitialLetter = (str) => str[0].toUpperCase();
 
-const Avatar = ({
-	size = 30,
-	bgColor = "#0a9396",
-	onClick = () => {},
-	txtColor,
-	style,
-}) => {
-	const user = useSelector((state) => state.user.user);
-	const showAvatar = !!user.imageUrl;
+const Avatar = ({ size = 30, onClick = () => {}, txtColor, style }) => {
+	const {
+		user,
+		config: { avatarColor },
+	} = useSelector((state) => state.user);
+	const showAvatarImage = !!user.imageUrl;
 
-	if (showAvatar)
+	if (showAvatarImage)
 		return (
 			<img
-				className="avatar-image"
+				className="Avatar__image"
 				src={user.imageUrl}
 				alt="Avatar"
 				width={size}
@@ -29,28 +25,31 @@ const Avatar = ({
 	const initialLetter = getInitialLetter(user.username);
 	const halfSize = getPercentFromValue(50, size);
 	const quarterSize = getPercentFromValue(25, size);
+	const bgColor = getBgColor(avatarColor);
 	const textColor = getTextColor(bgColor);
 
 	return (
-		<div
-			className="avatar-photo"
-			style={{
-				backgroundColor: bgColor,
-				fontSize: halfSize,
-				top: quarterSize,
-				width: size,
-				height: size,
-				...style,
-			}}
-			onClick={onClick}
-		>
+		<div className="Avatar">
 			<div
-				className="avatar-photo__initials"
+				className="Avatar__placeholder"
 				style={{
-					color: textColor,
+					backgroundColor: bgColor,
+					fontSize: halfSize,
+					top: quarterSize,
+					width: size,
+					height: size,
+					...style,
 				}}
+				onClick={onClick}
 			>
-				{initialLetter}
+				<div
+					className="initials"
+					style={{
+						color: textColor,
+					}}
+				>
+					{initialLetter}
+				</div>
 			</div>
 		</div>
 	);

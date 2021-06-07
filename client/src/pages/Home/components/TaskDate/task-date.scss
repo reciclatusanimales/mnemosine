@@ -1,33 +1,66 @@
-@import "../../../../sass/variables";
-@import "../../../../sass/mixins";
-
-.task-date {
-	@include box-overlay();
-	background-color: #fff;
+.TaskDate {
+	display: flex;
+	height: 20px;
 	width: 200px;
-	left: 100px;
+	padding: 15px;
+	position: relative;
 
-	&__list li {
-		@include task-item();
-		padding: 1px;
+	span {
+		white-space: nowrap;
+	}
 
-		div:nth-child(1) {
-			padding: 10px;
-			width: 100%;
-			display: -webkit-box;
-			display: -ms-flexbox;
+	&__date {
+		cursor: pointer;
+		margin-left: 15px;
+	}
+
+	&__menu {
+		background-color: #fff;
+		padding: 5px;
+		-webkit-box-shadow: $generic-box-shadow;
+		box-shadow: $generic-box-shadow;
+		position: absolute;
+		top: 0;
+		width: 200px;
+		left: 100px;
+		border-radius: 3px;
+
+		ul {
 			display: flex;
-			-webkit-box-align: center;
-			-ms-flex-align: center;
-			align-items: center;
+			flex-direction: column;
+			li {
+				color: #202020;
+				cursor: pointer;
+				padding: 1px;
+				display: flex;
 
-			span:first-of-type {
-				margin-right: 10px;
+				div {
+					padding: 10px;
+					width: 100%;
 
-				svg {
-					fill: grey;
+					span {
+						margin-right: 10px;
+
+						svg {
+							fill: grey;
+						}
+					}
 				}
 			}
 		}
 	}
+}
+
+// Datepicker
+
+.react-datepicker__input-container input {
+	visibility: hidden !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--keyboard-selected {
+	@include theme-aware("background-color", "primary");
 }

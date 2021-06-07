@@ -4,6 +4,15 @@ export const colorTypes = new Map([
 	["h", "hsla"],
 ]);
 
+export const colors = new Map([
+	["light", "#0A9396"],
+	["blue", "#1a508b"],
+	["red", "#e40017"],
+	["dark", "#374045"],
+]);
+
+export const getBgColor = (color) => colors.get(color);
+
 export const getColorType = (color) => colorTypes.get(color[0]);
 
 export const getArrayValuesFromString = (color) =>

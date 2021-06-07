@@ -1,88 +1,67 @@
-import "./edit-project.scss";
-import { useEffect, useRef, useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
-import { updateProject } from "../../../../store/dataSlice";
-import { useUI } from "../../../../context";
+import { updateProject, cleanErrors } from "../../../../store/dataSlice";
+import Modal from "../../../../components/Modal";
+import useForm from "../../../../hooks/useForm";
+import FormField from "../../../../components/FormField";
+import { useEffect, useState } from "react";
 
-export default function EditProject() {
-	const modalRef = useRef(null);
+const rules = {
+	name: {
+		type: "text",
+		required: true,
+	},
+};
+
+export default function EditProject({ isOpen, closeModal }) {
 	const dispatch = useDispatch();
-	const selectedProject = useSelector((state) => state.data.selectedProject);
-	const { showEditProject, setShowEditProject } = useUI();
-	const [name, setName] = useState(selectedProject?.name);
+	const { selectedProject, error } = useSelector((state) => state.data);
+	const [fields, setFields] = useState({ name: selectedProject?.name });
 
-	const handleUpdateProject = () => {
-		if (name === "") return;
-		dispatch(updateProject({ data: { name }, id: selectedProject.id }));
-		setName("");
-		setShowEditProject(null);
+	const handleUpdateProject = async () => {
+		await dispatch(
+			updateProject({
+				data: { name: values.name },
+				id: selectedProject.id,
+			})
+		);
+		closeModal();
+	};
+
+	const handleCleanErrors = () => {
+		if (error) dispatch(cleanErrors());
 	};
 
 	useEffect(() => {
-		const handleOutsideClick = (event) => {
-			if (!modalRef.current?.contains(event.target)) {
-				if (!showEditProject) return;
-				setShowEditProject(false);
-			}
-		};
+		if (fields.name === selectedProject.name) return;
+		setFields({ ...fields, name: selectedProject.name });
+	}, [fields, selectedProject]);
 
-		if (typeof window !== "undefined") {
-			window.addEventListener("click", handleOutsideClick);
-		}
-
-		if (typeof window !== "undefined") {
-			return () =>
-				window.removeEventListener("click", handleOutsideClick);
-		}
-	}, [showEditProject, setShowEditProject]);
-
-	useEffect(() => {
-		const handleEscape = (event) => {
-			if (!showEditProject) return;
-
-			if (event.key === "Escape") {
-				setShowEditProject(false);
-			}
-		};
-
-		document.addEventListener("keyup", handleEscape);
-		return () => document.removeEventListener("keyup", handleEscape);
-	}, [showEditProject, setShowEditProject]);
+	const { handleChange, handleSubmit, values, errors } = useForm(
+		{ fields, rules },
+		handleUpdateProject,
+		handleCleanErrors
+	);
 
 	return (
-		<div className="edit-project" ref={modalRef}>
-			<div className="edit-project__input">
-				<input
-					value={name}
-					onChange={(e) => setName(e.target.value)}
-					className="edit-project__name"
-					type="text"
-					placeholder="Nombre"
-				/>
-				<div className="edit-project__btns">
-					<span
-						aria-label="Cancelar"
-						className="edit-project__cancel"
-						data-type="action"
-						onClick={() => setShowEditProject(null)}
-						onKeyDown={() => setShowEditProject(null)}
-						role="button"
-						tabIndex={0}
-					>
-						Cancel
-					</span>
-
-					<button
-						className="edit-project__submit"
-						type="button"
-						data-type="action"
-						onClick={() => handleUpdateProject()}
-					>
-						Guardar
-					</button>
-				</div>
-			</div>
-		</div>
+		<Modal isOpen={isOpen} closeModal={closeModal}>
+			<Modal.Header>Editar Proyecto</Modal.Header>
+			<Modal.Content>
+				<form onSubmit={handleSubmit} noValidate>
+					<FormField
+						error={errors.name}
+						name="name"
+						placeholder="Nombre del proyecto"
+						onChange={handleChange}
+						value={values.name}
+					/>
+				</form>
+			</Modal.Content>
+			<Modal.Buttons>
+				<Modal.CancelButton />
+				<Modal.SubmitButton onSubmit={handleSubmit}>
+					Guardar
+				</Modal.SubmitButton>
+			</Modal.Buttons>
+		</Modal>
 	);
 }

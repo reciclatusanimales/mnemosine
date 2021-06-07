@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useUI } from "../../context";
-import useForm from "../../hooks/useForm";
-import { register, cleanErrors } from "../../store/userSlice";
-import FormField from "../../components/FormField";
-import Button from "../../components/Button";
+import { useUI } from "../../../../context";
+import useForm from "../../../../hooks/useForm";
+import { register, cleanErrors } from "../../../../store/userSlice";
+import FormField from "../../../../components/FormField";
+import Button from "../../../../components/Button";
 
 const fields = {
 	username: "",

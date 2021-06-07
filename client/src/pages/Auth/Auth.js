@@ -1,7 +1,6 @@
-import "./auth.scss";
 import { useUI } from "../../context";
-import Login from "../Login";
-import Register from "../Register";
+import Login from "./components/Login";
+import Register from "./components/Register";
 
 export default function Auth() {
 	const { showRegister } = useUI();

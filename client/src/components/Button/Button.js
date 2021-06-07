@@ -1,4 +1,3 @@
-import "./button.scss";
 import Spinner from "../Spinner";
 
 const Button = ({ children, isLoading, showSpinner = true, ...otherProps }) => {

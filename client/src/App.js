@@ -1,15 +1,14 @@
 import axios from "axios";
-import Content from "./components/Content";
+import Home from "./pages/Home";
 import Header from "./components/Header";
-import { useSelector } from "react-redux";
-import { useUI } from "./context";
-import Auth from "./pages/Auth";
 import jwt from "jwt-decode";
 import store from "./store/configureStore";
-import { setUser } from "./store/userSlice";
+import { setUser, setConfig } from "./store/userSlice";
+import AuthGuard from "./hoc/AuthGuard";
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 const token = localStorage.getItem("token");
+const config = localStorage.getItem("config");
 
 if (token) {
 	const decodedToken = jwt(token);
@@ -25,14 +24,17 @@ if (token) {
 	console.log("NO TOKEN");
 }
 
-export default function App() {
-	const user = useSelector((state) => state.user.user);
-	const { darkMode } = useUI();
+if (config) {
+	store.dispatch({ type: setConfig.type, payload: JSON.parse(config) });
+}
 
+export default function App() {
 	return (
-		<main className={darkMode ? "darkmode" : undefined}>
+		<main>
 			<Header />
-			{user ? <Content /> : <Auth />}
+			<AuthGuard>
+				<Home />
+			</AuthGuard>
 		</main>
 	);
 }

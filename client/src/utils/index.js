@@ -1,5 +1,5 @@
 import { setAuthorizationHeader, unauthenticateUser } from "./auth";
-import { getTextColor } from "./colors";
+import { getBgColor, getTextColor } from "./colors";
 import { arraySort, removeSymbols } from "./misc";
 import { getProjectTasks } from "./projects";
 import {
@@ -14,6 +14,7 @@ export {
 	setAuthorizationHeader,
 	unauthenticateUser,
 	// colors
+	getBgColor,
 	getTextColor,
 	// misc
 	arraySort,

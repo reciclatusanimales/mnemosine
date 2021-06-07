@@ -1,5 +1,40 @@
-@import "./variables";
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,700,900");
+@import "./color-palette";
+@import "./variables";
+@import "./animations";
+@import "./mixins";
+
+// Components
+@import "../components/Avatar/avatar.scss";
+@import "../components/Button/button.scss";
+@import "../components/ColorPalette/color-palette.scss";
+@import "../components/Empty/empty.scss";
+@import "../components/FormField/form-field.scss";
+@import "../components/Header/header.scss";
+@import "../components/Modal/modal.scss";
+@import "../components/ProfileDropdown/profile-dropdown.scss";
+@import "../components/Sidebar/sidebar.scss";
+@import "../components/Spinner/spinner.scss";
+
+// HOC
+@import "../hoc/AvatarContainer/avatar-container.scss";
+
+// Pages
+@import "../pages/Auth/auth.scss";
+@import "../pages/Home/home.scss";
+@import "../pages/Home/components/AddProject/add-project.scss";
+@import "../pages/Home/components/AddTask/add-task.scss";
+@import "../pages/Home/components/DeleteProject/delete-project.scss";
+@import "../pages/Home/components/DeleteTask/delete-task.scss";
+@import "../pages/Home/components/EditProject/edit-project.scss";
+@import "../pages/Home/components/EditTask/edit-task.scss";
+@import "../pages/Home/components/Project/project.scss";
+@import "../pages/Home/components/Projects/projects.scss";
+@import "../pages/Home/components/ProjectsSkeleton/projects-skeleton.scss";
+@import "../pages/Home/components/Task/task.scss";
+@import "../pages/Home/components/TaskDate/task-date.scss";
+@import "../pages/Home/components/Tasks/tasks.scss";
+@import "../pages/Home/components/TasksSkeleton/tasks-skeleton.scss";
 
 html {
 	-webkit-box-sizing: border-box;
@@ -50,102 +85,4 @@ ul {
 	color: #ff6347;
 	text-align: center;
 	height: 1rem;
-}
-
-// Datepicker
-
-.react-datepicker__input-container input {
-	visibility: hidden !important;
-}
-
-.react-datepicker__day--selected,
-.react-datepicker__day--keyboard-selected,
-.react-datepicker__month-text--keyboard-selected,
-.react-datepicker__quarter-text--keyboard-selected,
-.react-datepicker__year-text--keyboard-selected {
-	background-color: $primary;
-}
-
-.darkmode {
-	header {
-		-webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
-		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
-		background-color: $dark-primary;
-		border-color: transparent;
-	}
-
-	.tasks__list-project,
-	.add-task__plus,
-	.add-project__plus {
-		color: $dark-primary;
-	}
-
-	.submit,
-	.task-delete-modal__inner button,
-	.add-project__submit,
-	.edit-project__submit,
-	.add-task__submit,
-	.edit-task__submit,
-	.delete__submit,
-	.project-delete-modal__inner button {
-		background-color: $dark-primary !important;
-	}
-
-	.button {
-		background-color: $dark-primary !important;
-		:hover {
-			background-color: $dark-primary-2 !important;
-		}
-	}
-
-	.spinner {
-		border-top-color: $generic-dark-bg-secondary !important;
-		border-left-color: $generic-dark-bg-secondary !important;
-	}
-
-	.react-datepicker__day--selected,
-	.react-datepicker__day--keyboard-selected,
-	.react-datepicker__month-text--keyboard-selected,
-	.react-datepicker__quarter-text--keyboard-selected,
-	.react-datepicker__year-text--keyboard-selected {
-		background-color: $dark-primary !important;
-	}
-
-	.checkbox-container:hover input ~ .checkmark {
-		border: 1px solid $dark-primary !important;
-	}
-
-	.checkbox-container input:checked ~ .checkmark {
-		background-color: $dark-primary !important;
-	}
-
-	.auth {
-		background-color: $generic-dark-bg-secondary;
-		&__form {
-			button {
-				background-color: $generic-dark-bg;
-				&:hover {
-					background-color: $dark-primary-2;
-				}
-			}
-			&__container h1 {
-				color: $generic-dark-bg;
-			}
-		}
-
-		&__options {
-			a {
-				color: $generic-dark-bg;
-				&:hover {
-					color: $dark-primary-2;
-				}
-			}
-			button {
-				background-color: $generic-dark-bg;
-				&:hover {
-					background-color: $dark-primary-2;
-				}
-			}
-		}
-	}
 }

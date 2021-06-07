@@ -12,6 +12,7 @@ const initialState = {
 	selectedTask: null,
 	tasksLoading: false,
 	taskLoading: false,
+	error: null,
 };
 
 const dataSlice = createSlice({
@@ -21,19 +22,24 @@ const dataSlice = createSlice({
 		// Projects
 
 		setProjectsLoading: (state) => {
+			state.error = null;
 			state.projectsLoading = true;
 		},
+
 		setProjectLoading: (state) => {
 			state.projectLoading = true;
+			state.error = null;
 		},
 		projectsReceived: (state, { payload }) => {
 			state.projects = arraySort(payload, "name");
 			state.projectsLoading = false;
+			state.error = null;
 		},
 		setProject: (state, { payload }) => {
 			state.selectedProject = payload;
 			state.selectedTasks = getProjectTasks(payload, state.tasks);
 			state.selectedTask = null;
+			state.error = null;
 		},
 		projectAdded: (state, { payload }) => {
 			state.projects = arraySort([...state.projects, payload], "name");
@@ -41,6 +47,7 @@ const dataSlice = createSlice({
 			state.selectedTasks = [];
 			state.selectedTask = null;
 			state.projectLoading = false;
+			state.error = null;
 		},
 		projectUpdated: (state, { payload }) => {
 			const index = state.projects.findIndex(
@@ -50,6 +57,7 @@ const dataSlice = createSlice({
 			arraySort(state.projects, "name");
 			state.selectedProject = payload;
 			state.projectLoading = false;
+			state.error = null;
 		},
 		projectDeleted: (state, { payload }) => {
 			state.selectedProject = defaultProject;
@@ -64,15 +72,18 @@ const dataSlice = createSlice({
 			);
 			state.selectedTask = null;
 			state.projectLoading = false;
+			state.error = null;
 		},
 
 		// Tasks
 
 		setTasksLoading: (state) => {
 			state.tasksLoading = true;
+			state.error = null;
 		},
 		setTaskLoading: (state) => {
 			state.taskLoading = true;
+			state.error = null;
 		},
 		tasksReceived: (state, { payload }) => {
 			arraySort(payload, "name");
@@ -80,6 +91,7 @@ const dataSlice = createSlice({
 			state.selectedTasks = payload;
 			state.selectedTask = null;
 			state.tasksLoading = false;
+			state.error = null;
 		},
 		setTask: (state, { payload }) => {
 			state.selectedTask = payload;
@@ -95,6 +107,7 @@ const dataSlice = createSlice({
 				state.selectedTasks = [...state.tasks];
 			}
 			state.taskLoading = false;
+			state.error = null;
 		},
 		taskUpdated: (state, { payload }) => {
 			let index = state.selectedTasks.findIndex(
@@ -107,6 +120,7 @@ const dataSlice = createSlice({
 			arraySort(state.tasks, "name");
 			state.selectedTask = null;
 			state.taskLoading = false;
+			state.error = null;
 		},
 		taskArchived: (state, { payload }) => {
 			state.tasks = state.tasks.filter((task) => task.id !== payload.id);
@@ -114,6 +128,7 @@ const dataSlice = createSlice({
 				(task) => task.id !== payload.id
 			);
 			state.taskLoading = false;
+			state.error = null;
 		},
 		taskDeleted: (state, { payload }) => {
 			state.selectedTask = null;
@@ -121,6 +136,16 @@ const dataSlice = createSlice({
 			state.selectedTasks = state.selectedTasks.filter(
 				(task) => task.id !== payload
 			);
+			state.taskLoading = false;
+			state.error = null;
+		},
+
+		// Error
+		cleanErrors: (state) => {
+			state.error = null;
+			state.projectsLoading = false;
+			state.projectLoading = false;
+			state.tasksLoading = false;
 			state.taskLoading = false;
 		},
 	},
@@ -143,6 +168,8 @@ export const {
 	taskUpdated,
 	taskArchived,
 	taskDeleted,
+
+	cleanErrors,
 } = dataSlice.actions;
 
 export default dataSlice.reducer;
@@ -252,7 +279,7 @@ export const archiveTask = (id) => (dispatch) => {
 export const deleteTask = (id) => (dispatch) => {
 	return dispatch(
 		apiStart({
-			url: routes.TASKS,
+			url: `${routes.TASKS}/${id}`,
 			method: "DELETE",
 			data: { id },
 			onStart: setTaskLoading.type,

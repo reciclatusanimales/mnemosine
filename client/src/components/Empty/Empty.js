@@ -1,4 +1,3 @@
-import "./empty.scss";
 import empty from "./empty.gif";
 import { useSelector } from "react-redux";
 

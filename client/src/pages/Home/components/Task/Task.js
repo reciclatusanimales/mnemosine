@@ -1,24 +1,21 @@
-import "./task.scss";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setTask, archiveTask } from "../../../../store/dataSlice";
 import { FaPen, FaTrash } from "react-icons/fa";
-import { useUI } from "../../../../context";
 
-export default function Task({ task }) {
+export default function Task({ task, setMode }) {
 	const [isFadingOut, setIsFadingOut] = useState(false);
-	const { setShowEditTask, setShowDeleteTask } = useUI();
 	const dispatch = useDispatch();
 	const selectedProject = useSelector((state) => state.data.selectedProject);
 
-	const handleDeleteTask = () => {
-		dispatch(setTask(task));
-		setShowDeleteTask(true);
+	const handleDeleteTask = async () => {
+		await dispatch(setTask(task));
+		setMode("delete");
 	};
 
-	const handleEditTask = () => {
-		dispatch(setTask(task));
-		setShowEditTask(true);
+	const handleEditTask = async () => {
+		await dispatch(setTask(task));
+		setMode("edit");
 	};
 
 	const handleArchiveTask = () => {

@@ -1,5 +1,3 @@
-@import "../../../../sass/variables";
-
 .task {
 	display: -webkit-box;
 	display: -ms-flexbox;
@@ -25,7 +23,7 @@
 
 	&__project {
 		margin-left: 15px;
-		color: $primary;
+		@include theme-aware("color", "primary");
 	}
 
 	&__delete {
@@ -89,11 +87,12 @@
 	}
 
 	&__checkbox-container:hover input ~ .checkmark {
-		border: 1px solid $primary;
+		border-width: 1px;
+		@include theme-aware("border-color", "primary");
 	}
 
 	&__checkbox-container input:checked ~ .checkmark {
-		background-color: $primary;
+		@include theme-aware("background-color", "primary");
 	}
 
 	&__checkmark:after {

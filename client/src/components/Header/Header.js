@@ -1,29 +1,17 @@
-import "./header.scss";
 import AddTask from "../../pages/Home/components/AddTask";
-import EditTask from "../../pages/Home/components/EditTask";
-import DeleteProject from "../../pages/Home/components/DeleteProject";
-import DeleteTask from "../../pages/Home/components/DeleteTask/DeleteTask";
 import { useUI } from "../../context";
-import { FaPalette } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import ProfileDropdown from "../ProfileDropdown";
+import ColorPalette from "../ColorPalette";
 
 export default function Header() {
 	const user = useSelector((state) => state.user.user);
 
-	const {
-		darkMode,
-		setDarkMode,
-		showSidebar,
-		setShowSidebar,
-		showAddTask,
-		setShowAddTask,
-		showEditTask,
-	} = useUI();
+	const { showSidebar, setShowSidebar } = useUI();
 
 	return (
-		<header className="header">
-			<nav>
+		<header className="Header">
+			<div className="Header__wrapper">
 				{user && (
 					<div
 						className={
@@ -34,46 +22,16 @@ export default function Header() {
 						<i></i>
 					</div>
 				)}
-				<div className="settings">
-					<ul>
-						{user && (
-							<li className="settings__add">
-								<button
-									aria-label="Nueva Tarea"
-									onClick={() => {
-										setShowAddTask(true);
-									}}
-									onKeyDown={() => {
-										setShowAddTask(true);
-									}}
-									type="button"
-								>
-									+
-								</button>
-							</li>
-						)}
-						<li className="settings__darkmode">
-							<button
-								aria-label="Darkmode on/off"
-								onClick={() => setDarkMode(!darkMode)}
-								onKeyDown={() => setDarkMode(!darkMode)}
-								type="button"
-							>
-								<div className="logo">
-									<FaPalette />
-								</div>
-							</button>
-						</li>
+			</div>
+			<div className="Header__wrapper">
+				<nav>
+					<ul className="Header__settings">
+						{user && <AddTask />}
+						<ColorPalette />
 						<ProfileDropdown />
 					</ul>
-				</div>
-			</nav>
-
-			{showAddTask && <AddTask />}
-			{showEditTask && <EditTask />}
-
-			<DeleteProject />
-			<DeleteTask />
+				</nav>
+			</div>
 		</header>
 	);
 }

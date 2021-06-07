@@ -1,5 +1,4 @@
-import "./profile-dropdown.scss";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useUI } from "../../context";
@@ -14,11 +13,11 @@ const ProfileDropdown = () => {
 	const dispatch = useDispatch();
 
 	const user = useSelector((state) => state.user.user);
-	const { showProfileMenu, setShowProfileMenu, setShowRegister } = useUI();
+	const { setShowRegister } = useUI();
+	const [showProfileMenu, setShowProfileMenu] = useState(false);
 
 	const handleProfile = (e) => {
 		if (showProfileMenu && e.target !== profileRef.current) return;
-
 		setShowProfileMenu(!showProfileMenu);
 	};
 
@@ -61,16 +60,20 @@ const ProfileDropdown = () => {
 	if (!user) return null;
 
 	return (
-		<li className="settings__avatar">
-			<div className="avatar" onClick={handleProfile} ref={profileRef}>
+		<li className="ProfileDropdown">
+			<div
+				className="ProfileDropdown__container"
+				onClick={handleProfile}
+				ref={profileRef}
+			>
 				<Avatar />
 
 				<div
-					className={`dropdown-content${
+					className={`ProfileDropdown__content${
 						!showProfileMenu ? " hide" : ""
 					}`}
 				>
-					<span>
+					<span className="avatar">
 						<ConditionalWrapper
 							condition={user.accountType === "email"}
 							wrapper={(children) => (
@@ -79,10 +82,16 @@ const ProfileDropdown = () => {
 						>
 							<Avatar size={45} />
 						</ConditionalWrapper>
-						⊚{user.username}
+						<span
+							className={`username${
+								!user.imageUrl ? " center" : ""
+							}`}
+						>
+							⊚{user.username}
+						</span>
 					</span>
 					<span>{user.email}</span>
-					<span onClick={() => handleLogout()}>
+					<span className="logout" onClick={handleLogout}>
 						salir <FaSignOutAlt />
 					</span>
 				</div>

@@ -1,110 +1,79 @@
-import "./add-project.scss";
-import { useEffect, useRef, useState } from "react";
+import Modal from "../../../../components/Modal";
 
-import { useDispatch } from "react-redux";
-import { addProject } from "../../../../store/dataSlice";
-import { useUI } from "../../../../context";
+import { useDispatch, useSelector } from "react-redux";
+import { addProject, cleanErrors } from "../../../../store/dataSlice";
+import FormField from "../../../../components/FormField";
+import useForm from "../../../../hooks/useForm";
+import useModal from "../../../../hooks/useModal";
+
+const fields = {
+	name: "",
+};
+
+const rules = {
+	name: {
+		type: "text",
+		required: true,
+	},
+};
 
 export default function AddProject() {
-	const modalRef = useRef(null);
 	const dispatch = useDispatch();
-	const { showAddProject, setShowAddProject } = useUI();
-	const [name, setName] = useState("");
+	const { error, projectLoading } = useSelector((state) => state.data);
+	const { isOpen, openModal, closeModal } = useModal();
 
-	const handleAddProject = () => {
-		if (name === "") return;
-		dispatch(addProject({ name }));
-		setName("");
-		setShowAddProject(false);
+	const handleAddProject = async () => {
+		await dispatch(addProject({ name: values.name }));
+		closeModal();
 	};
 
-	useEffect(() => {
-		const handleOutsideClick = (event) => {
-			if (!modalRef.current?.contains(event.target)) {
-				if (!showAddProject) return;
-				setShowAddProject(false);
-			}
-		};
+	const handleCleanErrors = () => {
+		if (error) dispatch(cleanErrors());
+	};
 
-		if (typeof window !== "undefined") {
-			window.addEventListener("click", handleOutsideClick);
-		}
-
-		if (typeof window !== "undefined") {
-			return () =>
-				window.removeEventListener("click", handleOutsideClick);
-		}
-	}, [showAddProject, setShowAddProject]);
-
-	useEffect(() => {
-		const handleEscape = (event) => {
-			if (!showAddProject) return;
-
-			if (event.key === "Escape") {
-				setShowAddProject(false);
-			}
-		};
-
-		document.addEventListener("keyup", handleEscape);
-		return () => document.removeEventListener("keyup", handleEscape);
-	}, [showAddProject, setShowAddProject]);
+	const { handleChange, handleSubmit, values, errors } = useForm(
+		{ fields, rules },
+		handleAddProject,
+		handleCleanErrors
+	);
 
 	return (
-		<>
-			<div className="add-project" ref={modalRef}>
-				{showAddProject && (
-					<div className="add-project__input">
-						<input
-							value={name}
-							onChange={(e) => setName(e.target.value)}
-							className="add-project__name"
-							type="text"
-							placeholder="Nombre"
-						/>
-						<div className="add-project__btns">
-							<span
-								aria-label="Cancelar"
-								className="add-project__cancel"
-								data-type="action"
-								onClick={() => setShowAddProject(false)}
-								onKeyDown={() => setShowAddProject(false)}
-								role="button"
-								tabIndex={0}
-							>
-								Cancelar
-							</span>
-							<button
-								className="add-project__submit"
-								data-type="action"
-								type="button"
-								onClick={() => handleAddProject()}
-								disabled={name === ""}
-							>
-								Agregar
-							</button>
-						</div>
-					</div>
-				)}
+		<div className="AddProject">
+			<div
+				aria-label="Nuevo"
+				className="AddProject__action"
+				onClick={openModal}
+				onKeyDown={openModal}
+				role="button"
+				data-type="action"
+				tabIndex={0}
+			>
+				<span className="AddProject__plus" data-type="action">
+					+
+				</span>{" "}
+				<span className="AddProject__text" data-type="action">
+					Proyecto
+				</span>
 			</div>
 
-			{!showAddProject && (
-				<div
-					aria-label="Nuevo"
-					className="add-project__action"
-					onClick={() => setShowAddProject(true)}
-					onKeyDown={() => setShowAddProject(true)}
-					role="button"
-					data-type="action"
-					tabIndex={0}
-				>
-					<span className="add-project__plus" data-type="action">
-						+
-					</span>{" "}
-					<span className="add-project__text" data-type="action">
-						Proyecto
-					</span>
-				</div>
-			)}
-		</>
+			<Modal isOpen={isOpen} size="sm" closeModal={closeModal}>
+				<Modal.Header>Nuevo Proyecto</Modal.Header>
+				<Modal.Content>
+					<form onSubmit={handleSubmit} noValidate>
+						<FormField
+							error={errors.name}
+							name="name"
+							placeholder="Nombre del proyecto"
+							onChange={handleChange}
+							value={values.name}
+						/>
+					</form>
+				</Modal.Content>
+				<Modal.Buttons>
+					<Modal.CancelButton />
+					<Modal.SubmitButton onSubmit={handleSubmit} />
+				</Modal.Buttons>
+			</Modal>
+		</div>
 	);
 }

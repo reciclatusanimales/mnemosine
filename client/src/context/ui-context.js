@@ -1,46 +1,33 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 export const UIContext = createContext();
 
 export const UIProvider = ({ children }) => {
-	const [darkMode, setDarkMode] = useLocalStorage("dark-mode", false);
+	const [theme, setTheme] = useLocalStorage("theme", "light");
+	const [config, setConfig] = useLocalStorage("config", {
+		avatarColor: "light",
+	});
 	const [showSidebar, setShowSidebar] = useState(false);
-	const [showProfileMenu, setShowProfileMenu] = useState(false);
 	const [showRegister, setShowRegister] = useState(false);
-	const [showAddProject, setShowAddProject] = useState(false);
-	const [showEditProject, setShowEditProject] = useState(false);
-	const [showDeleteProject, setShowDeleteProject] = useState(false);
-	const [showAddTask, setShowAddTask] = useState(false);
-	const [showEditTask, setShowEditTask] = useState(false);
-	const [showDeleteTask, setShowDeleteTask] = useState(false);
+
+	useEffect(() => {
+		document.documentElement.className = "";
+		document.documentElement.classList.add(`theme-${theme}`);
+	}, [theme]);
 
 	const values = {
-		darkMode,
-		setDarkMode,
+		theme,
+		setTheme,
 
 		showSidebar,
 		setShowSidebar,
 
-		showProfileMenu,
-		setShowProfileMenu,
+		config,
+		setConfig,
 
 		showRegister,
 		setShowRegister,
-
-		showAddProject,
-		setShowAddProject,
-		showEditProject,
-		setShowEditProject,
-		showDeleteProject,
-		setShowDeleteProject,
-
-		showAddTask,
-		setShowAddTask,
-		showEditTask,
-		setShowEditTask,
-		showDeleteTask,
-		setShowDeleteTask,
 	};
 
 	return <UIContext.Provider value={values}>{children}</UIContext.Provider>;

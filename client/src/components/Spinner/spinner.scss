@@ -1,11 +1,9 @@
-@import "../../sass/variables";
-
 .spinner {
 	display: inline-block;
 	width: 1.5rem;
 	height: 1.5rem;
-	border-top-color: $generic-bg-secondary;
-	border-left-color: $generic-bg-secondary;
+	@include theme-aware("border-top-color", "$generic-bg-secondary");
+	@include theme-aware("border-left-color", "$generic-bg-secondary");
 	animation: spinner 400ms linear infinite;
 	border-bottom-color: transparent;
 	border-right-color: transparent;

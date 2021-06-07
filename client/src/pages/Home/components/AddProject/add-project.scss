@@ -1,10 +1,11 @@
-@import "../../../../sass/variables";
-@import "../../../../sass/mixins";
-
-.add-project {
+.AddProject {
 	@include no-select;
 	margin-top: 20px;
 	margin-bottom: 20px;
+
+	&__plus {
+		@include theme-aware("color", "primary");
+	}
 
 	&__input {
 		input {
