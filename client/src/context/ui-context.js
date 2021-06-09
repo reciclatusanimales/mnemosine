@@ -9,7 +9,6 @@ export const UIProvider = ({ children }) => {
 		avatarColor: "light",
 	});
 	const [showSidebar, setShowSidebar] = useState(false);
-	const [showRegister, setShowRegister] = useState(false);
 
 	useEffect(() => {
 		document.documentElement.className = "";
@@ -25,9 +24,6 @@ export const UIProvider = ({ children }) => {
 
 		config,
 		setConfig,
-
-		showRegister,
-		setShowRegister,
 	};
 
 	return <UIContext.Provider value={values}>{children}</UIContext.Provider>;

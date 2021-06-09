@@ -1,10 +1,16 @@
 import axios from "axios";
 import Home from "./pages/Home";
-import Header from "./components/Header";
 import jwt from "jwt-decode";
 import store from "./store/configureStore";
 import { setUser, setConfig } from "./store/userSlice";
-import AuthGuard from "./hoc/AuthGuard";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
+import ProtectedRoute from "./hoc/ProtectedRoute";
+import Layout from "./hoc/Layout";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import PublicRoute from "./hoc/PublicRoute";
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 const token = localStorage.getItem("token");
@@ -30,11 +36,28 @@ if (config) {
 
 export default function App() {
 	return (
-		<main>
-			<Header />
-			<AuthGuard>
-				<Home />
-			</AuthGuard>
-		</main>
+		<Router>
+			<Switch>
+				<Layout>
+					<ProtectedRoute exact path="/" component={Home} />
+
+					<PublicRoute exact path="/login" component={Login} />
+
+					<PublicRoute exact path="/register" component={Register} />
+
+					<PublicRoute
+						exact
+						path="/forgot-password"
+						component={ForgotPassword}
+					/>
+
+					<PublicRoute
+						exact
+						path="/reset-password/:token"
+						component={ResetPassword}
+					/>
+				</Layout>
+			</Switch>
+		</Router>
 	);
 }

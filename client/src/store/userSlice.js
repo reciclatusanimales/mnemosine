@@ -8,6 +8,7 @@ export const initialState = {
 	config: {
 		avatarColor: "light",
 	},
+	success: false,
 	error: null,
 	isLoading: false,
 };
@@ -23,6 +24,11 @@ const userSlice = createSlice({
 		cleanErrors: (state) => {
 			state.error = null;
 			state.isLoading = false;
+		},
+		setSuccess: (state) => {
+			state.error = null;
+			state.isLoading = false;
+			state.success = true;
 		},
 		setAuthenticated: (state, { payload }) => {
 			const {
@@ -72,6 +78,7 @@ export const {
 	setAuthenticated,
 	setUnauthenticated,
 	userImageUpdated,
+	setSuccess,
 	setErrors,
 	setLoading,
 	cleanErrors,
@@ -82,12 +89,12 @@ export const {
 
 export default reducer;
 
-export const login = (userData) => (dispatch) => {
+export const login = (data) => (dispatch) => {
 	return dispatch(
 		apiStart({
 			url: routes.LOGIN,
 			method: "POST",
-			data: userData,
+			data,
 			onSuccess: setAuthenticated.type,
 			onStart: setLoading.type,
 			onError: setErrors.type,
@@ -95,12 +102,12 @@ export const login = (userData) => (dispatch) => {
 	);
 };
 
-export const loginWithGoogle = (userData) => (dispatch) => {
+export const loginWithGoogle = (data) => (dispatch) => {
 	return dispatch(
 		apiStart({
 			url: routes.LOGIN_WITH_GOOGLE,
 			method: "POST",
-			data: userData,
+			data,
 			onSuccess: setAuthenticated.type,
 			onStart: setLoading.type,
 			onError: setErrors.type,
@@ -108,12 +115,12 @@ export const loginWithGoogle = (userData) => (dispatch) => {
 	);
 };
 
-export const register = (userData) => (dispatch) => {
+export const register = (data) => (dispatch) => {
 	return dispatch(
 		apiStart({
 			url: routes.REGISTER,
 			method: "POST",
-			data: userData,
+			data,
 			onSuccess: setAuthenticated.type,
 			onStart: setLoading.type,
 			onError: setErrors.type,
@@ -146,3 +153,42 @@ export const uploadUserImage = (data) => async (dispatch) => {
 		dispatch(apiError(error.message));
 	}
 };
+
+export const forgotPassword = (data) => (dispatch) => {
+	return dispatch(
+		apiStart({
+			url: routes.FORGOT_PASSWORD,
+			method: "POST",
+			data,
+			onSuccess: setSuccess.type,
+			onStart: setLoading.type,
+			onError: setErrors.type,
+		})
+	);
+};
+
+export const checkToken = (token) => (dispatch) => {
+	return dispatch(
+		apiStart({
+			url: `${routes.CHECK_PASSWORD_TOKEN}/${token}`,
+			method: "POST",
+			onStart: setLoading.type,
+			onError: setErrors.type,
+		})
+	);
+};
+
+export const resetPassword =
+	({ token, data }) =>
+	(dispatch) => {
+		return dispatch(
+			apiStart({
+				url: `${routes.RESET_PASSWORD}/${token}`,
+				method: "PUT",
+				data,
+				onSuccess: setAuthenticated.type,
+				onStart: setLoading.type,
+				onError: setErrors.type,
+			})
+		);
+	};

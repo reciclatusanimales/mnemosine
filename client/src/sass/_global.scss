@@ -20,7 +20,10 @@
 @import "../hoc/AvatarContainer/avatar-container.scss";
 
 // Pages
-@import "../pages/Auth/auth.scss";
+@import "../pages/Login/login.scss";
+@import "../pages/ForgotPassword/forgot-password.scss";
+@import "../pages/Register/register.scss";
+@import "../pages/ResetPassword/reset-password.scss";
 @import "../pages/Home/home.scss";
 @import "../pages/Home/components/AddProject/add-project.scss";
 @import "../pages/Home/components/AddTask/add-task.scss";

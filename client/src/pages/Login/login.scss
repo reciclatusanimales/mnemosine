@@ -1,0 +1,135 @@
+.Login {
+	position: relative;
+	min-height: 100vh;
+	@include theme-aware("background-color", "generic-bg-secondary");
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	-webkit-transition: all 0.5s ease;
+	-ms-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+
+	&__content {
+		position: relative;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		padding: 20px;
+	}
+
+	&__form {
+		&__container {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			width: 400px;
+			min-width: 300px;
+			flex-direction: column;
+
+			> h1 {
+				align-self: center;
+				@include theme-aware("color", "generic-bg");
+			}
+		}
+
+		overflow: hidden;
+		background-color: white;
+		padding: 40px 30px 10px 30px;
+		border-radius: 10px;
+
+		box-shadow: 5px 10px 10px rgba(rgba(2, 128, 144, 1), 0.2);
+
+		> span {
+			color: red;
+		}
+
+		> div {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.recovery {
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+
+			a {
+				text-decoration: none;
+				@include theme-aware("color", "generic-bg");
+
+				&:hover {
+					@include theme-aware("color", "primary-2");
+				}
+			}
+		}
+	}
+
+	&__options {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		margin-top: 2rem;
+
+		a {
+			text-decoration: none;
+			margin-left: auto;
+			@include theme-aware("color", "generic-bg");
+
+			&:hover {
+				@include theme-aware("color", "primary-2");
+			}
+		}
+
+		button {
+			position: relative;
+			cursor: pointer;
+			@include theme-aware("background-color", "generic-bg");
+			display: block;
+			color: white;
+			text-decoration: none;
+			margin: 20px 0;
+			padding: 8px 8px;
+			border-radius: 5px;
+			position: relative;
+			padding-left: 60px;
+			border-color: white;
+
+			svg {
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 1;
+				width: 50px;
+				height: 100%;
+				text-align: center;
+				padding: 0.3rem;
+				background: hsla(0, 0, 0, 0.1);
+				line-height: 3.2;
+				border-radius: 5px;
+			}
+
+			&:after {
+				content: "";
+				position: absolute;
+				z-index: 1;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				transition: all 0.2s ease-in-out;
+				border-radius: 5px;
+			}
+
+			&:hover {
+				@include theme-aware("background-color", "primary-2");
+			}
+		}
+	}
+}

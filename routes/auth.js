@@ -5,6 +5,9 @@ const {
 	register,
 	me,
 	logout,
+	forgotPassword,
+	resetPassword,
+	checkPasswordToken,
 	uploadUserImage,
 } = require("../controllers/auth");
 
@@ -17,6 +20,10 @@ router.post("/login", login);
 router.post("/login-with-google", loginWithGoogle);
 router.get("/me", auth, me);
 router.get("/logout", logout);
+router.post("/forgot-password", forgotPassword);
+router.put("/reset-password/:resettoken", resetPassword);
+router.post("/check-password-token/:resettoken", checkPasswordToken);
+
 router.put("/upload-user-image", auth, uploadUserImage);
 
 module.exports = router;

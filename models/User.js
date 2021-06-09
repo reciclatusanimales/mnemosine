@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+const crypto = require("crypto");
+
 module.exports = (sequelize, DataTypes) => {
 	class User extends Model {
 		static associate({ Project }) {
@@ -38,6 +40,14 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.STRING,
 				allowNull: true,
 			},
+			resetPasswordToken: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
+			resetPasswordExpire: {
+				type: DataTypes.DATE,
+				allowNull: true,
+			},
 			accountType: {
 				type: DataTypes.STRING,
 				allowNull: false,
@@ -62,5 +72,19 @@ module.exports = (sequelize, DataTypes) => {
 			tableName: "users",
 		}
 	);
+
+	User.prototype.getResetPasswordToken = function () {
+		const resetToken = crypto.randomBytes(20).toString("hex");
+
+		this.resetPasswordToken = crypto
+			.createHash("sha256")
+			.update(resetToken)
+			.digest("hex");
+
+		this.resetPasswordExpire = Date.now() + 60 * 60 * 1000;
+
+		return resetToken;
+	};
+
 	return User;
 };

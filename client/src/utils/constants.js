@@ -7,6 +7,9 @@ export const routes = Object.freeze({
 	LOGIN_WITH_GOOGLE: "auth/login-with-google",
 	REGISTER: "auth/register",
 	LOGOUT: "auth/logout",
+	FORGOT_PASSWORD: "auth/forgot-password",
+	RESET_PASSWORD: "auth/reset-password",
+	CHECK_PASSWORD_TOKEN: "auth/check-password-token",
 	UPLOAD_USER_IMAGE: "auth/upload-user-image",
 
 	// PROJECTS

@@ -1,10 +1,12 @@
 const path = require("path");
+const { Op } = require("sequelize");
 
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const { User } = require("../models");
-const { resizeImage, sendTokenResponse } = require("../utils/misc");
+const { resizeImage, sendTokenResponse, sendEmail } = require("../utils/misc");
 
 // @desc      Register user
 // @route     POST /api/v1/auth/register
@@ -176,6 +178,140 @@ exports.logout = asyncHandler(async (req, res, next) => {
 		expires: new Date(Date.now() + 10 * 1000),
 		httpOnly: true,
 	});
+
+	res.status(200).json({
+		success: true,
+		data: {},
+	});
+});
+
+// @desc      Forgot password
+// @route     POST /api/v1/auth/forgot-password
+// @access    Public
+exports.forgotPassword = asyncHandler(async (req, res, next) => {
+	const { email } = req.body;
+	const user = await User.findOne({ where: { email } });
+
+	if (!user) {
+		return next(
+			new ErrorResponse(
+				"No existe ningún usuario asociado ese correo.",
+				404
+			)
+		);
+	}
+
+	if (user.accountType === "google") {
+		return next(
+			new ErrorResponse(
+				"El usuario no posee contraseña. Utiliza la opción entrar con Google.",
+				400
+			)
+		);
+	}
+
+	const resetToken = user.getResetPasswordToken();
+	console.log(resetToken);
+
+	await user.save();
+
+	const resetUrl = `${process.env.APP_URL}/reset-password/${resetToken}`;
+
+	try {
+		await sendEmail({
+			email: user.email,
+			name: user.username,
+			type: "forgot_password",
+			params: {
+				reset_url: resetUrl,
+			},
+		});
+		res.status(200).json({
+			success: true,
+			data: "Correo enviado.",
+		});
+	} catch (err) {
+		console.log(err);
+		user.resetPasswordToken = null;
+		user.resetPasswordExpire = null;
+		await user.save();
+
+		return next(new ErrorResponse("El correo no pudo ser enviado.", 500));
+	}
+});
+
+// @desc      Reset password
+// @route     POST /api/v1/auth/reset-password/:resettoken
+// @access    Public
+exports.resetPassword = asyncHandler(async (req, res, next) => {
+	// Get hashed token
+	const resetPasswordToken = crypto
+		.createHash("sha256")
+		.update(req.params.resettoken)
+		.digest("hex");
+
+	const user = await User.findOne({
+		where: {
+			resetPasswordToken,
+			resetPasswordExpire: {
+				[Op.gt]: Date.now(),
+			},
+		},
+	});
+
+	if (!user) {
+		return next(new ErrorResponse("Token inválido", 400));
+	}
+
+	user.password = await bcrypt.hash(req.body.password, 6);
+	user.resetPasswordToken = null;
+	user.resetPasswordExpire = null;
+	await user.save();
+
+	try {
+		await sendEmail({
+			email: user.email,
+			name: user.username,
+			type: "reset_password",
+		});
+		const userObject = {
+			id: user.id,
+			username: user.username,
+			email: user.email,
+			imageUrl: user.imageUrl,
+			accountType: user.accountType,
+		};
+
+		sendTokenResponse(userObject, 200, res);
+	} catch (err) {
+		console.log(err);
+
+		return next(new ErrorResponse("El correo no pudo ser enviado.", 500));
+	}
+});
+
+// @desc      Check password token
+// @route     POST /api/v1/auth/check-password-token/:resettoken
+// @access    Public
+exports.checkPasswordToken = asyncHandler(async (req, res, next) => {
+	// Get hashed token
+	const resetPasswordToken = crypto
+		.createHash("sha256")
+		.update(req.params.resettoken)
+		.digest("hex");
+
+	const user = await User.findOne({
+		where: {
+			resetPasswordToken,
+			resetPasswordExpire: {
+				[Op.gt]: Date.now(),
+			},
+		},
+	});
+
+	if (!user) {
+		return next(new ErrorResponse("Token inválido", 400));
+	}
 
 	res.status(200).json({
 		success: true,

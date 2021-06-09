@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { useUI } from "../../context";
 import Avatar from "../Avatar";
 import { logoutUser } from "../../store/userSlice";
 import ConditionalWrapper from "../../hoc/ConditionalWrapper";
@@ -13,7 +12,6 @@ const ProfileDropdown = () => {
 	const dispatch = useDispatch();
 
 	const user = useSelector((state) => state.user.user);
-	const { setShowRegister } = useUI();
 	const [showProfileMenu, setShowProfileMenu] = useState(false);
 
 	const handleProfile = (e) => {
@@ -22,7 +20,6 @@ const ProfileDropdown = () => {
 	};
 
 	const handleLogout = () => {
-		setShowRegister(false);
 		dispatch(logoutUser());
 	};
 

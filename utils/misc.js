@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const sharp = require("sharp");
 const fs = require("fs");
+const axios = require("axios");
 
 // Get token from model, create cookie and send response
 exports.sendTokenResponse = (user, statusCode, res) => {
@@ -31,4 +32,33 @@ exports.resizeImage = async (filename, inPath, outPath, remove = true) => {
 	} catch (err) {
 		console.error(err);
 	}
+};
+
+exports.sendEmail = async ({ email, name, type, params = {} }) => {
+	const template_slug = `mnemosine_${type}`;
+
+	const data = {
+		from: email,
+		name,
+		template_slug,
+		type,
+		params,
+	};
+
+	axios
+		.post(`${process.env.EMAIL_SENDER_URL}`, data, {
+			headers: {
+				"Content-Type": "application/json",
+				"api-key": process.env.EMAIL_SENDER_API_KEY,
+			},
+		})
+		.then((response) => {
+			if (response.data.success) {
+				console.log("SUCCESS");
+			} else {
+				console.log(response.data);
+			}
+		})
+		.catch((error) => console.log(error.message))
+		.finally(() => console.log("ENDED"));
 };
