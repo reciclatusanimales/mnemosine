@@ -5,6 +5,7 @@ import Avatar from "../Avatar";
 import { logoutUser } from "../../store/userSlice";
 import ConditionalWrapper from "../../hoc/ConditionalWrapper";
 import AvatarContainer from "../../hoc/AvatarContainer";
+import { Link } from "react-router-dom";
 
 const ProfileDropdown = () => {
 	const profileRef = useRef(null);
@@ -88,6 +89,15 @@ const ProfileDropdown = () => {
 						</span>
 					</span>
 					<span>{user.email}</span>
+					<span>
+						<Link
+							onClick={() => setShowProfileMenu(false)}
+							to="/profile"
+							className="link"
+						>
+							Perfil
+						</Link>
+					</span>
 					<span className="logout" onClick={handleLogout}>
 						salir <FaSignOutAlt />
 					</span>

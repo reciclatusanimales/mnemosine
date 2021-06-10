@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 
 const ProtectedRoute = ({ component: Component, ...otherProps }) => {
 	const user = useSelector((state) => state.user.user);
-
+	console.log(user);
 	return (
 		<Route
 			{...otherProps}
