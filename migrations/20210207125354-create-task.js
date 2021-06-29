@@ -24,6 +24,10 @@ module.exports = {
 				type: Sequelize.STRING,
 				allowNull: false,
 			},
+			tags: {
+				type: Sequelize.STRING,
+				allowNull: true,
+			},
 			archived: {
 				type: Sequelize.BOOLEAN,
 				allowNull: false,

@@ -33,10 +33,20 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.STRING,
 				allowNull: false,
 			},
+			tags: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
 			archived: {
 				type: DataTypes.BOOLEAN,
 				allowNull: false,
 				defaultValue: false,
+			},
+			taglist: {
+				type: DataTypes.VIRTUAL,
+				get() {
+					return this.tags ? JSON.parse(this.tags) : [];
+				},
 			},
 		},
 		{

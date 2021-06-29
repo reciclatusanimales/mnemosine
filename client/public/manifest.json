@@ -1,0 +1,15 @@
+{
+	"short_name": "Mnemosine",
+	"name": "Mnemosine",
+	"icons": [
+		{
+			"src": "mnemosine.png",
+			"sizes": "16x16",
+			"type": "image/x-icon"
+		}
+	],
+	"start_url": "mnemosine .reciclatusanimales.com",
+	"display": "standalone",
+	"theme_color": "#000000",
+	"background_color": "#ffffff"
+}

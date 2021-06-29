@@ -1,0 +1,26 @@
+.Tooltip {
+	position: fixed;
+	font-size: 0.6em;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	@include theme-aware("background-color", "generic-bg");
+
+	color: white;
+	pointer-events: none;
+	padding: 6px 7px;
+	border-radius: 4px;
+	z-index: 99999;
+	display: inline-block;
+	white-space: nowrap;
+	opacity: 0;
+
+	transition-property: transform, opacity !important;
+	transition-duration: 0.06s !important;
+	transition-timing-function: cubic-bezier(0, 0, 0.2, 1) !important;
+	transform: scale(0.7);
+
+	&.show {
+		opacity: 1;
+		transform: scale(1);
+	}
+}

@@ -15,6 +15,7 @@ exports.getTasks = asyncHandler(async (req, res, next) => {
 		},
 		order: [["name", "ASC"]],
 		include: "project",
+		exclude: ["tags"],
 	});
 
 	res.status(200).json({
@@ -31,6 +32,7 @@ exports.addTask = asyncHandler(async (req, res, next) => {
 	const user = res.locals.user;
 	req.body.projectId = req.params.projectId;
 	req.body.userId = user.id;
+	req.body.tags = JSON.stringify(req.body.tags);
 
 	const project = await Project.findByPk(req.params.projectId);
 
@@ -52,7 +54,9 @@ exports.addTask = asyncHandler(async (req, res, next) => {
 		);
 	}
 
-	const task = await Task.create(req.body);
+	let task = await Task.create(req.body);
+
+	task = await Task.findByPk(task.id, { include: "project" });
 
 	res.status(200).json({
 		success: true,
@@ -65,7 +69,7 @@ exports.addTask = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.updateTask = asyncHandler(async (req, res, next) => {
 	const user = res.locals.user;
-	const { name, projectId, date } = req.body;
+	req.body.tags = JSON.stringify(req.body.tags);
 
 	const task = await Task.findByPk(req.params.id, { include: "project" });
 
@@ -85,9 +89,7 @@ exports.updateTask = asyncHandler(async (req, res, next) => {
 		);
 	}
 
-	task.name = name;
-	task.projectId = projectId;
-	task.date = date;
+	task.update(req.body);
 	await task.save();
 
 	res.status(200).json({

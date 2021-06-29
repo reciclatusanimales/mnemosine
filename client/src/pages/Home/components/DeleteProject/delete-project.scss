@@ -1,0 +1,52 @@
+.delete {
+	&__main {
+		overflow: visible;
+		border-radius: 5px;
+		background-color: white;
+		position: absolute;
+		left: 50%;
+		width: 300px;
+		top: 50%;
+		padding: 10px 10px 20px 20px;
+		-webkit-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+	}
+
+	&__message {
+		margin-bottom: 30px;
+		padding: 10px;
+	}
+
+	&__header-options {
+		display: flex;
+		justify-content: flex-end;
+		align-items: flex-start;
+	}
+
+	&__btns {
+		margin-top: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+	}
+
+	&__cancel-x {
+		cursor: pointer;
+		color: gray;
+		font-weight: bold;
+		font-size: 12px;
+	}
+
+	&__cancel,
+	&__submit {
+		@include no-select;
+	}
+
+	&__cancel {
+		@include cancel();
+	}
+
+	&__submit {
+		@include btn("90px");
+	}
+}

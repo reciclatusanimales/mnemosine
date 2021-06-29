@@ -3,6 +3,8 @@ const { Op } = require("sequelize");
 
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const fs = require("fs");
+
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const { User } = require("../models");
@@ -370,4 +372,28 @@ exports.uploadUserImage = asyncHandler(async (req, res, next) => {
 
 		sendTokenResponse(userObject, 200, res);
 	});
+});
+
+// @desc    Delete profile photo
+// @route   GET /api/v1/auth/delete-user-image
+// @access  Private
+exports.deleteUserImage = asyncHandler(async (req, res, next) => {
+	const user = await User.findByPk(res.locals.user.id);
+
+	const currentFilePath = `${process.env.FILE_UPLOAD_PATH}/profile_photos/${user.imageUrn}`;
+
+	fs.unlinkSync(currentFilePath);
+
+	user.imageUrn = null;
+	user.save();
+
+	const userObject = {
+		id: user.id,
+		username: user.username,
+		email: user.email,
+		imageUrl: user.imageUrl,
+		accountType: user.accountType,
+	};
+
+	sendTokenResponse(userObject, 200, res);
 });

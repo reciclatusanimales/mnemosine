@@ -9,6 +9,7 @@ const {
 	resetPassword,
 	checkPasswordToken,
 	uploadUserImage,
+	deleteUserImage,
 } = require("../controllers/auth");
 
 const { auth } = require("../middleware/auth");
@@ -25,5 +26,6 @@ router.put("/reset-password/:resettoken", resetPassword);
 router.post("/check-password-token/:resettoken", checkPasswordToken);
 
 router.put("/upload-user-image", auth, uploadUserImage);
+router.get("/delete-user-image", auth, deleteUserImage);
 
 module.exports = router;

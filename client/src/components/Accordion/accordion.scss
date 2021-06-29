@@ -1,0 +1,57 @@
+.Accordion {
+	margin-bottom: 15px;
+	border: 1px solid black;
+
+	&.opened &__head::after {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 10;
+		content: "";
+	}
+
+	&__head {
+		background-color: white;
+		position: relative;
+		cursor: pointer;
+
+		p {
+			padding: 21px 50px 21px 22px;
+			color: black;
+			margin-bottom: 0;
+			z-index: 1;
+			position: relative;
+		}
+
+		span {
+			position: absolute;
+			top: 50%;
+			right: 17px;
+			margin-top: -12px;
+			cursor: pointer;
+			font-size: 1.5rem;
+			transform: rotate(0deg);
+			transition-property: transform;
+			transition-timing-function: ease;
+
+			svg {
+				display: block;
+			}
+		}
+	}
+
+	&__body {
+		background-color: black;
+		display: none;
+		overflow: hidden;
+		transition-property: height;
+		transition-timing-function: ease;
+
+		&__inner {
+			padding: 33px 22px;
+			color: white;
+		}
+	}
+}
