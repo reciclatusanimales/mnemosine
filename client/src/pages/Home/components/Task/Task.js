@@ -18,11 +18,9 @@ export default function Task({ task, setMode }) {
 		setMode("edit");
 	};
 
-	const handleArchiveTask = () => {
-		setIsFadingOut(true);
-		setTimeout(() => {
-			dispatch(archiveTask(task.id));
-		}, 500);
+	const handleArchiveTask = (e) => {
+		e.preventDefault();
+		dispatch(archiveTask(task.id));
 	};
 
 	return (
@@ -35,8 +33,9 @@ export default function Task({ task, setMode }) {
 					<input
 						type="checkbox"
 						aria-label={`¿Marcar ${task.name} como realizada?`}
-						onClick={handleArchiveTask}
+						onChange={handleArchiveTask}
 						onKeyDown={handleArchiveTask}
+						checked={task.archived}
 					/>
 					<span className="task__checkmark"></span>
 				</label>

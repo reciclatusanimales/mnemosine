@@ -86,12 +86,12 @@
 		position: absolute;
 	}
 
-	&__checkbox-container:hover input ~ .checkmark {
+	&__checkbox-container:hover input ~ .task__checkmark {
 		border-width: 1px;
 		@include theme-aware("border-color", "primary");
 	}
 
-	&__checkbox-container input:checked ~ .checkmark {
+	&__checkbox-container input:checked ~ .task__checkmark {
 		@include theme-aware("background-color", "primary");
 	}
 
@@ -101,11 +101,11 @@
 		display: none;
 	}
 
-	&__checkbox-container input:checked ~ .checkmark:after {
+	&__checkbox-container input:checked ~ .task__checkmark:after {
 		display: block;
 	}
 
-	&__checkbox-container .checkmark:after {
+	&__checkbox-container .task__checkmark:after {
 		left: 6px;
 		top: 3px;
 		width: 5px;

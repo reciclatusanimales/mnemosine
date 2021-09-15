@@ -123,10 +123,12 @@ const dataSlice = createSlice({
 			state.error = null;
 		},
 		taskArchived: (state, { payload }) => {
-			state.tasks = state.tasks.filter((task) => task.id !== payload.id);
-			state.selectedTasks = state.selectedTasks.filter(
-				(task) => task.id !== payload.id
+			let index = state.selectedTasks.findIndex(
+				(task) => task.id === payload.id
 			);
+			state.selectedTasks[index].archived = payload.archived;
+			index = state.tasks.findIndex((task) => task.id === payload.id);
+			state.tasks[index].archived = payload.archived;
 			state.taskLoading = false;
 			state.error = null;
 		},
