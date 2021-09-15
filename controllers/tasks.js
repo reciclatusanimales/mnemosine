@@ -11,7 +11,6 @@ exports.getTasks = asyncHandler(async (req, res, next) => {
 	const data = await Task.findAll({
 		where: {
 			userId: user.id,
-			archived: false,
 		},
 		order: [["name", "ASC"]],
 		include: "project",
@@ -122,7 +121,7 @@ exports.archiveTask = asyncHandler(async (req, res, next) => {
 		);
 	}
 
-	task.archived = true;
+	task.archived = !task.archived;
 	await task.save();
 
 	res.status(200).json({

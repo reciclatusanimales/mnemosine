@@ -49,14 +49,7 @@ export default function Tasks() {
 				>
 					{selectedTasks.length ? (
 						selectedTasks.map((task, index) => (
-							<Fragment key={task.id}>
-								<Accordion.Toggle eventKey={index}>
-									<Task task={task} setMode={setMode} />
-								</Accordion.Toggle>
-								<Accordion.Collapse eventKey={index}>
-									{task.name}
-								</Accordion.Collapse>
-							</Fragment>
+							<Task key={task.id} task={task} setMode={setMode} />
 						))
 					) : (
 						<Empty />
